@@ -41,6 +41,7 @@ import {
   RuneCrestIcon,
   RuneScrollIcon,
   RuneSwordIcon,
+  RuneCombatIcon,
   RuneTomeIcon,
   RuneAstrolabeIcon,
   RuneHammerIcon,
@@ -385,7 +386,25 @@ export default function Index() {
             ? 'Módulos Integrados do Reino (RPG & RP)'
             : 'Forjar Novo Registro de Aventura (RPG)'}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <Link
+            to="/combat"
+            className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"
+          >
+            <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <RuneCombatIcon className="h-5 w-5 mode-accent-text" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-sm font-fantasy font-bold text-amber-100 block">
+                Combate Tático
+              </span>
+              <span className="text-xs text-[#a39b8d] line-clamp-1">
+                Rastreador de iniciativa e dano
+              </span>
+            </div>
+            <ArrowRight className="h-4 w-4 text-amber-400/60 group-hover:text-amber-300 transition-colors" />
+          </Link>
+
           <Link
             to="/sessions"
             className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"

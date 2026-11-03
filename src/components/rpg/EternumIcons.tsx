@@ -877,6 +877,56 @@ export function RuneSparkleIcon({ className = 'w-4 h-4', size, ...props }: Etern
   )
 }
 
+/**
+ * 11. Combate Tático / Ordem de Iniciativa / Confronto:
+ * Escudo heráldico facetado com duas lâminas rúnicas cruzadas e orbe de precisão.
+ * Silhueta: Lâminas cruzadas em X com escudo e gema rúnica central.
+ */
+export function RuneCombatIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Lâmina 1 (Diagonal /) */}
+      <line x1="4.5" y1="19.5" x2="19.5" y2="4.5" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Ponta da espada 1 */}
+      <path d="M16.5 4.5 L19.5 4.5 L19.5 7.5" strokeWidth="1.4" strokeLinejoin="round" />
+      {/* Guarda da espada 1 */}
+      <line x1="5.5" y1="16.5" x2="8.5" y2="19.5" strokeWidth="1.4" strokeLinecap="round" />
+      {/* Pomo 1 */}
+      <circle cx="4" cy="20" r="0.9" fill="currentColor" />
+
+      {/* Lâmina 2 (Diagonal \) */}
+      <line x1="19.5" y1="19.5" x2="4.5" y2="4.5" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Ponta da espada 2 */}
+      <path d="M7.5 4.5 L4.5 4.5 L4.5 7.5" strokeWidth="1.4" strokeLinejoin="round" />
+      {/* Guarda da espada 2 */}
+      <line x1="18.5" y1="16.5" x2="15.5" y2="19.5" strokeWidth="1.4" strokeLinecap="round" />
+      {/* Pomo 2 */}
+      <circle cx="20" cy="20" r="0.9" fill="currentColor" />
+
+      {/* Escudo facetado no ponto de cruzamento */}
+      <path
+        d="M12 7.5 L15.5 9.5 V13.5 C15.5 15.8 12 17.5 12 17.5 C12 17.5 8.5 15.8 8.5 13.5 V9.5 Z"
+        strokeWidth="1.3"
+        fill="currentColor"
+        fillOpacity="0.22"
+        strokeLinejoin="round"
+      />
+      {/* Runa central focal do escudo */}
+      <circle cx="12" cy="12.5" r="1.1" fill="currentColor" />
+    </svg>
+  )
+}
+
 // Busto / Silhueta Nobre (substitui 👤)
 export function RuneUserIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -928,8 +978,10 @@ export type RunicInsigniaKey =
   | 'sparkle'
   | 'crest'
   | 'user'
+  | 'combat'
 
 export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] = [
+  { id: 'combat', label: 'Combate Tático' },
   { id: 'sword', label: 'Espada de Honra' },
   { id: 'wolf', label: 'Lobo Nobre' },
   { id: 'fox', label: 'Raposa Astuta' },
@@ -997,6 +1049,8 @@ export function RunicInsignia({
     return <RuneGearIcon className={className} size={size} {...props} />
   if (norm === 'crest' || norm === 'portal')
     return <RuneCrestIcon className={className} size={size} {...props} />
+  if (norm === 'combat' || norm === 'combate' || norm === 'iniciativa' || norm === 'battle')
+    return <RuneCombatIcon className={className} size={size} {...props} />
 
   // Fallback padrão seguro (Pergaminho rúnico suave)
   return <RuneScrollIcon className={className} size={size} {...props} />
@@ -1013,6 +1067,7 @@ export type EternumIconKey =
   | 'oracle'
   | 'settings'
   | 'search'
+  | 'combat'
 
 export function EternumIcon({
   name,
@@ -1039,6 +1094,8 @@ export function EternumIcon({
       return <RuneOracleIcon className={className} size={size} {...props} />
     case 'settings':
       return <RuneGearIcon className={className} size={size} {...props} />
+    case 'combat':
+      return <RuneCombatIcon className={className} size={size} {...props} />
     case 'search':
       return <RuneSearchIcon className={className} size={size} {...props} />
     default:

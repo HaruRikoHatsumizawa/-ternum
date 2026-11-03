@@ -28,6 +28,7 @@ import {
   RuneCrestIcon,
   RuneScrollIcon,
   RuneSwordIcon,
+  RuneCombatIcon,
   RuneTomeIcon,
   RuneAstrolabeIcon,
   RuneHammerIcon,
@@ -292,6 +293,17 @@ export default function Layout() {
                     </div>
                     <div className="space-y-0.5">
                       <Link
+                        to="/combat"
+                        className={`w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                          location.pathname === '/combat'
+                            ? 'bg-amber-500/20 text-amber-200 font-semibold border border-amber-500/40'
+                            : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d]'
+                        }`}
+                      >
+                        <RuneCombatIcon className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                        <span>Combate Tático</span>
+                      </Link>
+                      <Link
                         to="/npcs"
                         className={`w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                           location.pathname === '/npcs'
@@ -381,6 +393,18 @@ export default function Layout() {
                   >
                     <RuneSwordIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                     <span>Salão de Guerra & Quests (RPG)</span>
+                  </Link>
+
+                  <Link
+                    to="/combat"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/combat'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneCombatIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span>Combate Tático</span>
                   </Link>
 
                   <Link
@@ -838,6 +862,14 @@ export default function Layout() {
                 >
                   <Table className="mr-2 h-3.5 w-3.5 text-amber-400" /> Novo Códice Arcano
                 </DropdownMenuItem>
+                {mode !== 'rp' && (
+                  <DropdownMenuItem
+                    onClick={() => navigate('/combat')}
+                    className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer text-amber-200"
+                  >
+                    <RuneCombatIcon className="mr-2 h-3.5 w-3.5 text-amber-400" /> Combate Tático
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

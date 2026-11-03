@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T14:31:47.146Z",
+  "generatedAt": "2026-11-03T15:08:31.865Z",
   "collections": [
     {
       "name": "users",
@@ -545,6 +545,88 @@
       "indexes": [
         "CREATE INDEX idx_npcs_user ON npcs (user)",
         "CREATE INDEX idx_npcs_user_name ON npcs (user, name)"
+      ]
+    },
+    {
+      "name": "encounters",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["Preparando", "Em Andamento", "Finalizado"]
+        },
+        {
+          "name": "round",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "current_turn_index",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "combatants",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_encounters_user ON encounters (user)",
+        "CREATE INDEX idx_encounters_user_updated ON encounters (user, updated DESC)"
       ]
     }
   ]

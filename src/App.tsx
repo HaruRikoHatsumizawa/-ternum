@@ -14,6 +14,7 @@ import SessionsCalendar from './pages/SessionsCalendar'
 import LootForge from './pages/LootForge'
 import NpcView from './pages/NpcView'
 import OracleChat from './pages/OracleChat'
+import CombatTracker from './pages/CombatTracker'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -91,6 +92,7 @@ const App = () => (
                 <Route path="/databases/:id" element={<DatabaseView />} />
                 <Route path="/sessions" element={<SessionsCalendar />} />
                 <Route path="/loot" element={<LootForge />} />
+                <Route path="/combat" element={<CombatTracker />} />
                 <Route path="/npcs" element={<NpcView />} />
                 <Route path="/oracle" element={<OracleChat />} />
                 <Route path="/settings" element={<Settings />} />
