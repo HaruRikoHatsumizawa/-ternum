@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T15:34:56.169Z",
+  "generatedAt": "2026-11-03T16:16:54.489Z",
   "collections": [
     {
       "name": "users",
@@ -634,6 +634,63 @@
       "indexes": [
         "CREATE INDEX idx_encounters_user ON encounters (user)",
         "CREATE INDEX idx_encounters_user_updated ON encounters (user, updated DESC)"
+      ]
+    },
+    {
+      "name": "glossary_terms",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "term",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "category",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["combate", "personagem", "regras", "dados", "mesa"]
+        },
+        {
+          "name": "definition",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_glossary_user ON glossary_terms (user)",
+        "CREATE UNIQUE INDEX idx_glossary_user_term ON glossary_terms (user, term)"
       ]
     }
   ]
