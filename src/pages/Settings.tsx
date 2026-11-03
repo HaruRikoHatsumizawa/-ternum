@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
+import { RuneGearIcon, RuneSwordIcon, RuneScrollIcon } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -112,7 +113,7 @@ export default function Settings() {
       <div>
         <h1 className="text-2xl font-fantasy font-bold mode-accent-text tracking-tight flex items-center gap-2">
           <span>Santuário do Mestre & Aventureiro</span>
-          <span className="text-lg">🛡️</span>
+          <RuneGearIcon className="w-5 h-5 mode-accent-text shrink-0" />
         </h1>
         <p className="text-sm text-[#a39b8d] mt-1">
           Gerencie as molduras da foto de perfil, a paleta visual (RP Roxo / RPG Ouro), título de
@@ -148,7 +149,7 @@ export default function Settings() {
             >
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-amber-300">
-                  <Swords className="w-3.5 h-3.5 text-amber-400" />
+                  <RuneSwordIcon className="w-4 h-4 text-amber-400" />
                   Modo RPG — Ouro Forjado
                 </span>
                 {mode === 'rpg' && (
@@ -181,7 +182,7 @@ export default function Settings() {
             >
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-purple-300">
-                  <Scroll className="w-3.5 h-3.5 text-purple-400" />
+                  <RuneScrollIcon className="w-4 h-4 text-purple-400" />
                   Modo RP — Roxo Aristocrático
                 </span>
                 {mode === 'rp' && (

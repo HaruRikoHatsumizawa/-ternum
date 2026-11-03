@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { RunicCircle, ArcaneOrb, TomeOrnament } from '@/components/rpg/RpgArtwork'
+import { RuneOracleIcon } from '@/components/rpg/EternumIcons'
 import { toast } from '@/hooks/use-toast'
 
 interface ChatMessage {
@@ -213,8 +214,8 @@ export default function OracleChat() {
       {/* Topo do Santuário do Oráculo */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#262c3a] pb-4 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300">
-            <ArcaneOrb className="w-7 h-7 text-amber-400" />
+          <div className="w-11 h-11 rounded-xl bg-purple-500/15 border border-purple-500/35 text-purple-300 flex items-center justify-center shrink-0">
+            <RuneOracleIcon className="w-7 h-7 text-purple-400" />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-fantasy font-bold text-amber-100 flex items-center gap-2">

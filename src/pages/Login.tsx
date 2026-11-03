@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { RuneCrestIcon } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -67,7 +68,7 @@ export default function Login() {
         {/* Logo / Header Rúnico */}
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 shadow-xl shadow-amber-950/40 mb-2">
-            <span className="text-3xl">⚔️</span>
+            <RuneCrestIcon className="w-8 h-8 text-amber-400" />
           </div>
           <h1 className="text-3xl font-fantasy font-bold tracking-tight text-amber-100">Éternum</h1>
           <p className="text-xs text-amber-300/80 font-fantasy uppercase tracking-wider">

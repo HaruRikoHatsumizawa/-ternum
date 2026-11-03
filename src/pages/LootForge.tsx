@@ -18,8 +18,8 @@ import {
   Scroll,
   History,
   Check,
-  Flame,
 } from 'lucide-react'
+import { RuneHammerIcon } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { RunicCircle, DragonSilhouette, TomeOrnament } from '@/components/rpg/RpgArtwork'
 import { toast } from '@/hooks/use-toast'
@@ -127,8 +127,10 @@ export default function LootForge() {
       {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#262c3a] pb-6">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Flame className="w-6 h-6 text-amber-400" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <RuneHammerIcon className="w-6 h-6 mode-accent-text" />
+            </div>
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
               Forja do Tesouro & Gerador de Loot
             </h1>

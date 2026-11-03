@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
+import { RuneSwordIcon } from '@/components/rpg/EternumIcons'
 import {
   Trash2,
   Star,
@@ -439,7 +440,7 @@ export default function PageEditor() {
 
                 {block.type === 'bullet' && (
                   <div className="flex items-start gap-2 pt-0.5">
-                    <span className="text-amber-400 select-none mt-0.5 text-xs">⚔️</span>
+                    <RuneSwordIcon className="w-3.5 h-3.5 mode-accent-text shrink-0 mt-1" />
                     <input
                       type="text"
                       value={block.content}

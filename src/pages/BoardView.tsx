@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { boardsService, BoardRecord, BoardCard, BoardColumn } from '@/services/boards'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
+import { RuneSwordIcon } from '@/components/rpg/EternumIcons'
 import {
   Plus,
   Trash2,
@@ -212,8 +213,14 @@ export default function BoardView() {
       {/* Header do Mural de Missões */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#262e40]">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{board?.icon || '🛡️'}</span>
+          <div className="flex items-center gap-3">
+            {!board?.icon || board.icon === '🛡️' || board.icon === '📌' ? (
+              <div className="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+                <RuneSwordIcon className="w-5 h-5 mode-accent-text" />
+              </div>
+            ) : (
+              <span className="text-2xl">{board.icon}</span>
+            )}
             <input
               type="text"
               value={name}

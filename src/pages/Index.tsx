@@ -37,6 +37,15 @@ import {
   TomeOrnament,
   RunicPawIcon,
 } from '@/components/rpg/RpgArtwork'
+import {
+  RuneCrestIcon,
+  RuneScrollIcon,
+  RuneSwordIcon,
+  RuneTomeIcon,
+  RuneAstrolabeIcon,
+  RuneHammerIcon,
+  RuneOracleIcon,
+} from '@/components/rpg/EternumIcons'
 
 // Amostras de Heróis em Destaque da Campanha (Fichas prontas)
 const HIGHLIGHT_HEROES = [
@@ -192,7 +201,13 @@ export default function Index() {
               <div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-fantasy text-amber-100 flex items-center gap-3">
                   <span>Éternum — {user?.name || 'Mestre da Mesa'}</span>
-                  <span className="text-2xl">{mode === 'rp' ? '🔮' : '⚔️'}</span>
+                  <span className="mode-accent-text inline-flex items-center justify-center p-1 rounded-lg bg-black/30 border mode-accent-border">
+                    {mode === 'rp' ? (
+                      <RuneOracleIcon className="w-6 h-6 mode-accent-text" />
+                    ) : (
+                      <RuneSwordIcon className="w-6 h-6 mode-accent-text" />
+                    )}
+                  </span>
                 </h1>
                 <p className="text-xs mode-accent-text font-fantasy">
                   {mode === 'rp'
@@ -327,7 +342,7 @@ export default function Index() {
             className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"
           >
             <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Calendar className="h-5 w-5" />
+              <RuneAstrolabeIcon className="h-5 w-5 mode-accent-text" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-sm font-fantasy font-bold text-amber-100 block">
@@ -345,7 +360,7 @@ export default function Index() {
             className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"
           >
             <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Flame className="h-5 w-5" />
+              <RuneHammerIcon className="h-5 w-5 mode-accent-text" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-sm font-fantasy font-bold text-amber-100 block">
@@ -363,7 +378,7 @@ export default function Index() {
             className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-purple-500/40 transition-all text-left group shadow-xs"
           >
             <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Bot className="h-5 w-5" />
+              <RuneOracleIcon className="h-5 w-5 text-purple-400" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-sm font-fantasy font-bold text-purple-100 block">
@@ -420,9 +435,19 @@ export default function Index() {
                 to={`/pages/${p.id}`}
                 className="p-3.5 rounded-xl border border-amber-500/30 bg-[#131824] hover:bg-[#182030] hover:border-amber-500/50 transition-all flex items-center gap-2.5 shadow-sm group"
               >
-                <span className="text-xl shrink-0 group-hover:scale-110 transition-transform">
-                  {p.icon || '⚔️'}
-                </span>
+                {!p.icon ||
+                p.icon === '⚔️' ||
+                p.icon === '📝' ||
+                p.icon === '📜' ||
+                p.icon === '🔮' ? (
+                  <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <RuneScrollIcon className="w-4 h-4 mode-accent-text" />
+                  </div>
+                ) : (
+                  <span className="text-xl shrink-0 group-hover:scale-110 transition-transform">
+                    {p.icon}
+                  </span>
+                )}
                 <span className="text-xs font-fantasy font-bold text-amber-100 truncate flex-1">
                   {p.title}
                 </span>
@@ -458,9 +483,19 @@ export default function Index() {
               className="p-3.5 rounded-xl border border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29] transition-all flex items-center justify-between gap-2 group"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <span className="text-xl shrink-0 group-hover:scale-105 transition-transform">
-                  {p.icon || '⚔️'}
-                </span>
+                {!p.icon ||
+                p.icon === '⚔️' ||
+                p.icon === '📝' ||
+                p.icon === '📜' ||
+                p.icon === '🔮' ? (
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <RuneScrollIcon className="w-4 h-4 mode-accent-text" />
+                  </div>
+                ) : (
+                  <span className="text-xl shrink-0 group-hover:scale-105 transition-transform">
+                    {p.icon}
+                  </span>
+                )}
                 <div className="min-w-0">
                   <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                     {p.title || 'Sem título'}
@@ -512,8 +547,14 @@ export default function Index() {
                 className="p-3.5 rounded-xl border border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29] transition-all space-y-2 group"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 truncate">
-                    <span className="text-xl">{b.icon || '🛡️'}</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <RuneSwordIcon className="w-4 h-4 mode-accent-text" />
+                      </div>
+                    ) : (
+                      <span className="text-xl">{b.icon}</span>
+                    )}
                     <span className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                       {b.name}
                     </span>
@@ -572,7 +613,13 @@ export default function Index() {
               className="p-3.5 rounded-xl border border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29] transition-all flex items-center justify-between gap-2 group"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <span className="text-xl shrink-0">{d.icon || '🐉'}</span>
+                {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <RuneTomeIcon className="w-4 h-4 mode-accent-text" />
+                  </div>
+                ) : (
+                  <span className="text-xl shrink-0">{d.icon}</span>
+                )}
                 <div className="min-w-0">
                   <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                     {d.name}

@@ -10,23 +10,13 @@ import {
   FileText,
   Kanban,
   Table,
-  Settings as SettingsIcon,
   Plus,
-  Search,
   ChevronDown,
   ChevronRight,
   Menu,
   X,
   Star,
   LogOut,
-  FolderOpen,
-  Home,
-  CheckCircle2,
-  Sparkles,
-  Calendar,
-  Flame,
-  Users,
-  Bot,
 } from 'lucide-react'
 import {
   RunicCircle,
@@ -34,6 +24,18 @@ import {
   CrestShield,
   RunicPawIcon,
 } from '@/components/rpg/RpgArtwork'
+import {
+  RuneCrestIcon,
+  RuneScrollIcon,
+  RuneSwordIcon,
+  RuneTomeIcon,
+  RuneAstrolabeIcon,
+  RuneHammerIcon,
+  RuneNpcIcon,
+  RuneOracleIcon,
+  RuneGearIcon,
+  RuneSearchIcon,
+} from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -188,7 +190,7 @@ export default function Layout() {
                     onClick={() => navigate('/settings')}
                     className="hover:bg-amber-500/10 focus:bg-amber-500/10 text-amber-100"
                   >
-                    <SettingsIcon className="mr-2 h-3.5 w-3.5 text-amber-400" /> Santuário & Perfil
+                    <RuneGearIcon className="mr-2 h-3.5 w-3.5 text-amber-400" /> Santuário & Perfil
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-[#262c3a]" />
                   <DropdownMenuItem
@@ -214,9 +216,9 @@ export default function Layout() {
             <div className="px-2 pt-2.5 pb-1 space-y-1">
               <button
                 onClick={() => setSearchOpen(true)}
-                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d] rounded-md transition-colors border border-transparent hover:border-amber-500/20"
+                className="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d] rounded-md transition-colors border border-transparent hover:border-amber-500/20 group"
               >
-                <Search className="h-3.5 w-3.5 text-amber-400/70" />
+                <RuneSearchIcon className="h-3.5 w-3.5 text-amber-400/80 group-hover:text-amber-300" />
                 <span className="flex-1 text-left font-medium">Consultar Oráculo</span>
                 <kbd className="text-[10px] font-mono text-amber-300/70 bg-[#121620] border border-amber-500/30 px-1 py-0.2 rounded">
                   ⌘K
@@ -231,7 +233,7 @@ export default function Layout() {
                     : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Home className="h-3.5 w-3.5 mode-accent-text" />
+                <RuneCrestIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                 <span>Salão Principal</span>
               </Link>
 
@@ -243,7 +245,7 @@ export default function Layout() {
                     : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Calendar className="h-3.5 w-3.5 mode-accent-text" />
+                <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                 <span>Calendário de Sessões</span>
               </Link>
 
@@ -255,7 +257,7 @@ export default function Layout() {
                     : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Flame className="h-3.5 w-3.5 mode-accent-text" />
+                <RuneHammerIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                 <span>Forja do Tesouro (Loot)</span>
               </Link>
 
@@ -267,7 +269,7 @@ export default function Layout() {
                     : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Users className="h-3.5 w-3.5 mode-accent-text" />
+                <RuneNpcIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                 <span>Fichas de NPCs</span>
               </Link>
 
@@ -275,11 +277,11 @@ export default function Layout() {
                 to="/oracle"
                 className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                   location.pathname === '/oracle'
-                    ? 'bg-purple-950/40 text-purple-200 font-semibold border border-purple-500/40 shadow-xs'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
                     : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
                 }`}
               >
-                <Bot className="h-3.5 w-3.5 text-purple-400" />
+                <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                 <span className="flex-1">Oráculo de Éternum</span>
                 <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
                   IA
@@ -294,14 +296,15 @@ export default function Layout() {
                 <div className="flex items-center justify-between px-2 py-1 text-amber-300/60 hover:text-amber-200 group">
                   <button
                     onClick={() => setPagesExpanded(!pagesExpanded)}
-                    className="flex items-center gap-1 font-fantasy font-bold uppercase text-[10px] tracking-wider"
+                    className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
+                    <RuneScrollIcon className="h-3.5 w-3.5 mode-accent-text" />
+                    <span>Fichas & Crônicas ({pages.length})</span>
                     {pagesExpanded ? (
-                      <ChevronDown className="h-3 w-3 text-amber-400" />
+                      <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
-                      <ChevronRight className="h-3 w-3 text-amber-400" />
+                      <ChevronRight className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     )}
-                    Fichas & Crônicas ({pages.length})
                   </button>
                   <button
                     onClick={handleCreateNewPage}
@@ -326,7 +329,16 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          <span className="shrink-0 text-sm">{p.icon || '⚔️'}</span>
+                          {/* Se for emoji de sistema ou vazio, usa ícone SVG; se usuário colocou outro emoji, respeita */}
+                          {!p.icon ||
+                          p.icon === '⚔️' ||
+                          p.icon === '📝' ||
+                          p.icon === '📜' ||
+                          p.icon === '🔮' ? (
+                            <RuneScrollIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
+                          ) : (
+                            <span className="shrink-0 text-xs">{p.icon}</span>
+                          )}
                           <span className="truncate">{p.title || 'Ficha Sem Título'}</span>
                           {p.is_favorite && (
                             <Star className="h-2.5 w-2.5 text-amber-400 fill-amber-400 ml-auto shrink-0" />
@@ -348,14 +360,15 @@ export default function Layout() {
                 <div className="flex items-center justify-between px-2 py-1 text-amber-300/60 hover:text-amber-200 group">
                   <button
                     onClick={() => setBoardsExpanded(!boardsExpanded)}
-                    className="flex items-center gap-1 font-fantasy font-bold uppercase text-[10px] tracking-wider"
+                    className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
+                    <RuneSwordIcon className="h-3.5 w-3.5 mode-accent-text" />
+                    <span>Mural de Missões ({boards.length})</span>
                     {boardsExpanded ? (
-                      <ChevronDown className="h-3 w-3 text-amber-400" />
+                      <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
-                      <ChevronRight className="h-3 w-3 text-amber-400" />
+                      <ChevronRight className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     )}
-                    Mural de Missões ({boards.length})
                   </button>
                   <button
                     onClick={handleCreateNewBoard}
@@ -380,7 +393,11 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          <span className="shrink-0 text-sm">{b.icon || '🛡️'}</span>
+                          {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
+                            <RuneSwordIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
+                          ) : (
+                            <span className="shrink-0 text-xs">{b.icon}</span>
+                          )}
                           <span className="truncate">{b.name || 'Mural de Missões'}</span>
                         </Link>
                       )
@@ -399,14 +416,15 @@ export default function Layout() {
                 <div className="flex items-center justify-between px-2 py-1 text-amber-300/60 hover:text-amber-200 group">
                   <button
                     onClick={() => setDbsExpanded(!dbsExpanded)}
-                    className="flex items-center gap-1 font-fantasy font-bold uppercase text-[10px] tracking-wider"
+                    className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
+                    <RuneTomeIcon className="h-3.5 w-3.5 mode-accent-text" />
+                    <span>Códices & Bestiários ({databases.length})</span>
                     {dbsExpanded ? (
-                      <ChevronDown className="h-3 w-3 text-amber-400" />
+                      <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
-                      <ChevronRight className="h-3 w-3 text-amber-400" />
+                      <ChevronRight className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     )}
-                    Códices & Bestiários ({databases.length})
                   </button>
                   <button
                     onClick={handleCreateNewDatabase}
@@ -431,7 +449,11 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          <span className="shrink-0 text-sm">{d.icon || '🐉'}</span>
+                          {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
+                            <RuneTomeIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
+                          ) : (
+                            <span className="shrink-0 text-xs">{d.icon}</span>
+                          )}
                           <span className="truncate">{d.name || 'Códice Sem Nome'}</span>
                         </Link>
                       )
@@ -450,9 +472,13 @@ export default function Layout() {
             <div className="p-2 border-t border-[#262c3a] bg-[#090c10] flex items-center justify-between text-xs">
               <Link
                 to="/settings"
-                className="flex items-center gap-2 px-2 py-1.5 text-amber-200/70 hover:text-amber-100 hover:bg-[#18202d] rounded-md transition-colors"
+                className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors ${
+                  location.pathname === '/settings'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border'
+                    : 'text-amber-200/70 hover:text-amber-100 hover:bg-[#18202d]'
+                }`}
               >
-                <SettingsIcon className="h-3.5 w-3.5 mode-accent-text" />
+                <RuneGearIcon className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Santuário</span>
               </Link>
 
@@ -524,7 +550,7 @@ export default function Layout() {
               onClick={() => setSearchOpen(true)}
               className="h-7 text-xs text-amber-200/80 hover:text-amber-100 bg-[#141923] border-[#2c3547] hover:border-amber-500/40 px-2.5 gap-1.5 hidden sm:flex"
             >
-              <Search className="h-3 w-3 mode-accent-text" />
+              <RuneSearchIcon className="h-3 w-3 mode-accent-text" />
               <span>Consultar Oráculo...</span>
               <kbd className="text-[9px] font-mono mode-accent-text bg-[#0c0f14] border mode-accent-border px-1 py-0.2 rounded ml-1">
                 ⌘K
@@ -582,7 +608,7 @@ export default function Layout() {
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
         <DialogContent className="max-w-lg p-0 overflow-hidden gap-0 bg-[#121620] border-[#2c3547] text-[#f1ede3]">
           <div className="flex items-center px-3 border-b border-[#262c3a] bg-[#161b26]">
-            <Search className="h-4 w-4 mode-accent-text mr-2" />
+            <RuneSearchIcon className="h-4 w-4 mode-accent-text mr-2" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -604,8 +630,9 @@ export default function Layout() {
             {/* Resultados de Fichas/Crônicas */}
             {filteredPages.length > 0 && (
               <div>
-                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80">
-                  Fichas & Crônicas
+                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80 flex items-center gap-1.5">
+                  <RuneScrollIcon className="h-3 w-3 mode-accent-text" />
+                  <span>Fichas & Crônicas</span>
                 </p>
                 <div className="space-y-0.5">
                   {filteredPages.map((p) => (
@@ -617,7 +644,15 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      <span className="text-base">{p.icon || '⚔️'}</span>
+                      {!p.icon ||
+                      p.icon === '⚔️' ||
+                      p.icon === '📝' ||
+                      p.icon === '📜' ||
+                      p.icon === '🔮' ? (
+                        <RuneScrollIcon className="h-4 w-4 mode-accent-text shrink-0" />
+                      ) : (
+                        <span className="text-base">{p.icon}</span>
+                      )}
                       <span className="font-medium truncate">{p.title}</span>
                     </button>
                   ))}
@@ -628,8 +663,9 @@ export default function Layout() {
             {/* Resultados de Murais de Missões */}
             {filteredBoards.length > 0 && (
               <div>
-                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80">
-                  Murais de Missões
+                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80 flex items-center gap-1.5">
+                  <RuneSwordIcon className="h-3 w-3 mode-accent-text" />
+                  <span>Murais de Missões</span>
                 </p>
                 <div className="space-y-0.5">
                   {filteredBoards.map((b) => (
@@ -641,7 +677,11 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      <span className="text-base">{b.icon || '🛡️'}</span>
+                      {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
+                        <RuneSwordIcon className="h-4 w-4 mode-accent-text shrink-0" />
+                      ) : (
+                        <span className="text-base">{b.icon}</span>
+                      )}
                       <span className="font-medium truncate">{b.name}</span>
                     </button>
                   ))}
@@ -652,8 +692,9 @@ export default function Layout() {
             {/* Resultados de Códices */}
             {filteredDatabases.length > 0 && (
               <div>
-                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80">
-                  Códices & Bestiários
+                <p className="px-2 py-1 text-[10px] font-fantasy uppercase tracking-wider text-amber-400/80 flex items-center gap-1.5">
+                  <RuneTomeIcon className="h-3 w-3 mode-accent-text" />
+                  <span>Códices & Bestiários</span>
                 </p>
                 <div className="space-y-0.5">
                   {filteredDatabases.map((d) => (
@@ -665,7 +706,11 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      <span className="text-base">{d.icon || '🐉'}</span>
+                      {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
+                        <RuneTomeIcon className="h-4 w-4 mode-accent-text shrink-0" />
+                      ) : (
+                        <span className="text-base">{d.icon}</span>
+                      )}
                       <span className="font-medium truncate">{d.name}</span>
                     </button>
                   ))}

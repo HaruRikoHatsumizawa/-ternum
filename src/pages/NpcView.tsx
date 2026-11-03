@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
+import { RuneNpcIcon } from '@/components/rpg/EternumIcons'
 import {
   Users,
   Plus,
@@ -182,8 +183,10 @@ export default function NpcView() {
       {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#262c3a] pb-6">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Users className="w-6 h-6 text-amber-400" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <RuneNpcIcon className="w-6 h-6 mode-accent-text" />
+            </div>
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
               Fichas de Personagens & NPCs (RPG & RP)
             </h1>
