@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T16:58:13.990Z",
+  "generatedAt": "2026-11-03T22:28:35.234Z",
   "collections": [
     {
       "name": "users",
@@ -862,6 +862,134 @@
       "indexes": [
         "CREATE INDEX idx_inventory_user ON inventory_items (user)",
         "CREATE INDEX idx_inventory_user_char ON inventory_items (user, character_id)"
+      ]
+    },
+    {
+      "name": "character_details",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "character_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "age",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sexuality",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "pronouns",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "race",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "species",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "backstory",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "photo",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "powers",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "abilities",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "bonds",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rp_summary",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rpg_summary",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ai_custom_sheet",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_char_details_user ON character_details (user)",
+        "CREATE UNIQUE INDEX idx_char_details_user_char ON character_details (user, character_id)"
       ]
     }
   ]

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
@@ -38,6 +39,7 @@ function getModifier(score?: number): string {
 }
 
 export default function NpcView() {
+  const navigate = useNavigate()
   const { mode } = useAppMode()
   const { t } = useLanguage()
   const [npcs, setNpcs] = useState<NpcRecord[]>([])
@@ -339,6 +341,18 @@ export default function NpcView() {
                   </div>
 
                   <div className="flex items-center gap-1.5 ml-auto">
+                    {!isCreating && active && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/characters/${active.id}`)}
+                        className="text-xs border-amber-500/40 bg-amber-500/10 text-amber-200 hover:bg-amber-500/20 font-fantasy font-bold"
+                      >
+                        <Sparkles className="h-3.5 w-3.5 mr-1 text-amber-400" />
+                        {t('characterDetail.openSubpageButton') || 'Dossiê do Personagem'}
+                      </Button>
+                    )}
+
                     {isEditing ? (
                       <>
                         <Button

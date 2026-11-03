@@ -46,6 +46,7 @@ export default function Settings() {
   const [selectedFrame, setSelectedFrame] = useState<string>(user?.pfp_frame || 'runic-gold')
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null)
+  const [removeAvatarRequested, setRemoveAvatarRequested] = useState<boolean>(false)
   const [profileSuccess, setProfileSuccess] = useState(false)
   const [profileError, setProfileError] = useState<string | null>(null)
   const [profileLoading, setProfileLoading] = useState(false)
@@ -57,9 +58,10 @@ export default function Settings() {
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [passwordLoading, setPasswordLoading] = useState(false)
 
-  const avatarUrl = user?.avatar
-    ? pb.files.getUrl(user, user.avatar, { thumb: '128x128' })
-    : undefined
+  const avatarUrl =
+    !removeAvatarRequested && user?.avatar
+      ? pb.files.getUrl(user, user.avatar, { thumb: '128x128' })
+      : undefined
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -70,10 +72,14 @@ export default function Settings() {
     try {
       await updateProfile({
         name: name.trim(),
-        avatar: avatarFile,
+        avatar: removeAvatarRequested ? null : avatarFile,
+        removeAvatar: removeAvatarRequested,
         pfp_frame: selectedFrame,
         app_mode: mode,
       })
+      setAvatarFile(null)
+      setAvatarPreviewUrl(null)
+      setRemoveAvatarRequested(false)
       setProfileSuccess(true)
       setTimeout(() => setProfileSuccess(false), 3000)
     } catch (err: any) {
@@ -295,7 +301,7 @@ export default function Settings() {
                     ) : avatarUrl ? (
                       <AvatarImage src={avatarUrl} alt={user?.name || 'Avatar'} />
                     ) : null}
-                    <AvatarFallback className="text-xl font-fantasy font-bold bg-amber-500/20 text-amber-300">
+                    <AvatarFallback className="text-xl font-fantasy font-bold bg-amber-500/20 text-amber-300 flex items-center justify-center">
                       {user?.name ? user.name.slice(0, 2).toUpperCase() : 'GM'}
                     </AvatarFallback>
                   </Avatar>
@@ -323,6 +329,7 @@ export default function Settings() {
                         const file = e.target.files[0]
                         setAvatarFile(file)
                         setAvatarPreviewUrl(URL.createObjectURL(file))
+                        setRemoveAvatarRequested(false)
                       }
                     }}
                   />
@@ -331,6 +338,37 @@ export default function Settings() {
                       <Check className="w-3.5 h-3.5 text-emerald-400" />{' '}
                       {t('settings.uploadSuccess')}
                     </span>
+                  )}
+                  {(user?.avatar || avatarPreviewUrl) && !removeAvatarRequested && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setAvatarFile(null)
+                        setAvatarPreviewUrl(null)
+                        setRemoveAvatarRequested(true)
+                      }}
+                      className="text-xs border-rose-500/40 text-rose-300 hover:bg-rose-950/40 hover:text-rose-200 font-fantasy"
+                    >
+                      {t('settings.removeAvatar')}
+                    </Button>
+                  )}
+                  {removeAvatarRequested && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-rose-400 italic">
+                        {t('settings.avatarWillBeRemoved')}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setRemoveAvatarRequested(false)}
+                        className="text-[11px] text-amber-300 hover:text-amber-100 h-6 px-1.5"
+                      >
+                        {t('common.cancel')}
+                      </Button>
+                    </div>
                   )}
                 </div>
                 <p className="text-[11px] text-[#7d7568]">{t('settings.uploadHelp')}</p>

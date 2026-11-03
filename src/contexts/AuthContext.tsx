@@ -12,6 +12,7 @@ interface AuthContextType {
   updateProfile: (data: {
     name?: string
     avatar?: File | null
+    removeAvatar?: boolean
     pfp_frame?: string
     app_mode?: 'geral' | 'rpg' | 'rp'
     locale?: 'pt-BR' | 'en'
@@ -87,6 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const updateProfile = async (data: {
     name?: string
     avatar?: File | null
+    removeAvatar?: boolean
     pfp_frame?: string
     app_mode?: 'geral' | 'rpg' | 'rp'
     locale?: 'pt-BR' | 'en'
@@ -96,7 +98,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (data.name !== undefined) {
       formData.append('name', data.name)
     }
-    if (data.avatar) {
+    if (data.removeAvatar) {
+      // No PocketBase, passar string vazia ou null no campo de arquivo remove o arquivo existente
+      formData.append('avatar', '')
+    } else if (data.avatar) {
       formData.append('avatar', data.avatar)
     }
     if (data.pfp_frame !== undefined) {

@@ -18,6 +18,7 @@ import OracleChat from './pages/OracleChat'
 import CombatTracker from './pages/CombatTracker'
 import GlossaryView from './pages/GlossaryView'
 import CompendiumView from './pages/CompendiumView'
+import CharacterDetailView from './pages/CharacterDetailView'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -100,6 +101,7 @@ const App = () => (
                   <Route path="/loot" element={<LootForge />} />
                   <Route path="/combat" element={<CombatTracker />} />
                   <Route path="/npcs" element={<NpcView />} />
+                  <Route path="/characters/:id" element={<CharacterDetailView />} />
                   <Route path="/oracle" element={<OracleChat />} />
                   <Route path="/glossary" element={<GlossaryView />} />
                   <Route path="/compendium" element={<CompendiumView />} />
