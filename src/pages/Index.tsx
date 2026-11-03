@@ -45,7 +45,9 @@ import {
   RuneAstrolabeIcon,
   RuneHammerIcon,
   RuneOracleIcon,
+  RunicInsignia,
 } from '@/components/rpg/EternumIcons'
+import { RpHomeView } from '@/components/rpg/RpHomeView'
 
 // Amostras de Heróis em Destaque da Campanha (Fichas prontas)
 const HIGHLIGHT_HEROES = [
@@ -56,7 +58,7 @@ const HIGHLIGHT_HEROES = [
     level: 5,
     hpMax: 48,
     hpCurrent: 44,
-    avatar: '🦊',
+    avatar: 'fox',
     xp: 6800,
     xpNext: 7500,
     alignment: 'Caótico e Bom',
@@ -69,7 +71,7 @@ const HIGHLIGHT_HEROES = [
     level: 4,
     hpMax: 26,
     hpCurrent: 26,
-    avatar: '🐺',
+    avatar: 'wolf',
     xp: 3900,
     xpNext: 4500,
     alignment: 'Neutro e Bom',
@@ -82,7 +84,7 @@ const HIGHLIGHT_HEROES = [
     level: 4,
     hpMax: 38,
     hpCurrent: 35,
-    avatar: '🐉',
+    avatar: 'dragon',
     xp: 4100,
     xpNext: 4500,
     alignment: 'Leal e Neutro',
@@ -124,7 +126,7 @@ export default function Index() {
 
   const handleCreatePage = async () => {
     try {
-      const p = await pagesService.create({ title: 'Nova Ficha / Crônica', icon: '⚔️' })
+      const p = await pagesService.create({ title: 'Nova Ficha / Crônica', icon: 'scroll' })
       navigate(`/pages/${p.id}`)
     } catch (err) {
       console.error(err)
@@ -133,7 +135,7 @@ export default function Index() {
 
   const handleCreateBoard = async () => {
     try {
-      const b = await boardsService.create({ name: 'Novo Mural de Missões', icon: '🛡️' })
+      const b = await boardsService.create({ name: 'Novo Mural de Missões', icon: 'sword' })
       navigate(`/boards/${b.id}`)
     } catch (err) {
       console.error(err)
@@ -142,7 +144,7 @@ export default function Index() {
 
   const handleCreateDatabase = async () => {
     try {
-      const d = await databasesService.create({ name: 'Novo Códice Arcano', icon: '🐉' })
+      const d = await databasesService.create({ name: 'Novo Códice Arcano', icon: 'tome' })
       navigate(`/databases/${d.id}`)
     } catch (err) {
       console.error(err)
@@ -168,9 +170,30 @@ export default function Index() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Abrindo o Salão Principal de Éternum..."
-        submessage="Invocando pergaminhos, murais e personagens"
+        message={
+          mode === 'rp'
+            ? 'Abrindo o Salão de Narrativa de Éternum...'
+            : 'Abrindo o Salão Principal de Éternum...'
+        }
+        submessage={
+          mode === 'rp'
+            ? 'Preparando crônicas, cenas e a corte aristocrática'
+            : 'Invocando pergaminhos, murais e personagens'
+        }
         fullScreen={false}
+      />
+    )
+  }
+
+  // Se o modo for RP, entrega a experiência do Salão de Narrativa autêntica
+  if (mode === 'rp') {
+    return (
+      <RpHomeView
+        pages={pages}
+        onRefreshPages={async () => {
+          const p = await pagesService.list().catch(() => [])
+          setPages(p)
+        }}
       />
     )
   }
@@ -186,11 +209,7 @@ export default function Index() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full mode-accent-bg border mode-accent-border mode-accent-text text-xs font-fantasy tracking-wider uppercase">
               <Crown className="h-3.5 w-3.5 mode-accent-text" />
-              <span>
-                {mode === 'rp'
-                  ? 'Éternum • Crônicas & Cenas Narrativas (RP)'
-                  : 'Éternum • As Crônicas de Val-Morath (RPG)'}
-              </span>
+              <span>Éternum • As Crônicas de Val-Morath (RPG)</span>
             </div>
             <div className="flex items-center gap-4">
               <AvatarFrame frameId={user?.pfp_frame || 'runic-gold'} size="lg">
@@ -202,17 +221,11 @@ export default function Index() {
                 <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-fantasy text-amber-100 flex items-center gap-3">
                   <span>Éternum — {user?.name || 'Mestre da Mesa'}</span>
                   <span className="mode-accent-text inline-flex items-center justify-center p-1 rounded-lg bg-black/30 border mode-accent-border">
-                    {mode === 'rp' ? (
-                      <RuneOracleIcon className="w-6 h-6 mode-accent-text" />
-                    ) : (
-                      <RuneSwordIcon className="w-6 h-6 mode-accent-text" />
-                    )}
+                    <RuneSwordIcon className="w-6 h-6 mode-accent-text" />
                   </span>
                 </h1>
                 <p className="text-xs mode-accent-text font-fantasy">
-                  {mode === 'rp'
-                    ? 'Atmosfera de RP ativa (Roxo Aristocrático)'
-                    : 'Atmosfera de RPG ativa (Ouro Rúnico Forjado)'}
+                  Atmosfera de RPG ativa (Ouro Rúnico Forjado)
                 </p>
               </div>
             </div>
@@ -435,19 +448,9 @@ export default function Index() {
                 to={`/pages/${p.id}`}
                 className="p-3.5 rounded-xl border border-amber-500/30 bg-[#131824] hover:bg-[#182030] hover:border-amber-500/50 transition-all flex items-center gap-2.5 shadow-sm group"
               >
-                {!p.icon ||
-                p.icon === '⚔️' ||
-                p.icon === '📝' ||
-                p.icon === '📜' ||
-                p.icon === '🔮' ? (
-                  <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <RuneScrollIcon className="w-4 h-4 mode-accent-text" />
-                  </div>
-                ) : (
-                  <span className="text-xl shrink-0 group-hover:scale-110 transition-transform">
-                    {p.icon}
-                  </span>
-                )}
+                <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <RunicInsignia name={p.icon || 'scroll'} className="w-4 h-4 mode-accent-text" />
+                </div>
                 <span className="text-xs font-fantasy font-bold text-amber-100 truncate flex-1">
                   {p.title}
                 </span>
@@ -483,19 +486,9 @@ export default function Index() {
               className="p-3.5 rounded-xl border border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29] transition-all flex items-center justify-between gap-2 group"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                {!p.icon ||
-                p.icon === '⚔️' ||
-                p.icon === '📝' ||
-                p.icon === '📜' ||
-                p.icon === '🔮' ? (
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <RuneScrollIcon className="w-4 h-4 mode-accent-text" />
-                  </div>
-                ) : (
-                  <span className="text-xl shrink-0 group-hover:scale-105 transition-transform">
-                    {p.icon}
-                  </span>
-                )}
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <RunicInsignia name={p.icon || 'scroll'} className="w-4 h-4 mode-accent-text" />
+                </div>
                 <div className="min-w-0">
                   <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                     {p.title || 'Sem título'}
@@ -548,13 +541,12 @@ export default function Index() {
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 truncate">
-                    {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                        <RuneSwordIcon className="w-4 h-4 mode-accent-text" />
-                      </div>
-                    ) : (
-                      <span className="text-xl">{b.icon}</span>
-                    )}
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <RunicInsignia
+                        name={b.icon || 'sword'}
+                        className="w-4 h-4 mode-accent-text"
+                      />
+                    </div>
                     <span className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                       {b.name}
                     </span>
@@ -613,13 +605,9 @@ export default function Index() {
               className="p-3.5 rounded-xl border border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29] transition-all flex items-center justify-between gap-2 group"
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <RuneTomeIcon className="w-4 h-4 mode-accent-text" />
-                  </div>
-                ) : (
-                  <span className="text-xl shrink-0">{d.icon}</span>
-                )}
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                  <RunicInsignia name={d.icon || 'tome'} className="w-4 h-4 mode-accent-text" />
+                </div>
                 <div className="min-w-0">
                   <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                     {d.name}

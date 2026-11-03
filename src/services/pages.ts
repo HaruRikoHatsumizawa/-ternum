@@ -41,7 +41,7 @@ export const pagesService = {
     return await pb.collection('pages').create<PageRecord>({
       user,
       title: data.title || 'Nova Ficha / Crônica',
-      icon: data.icon || '⚔️',
+      icon: data.icon || 'scroll',
       cover: data.cover || '',
       blocks: data.blocks || [{ id: 'b_' + Date.now(), type: 'text', content: '' }],
       is_favorite: data.is_favorite || false,

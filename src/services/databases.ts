@@ -76,7 +76,7 @@ export const databasesService = {
       user,
       name: data.name || 'Novo Códice Arcano',
       description: data.description || 'Registro de monstros, NPCs e tesouros da mesa',
-      icon: data.icon || '🐉',
+      icon: data.icon || 'tome',
       columns: data.columns || defaultColumns,
       rows: data.rows || [],
     })

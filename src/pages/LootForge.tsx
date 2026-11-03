@@ -19,7 +19,7 @@ import {
   History,
   Check,
 } from 'lucide-react'
-import { RuneHammerIcon } from '@/components/rpg/EternumIcons'
+import { RuneHammerIcon, RunicInsignia } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { RunicCircle, DragonSilhouette, TomeOrnament } from '@/components/rpg/RpgArtwork'
 import { toast } from '@/hooks/use-toast'
@@ -64,7 +64,7 @@ export default function LootForge() {
       if (!targetDb) {
         targetDb = await databasesService.create({
           name: 'Códice Arcano: Tesouros & Relíquias',
-          icon: '💎',
+          icon: 'gem',
           description: 'Registro de tesouros forjados e relíquias sorteadas',
           columns: [
             { id: 'col_name', name: 'Nome do Item', type: 'text' },
@@ -210,9 +210,9 @@ export default function LootForge() {
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="flex items-center gap-4">
               <div
-                className={`w-16 h-16 rounded-xl border flex items-center justify-center text-3xl shadow-inner ${rarityStyle.bg} ${rarityStyle.border}`}
+                className={`w-16 h-16 rounded-xl border flex items-center justify-center shadow-inner ${rarityStyle.bg} ${rarityStyle.border} ${rarityStyle.text}`}
               >
-                {currentItem.icon}
+                <RunicInsignia name={currentItem.icon} className="w-8 h-8" />
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -322,7 +322,11 @@ export default function LootForge() {
                   className="p-3 rounded-xl border border-[#232b3b] bg-[#121620] hover:border-amber-500/40 cursor-pointer transition-all space-y-1 group"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xl">{item.icon}</span>
+                    <span
+                      className={`p-1 rounded bg-[#1a2130] border border-[#2b3548] flex items-center justify-center ${style.text}`}
+                    >
+                      <RunicInsignia name={item.icon} className="w-4 h-4" />
+                    </span>
                     <span
                       className={`text-[10px] font-fantasy font-bold px-1.5 py-0.2 rounded border ${style.bg} ${style.border} ${style.text}`}
                     >

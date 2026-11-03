@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
-import { RuneNpcIcon } from '@/components/rpg/EternumIcons'
+import { RuneNpcIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
 import {
   Users,
   Plus,
@@ -110,7 +110,7 @@ export default function NpcView() {
       },
       secrets: 'Segredo oculto deste personagem que os outros podem descobrir durante o jogo...',
       notes: 'Ganchos de cenas narrativas e missões...',
-      avatar: '🐺',
+      avatar: 'wolf',
     })
   }
 
@@ -234,8 +234,8 @@ export default function NpcView() {
                       : 'border-[#262e40] bg-[#121620] hover:border-amber-500/40 hover:bg-[#161c29]'
                   }`}
                 >
-                  <span className="text-2xl shrink-0 p-1.5 rounded-lg bg-[#1a2130] border border-[#2b3548]">
-                    {npc.avatar || '👤'}
+                  <span className="shrink-0 p-2 rounded-lg bg-[#1a2130] border border-[#2b3548] text-amber-300 flex items-center justify-center w-10 h-10">
+                    <RunicInsignia name={npc.avatar || 'npc'} className="w-5 h-5" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
@@ -386,20 +386,26 @@ export default function NpcView() {
                     </div>
                     <div className="space-y-1">
                       <label className="text-[11px] font-fantasy font-bold text-amber-200">
-                        Ícone / Avatar
+                        Insígnia Rúnica
                       </label>
-                      <Input
-                        value={formData.avatar || ''}
+                      <select
+                        value={formData.avatar || 'npc'}
                         onChange={(e) => setFormData({ ...formData, avatar: e.target.value })}
-                        placeholder="Ex: 🐺, 🦊, 🐆, 🐉"
-                        className="bg-[#0c1017] border-[#2c3548] text-amber-100 text-center"
-                      />
+                        className="w-full h-9 rounded-md bg-[#0c1017] border border-[#2c3444] px-2 text-xs text-amber-100 font-fantasy"
+                      >
+                        <option value="npc">Busto Nobre (Padrão)</option>
+                        {RUNIC_INSIGNIA_CATALOG.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/30">
-                      {active.avatar || '👤'}
+                    <span className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center justify-center w-14 h-14">
+                      <RunicInsignia name={active.avatar || 'npc'} className="w-8 h-8" />
                     </span>
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-fantasy font-extrabold text-amber-100">

@@ -35,6 +35,7 @@ import {
   RuneOracleIcon,
   RuneGearIcon,
   RuneSearchIcon,
+  RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -103,7 +104,7 @@ export default function Layout() {
 
   const handleCreateNewPage = async () => {
     try {
-      const newPage = await pagesService.create({ title: 'Nova Página', icon: '📝' })
+      const newPage = await pagesService.create({ title: 'Nova Página', icon: 'scroll' })
       navigate(`/pages/${newPage.id}`)
     } catch (err) {
       console.error(err)
@@ -112,7 +113,7 @@ export default function Layout() {
 
   const handleCreateNewBoard = async () => {
     try {
-      const newBoard = await boardsService.create({ name: 'Novo Quadro', icon: '📌' })
+      const newBoard = await boardsService.create({ name: 'Novo Quadro', icon: 'sword' })
       navigate(`/boards/${newBoard.id}`)
     } catch (err) {
       console.error(err)
@@ -121,7 +122,7 @@ export default function Layout() {
 
   const handleCreateNewDatabase = async () => {
     try {
-      const newDb = await databasesService.create({ name: 'Nova Tabela', icon: '📊' })
+      const newDb = await databasesService.create({ name: 'Nova Tabela', icon: 'tome' })
       navigate(`/databases/${newDb.id}`)
     } catch (err) {
       console.error(err)
@@ -234,31 +235,7 @@ export default function Layout() {
                 }`}
               >
                 <RuneCrestIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                <span>Salão Principal</span>
-              </Link>
-
-              <Link
-                to="/sessions"
-                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
-                  location.pathname === '/sessions'
-                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
-                }`}
-              >
-                <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                <span>Calendário de Sessões</span>
-              </Link>
-
-              <Link
-                to="/loot"
-                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
-                  location.pathname === '/loot'
-                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
-                }`}
-              >
-                <RuneHammerIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                <span>Forja do Tesouro (Loot)</span>
+                <span>{mode === 'rp' ? 'Salão de Narrativa' : 'Salão Principal'}</span>
               </Link>
 
               <Link
@@ -270,7 +247,31 @@ export default function Layout() {
                 }`}
               >
                 <RuneNpcIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                <span>Fichas de NPCs</span>
+                <span>{mode === 'rp' ? 'Personagens & Relações' : 'Fichas de NPCs'}</span>
+              </Link>
+
+              <Link
+                to="/sessions"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/sessions'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                }`}
+              >
+                <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                <span>{mode === 'rp' ? 'Cenas & Encontros' : 'Calendário de Sessões'}</span>
+              </Link>
+
+              <Link
+                to="/loot"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/loot'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                }`}
+              >
+                <RuneHammerIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                <span>{mode === 'rp' ? 'Relíquias & Tesouros' : 'Forja do Tesouro (Loot)'}</span>
               </Link>
 
               <Link
@@ -282,7 +283,9 @@ export default function Layout() {
                 }`}
               >
                 <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                <span className="flex-1">Oráculo de Éternum</span>
+                <span className="flex-1">
+                  {mode === 'rp' ? 'Oráculo de Éternum (Narrador)' : 'Oráculo de Éternum'}
+                </span>
                 <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
                   IA
                 </span>
@@ -299,7 +302,11 @@ export default function Layout() {
                     className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
                     <RuneScrollIcon className="h-3.5 w-3.5 mode-accent-text" />
-                    <span>Fichas & Crônicas ({pages.length})</span>
+                    <span>
+                      {mode === 'rp'
+                        ? `Crônicas & Diários (${pages.length})`
+                        : `Fichas & Crônicas (${pages.length})`}
+                    </span>
                     {pagesExpanded ? (
                       <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
@@ -329,16 +336,10 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          {/* Se for emoji de sistema ou vazio, usa ícone SVG; se usuário colocou outro emoji, respeita */}
-                          {!p.icon ||
-                          p.icon === '⚔️' ||
-                          p.icon === '📝' ||
-                          p.icon === '📜' ||
-                          p.icon === '🔮' ? (
-                            <RuneScrollIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
-                          ) : (
-                            <span className="shrink-0 text-xs">{p.icon}</span>
-                          )}
+                          <RunicInsignia
+                            name={p.icon || 'scroll'}
+                            className="w-3.5 h-3.5 text-amber-400 shrink-0"
+                          />
                           <span className="truncate">{p.title || 'Ficha Sem Título'}</span>
                           {p.is_favorite && (
                             <Star className="h-2.5 w-2.5 text-amber-400 fill-amber-400 ml-auto shrink-0" />
@@ -363,7 +364,11 @@ export default function Layout() {
                     className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
                     <RuneSwordIcon className="h-3.5 w-3.5 mode-accent-text" />
-                    <span>Mural de Missões ({boards.length})</span>
+                    <span>
+                      {mode === 'rp'
+                        ? `Tramas & Capítulos (${boards.length})`
+                        : `Mural de Missões (${boards.length})`}
+                    </span>
                     {boardsExpanded ? (
                       <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
@@ -393,11 +398,10 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
-                            <RuneSwordIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
-                          ) : (
-                            <span className="shrink-0 text-xs">{b.icon}</span>
-                          )}
+                          <RunicInsignia
+                            name={b.icon || 'sword'}
+                            className="w-3.5 h-3.5 text-amber-400 shrink-0"
+                          />
                           <span className="truncate">{b.name || 'Mural de Missões'}</span>
                         </Link>
                       )
@@ -419,7 +423,11 @@ export default function Layout() {
                     className="flex items-center gap-1.5 font-fantasy font-bold uppercase text-[10px] tracking-wider"
                   >
                     <RuneTomeIcon className="h-3.5 w-3.5 mode-accent-text" />
-                    <span>Códices & Bestiários ({databases.length})</span>
+                    <span>
+                      {mode === 'rp'
+                        ? `Tabelas & Registros (${databases.length})`
+                        : `Códices & Bestiários (${databases.length})`}
+                    </span>
                     {dbsExpanded ? (
                       <ChevronDown className="h-3 w-3 text-amber-400/70 ml-0.5" />
                     ) : (
@@ -449,11 +457,10 @@ export default function Layout() {
                               : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d] border-transparent'
                           }`}
                         >
-                          {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
-                            <RuneTomeIcon className="shrink-0 h-3.5 w-3.5 mode-accent-text" />
-                          ) : (
-                            <span className="shrink-0 text-xs">{d.icon}</span>
-                          )}
+                          <RunicInsignia
+                            name={d.icon || 'tome'}
+                            className="w-3.5 h-3.5 text-amber-400 shrink-0"
+                          />
                           <span className="truncate">{d.name || 'Códice Sem Nome'}</span>
                         </Link>
                       )
@@ -644,15 +651,10 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      {!p.icon ||
-                      p.icon === '⚔️' ||
-                      p.icon === '📝' ||
-                      p.icon === '📜' ||
-                      p.icon === '🔮' ? (
-                        <RuneScrollIcon className="h-4 w-4 mode-accent-text shrink-0" />
-                      ) : (
-                        <span className="text-base">{p.icon}</span>
-                      )}
+                      <RunicInsignia
+                        name={p.icon || 'scroll'}
+                        className="w-4 h-4 text-amber-400 mr-2 shrink-0"
+                      />
                       <span className="font-medium truncate">{p.title}</span>
                     </button>
                   ))}
@@ -677,11 +679,10 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      {!b.icon || b.icon === '🛡️' || b.icon === '📌' ? (
-                        <RuneSwordIcon className="h-4 w-4 mode-accent-text shrink-0" />
-                      ) : (
-                        <span className="text-base">{b.icon}</span>
-                      )}
+                      <RunicInsignia
+                        name={b.icon || 'sword'}
+                        className="w-4 h-4 text-amber-400 mr-2 shrink-0"
+                      />
                       <span className="font-medium truncate">{b.name}</span>
                     </button>
                   ))}
@@ -706,11 +707,10 @@ export default function Layout() {
                       }}
                       className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md hover:bg-amber-500/10 text-left transition-colors text-amber-100"
                     >
-                      {!d.icon || d.icon === '🐉' || d.icon === '📊' || d.icon === '💎' ? (
-                        <RuneTomeIcon className="h-4 w-4 mode-accent-text shrink-0" />
-                      ) : (
-                        <span className="text-base">{d.icon}</span>
-                      )}
+                      <RunicInsignia
+                        name={d.icon || 'tome'}
+                        className="w-4 h-4 text-amber-400 mr-2 shrink-0"
+                      />
                       <span className="font-medium truncate">{d.name}</span>
                     </button>
                   ))}

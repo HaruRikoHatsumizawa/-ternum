@@ -6,8 +6,9 @@ export interface EternumIconProps extends React.SVGProps<SVGSVGElement> {
 }
 
 /**
- * Início / Salão Principal:
- * Brasão rúnico / Orbe sagrado com estrela de 4 pontas central e anel de nós arcanos.
+ * 1. Início / Salão Principal / Salão de Narrativa:
+ * Portal em arco ogival místico com orbe focal ascendente e pedestal rúnico.
+ * Silhueta: Arco ogival / Portal vertical esbelto.
  */
 export function RuneCrestIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -22,35 +23,36 @@ export function RuneCrestIcon({ className = 'w-4 h-4', size, ...props }: Eternum
       aria-hidden="true"
       {...props}
     >
-      {/* Contorno do escudo arqueado */}
+      {/* Arco ogival exterior do portal */}
       <path
-        d="M12 2.5 C16 2.5 20.5 4 20.5 6.5 C20.5 13.5 16 19 12 21.5 C8 19 3.5 13.5 3.5 6.5 C3.5 4 8 2.5 12 2.5 Z"
-        strokeWidth="1.5"
+        d="M4 21 V12 C4 6.5 12 2.5 12 2.5 C12 2.5 20 6.5 20 12 V21"
+        strokeWidth="1.6"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
-      {/* Moldura rúnica interna sutil */}
+      {/* Moldura rúnica interna em arco */}
       <path
-        d="M12 4.8 C15 4.8 18.5 6 18.5 8 C18.5 13.2 15 17.5 12 19.5 C9 17.5 5.5 13.2 5.5 8 C5.5 6 9 4.8 12 4.8 Z"
-        strokeWidth="0.9"
+        d="M7 21 V13 C7 8.5 12 5.5 12 5.5 C12 5.5 17 8.5 17 13 V21"
+        strokeWidth="1"
         strokeDasharray="2 1.5"
-        opacity="0.6"
+        opacity="0.65"
       />
-      {/* Estrela / Orbe central de 4 pontas */}
-      <path
-        d="M12 7 L13 11 L17 12 L13 13 L12 17 L11 13 L7 12 L11 11 Z"
-        strokeWidth="1.3"
-        fill="currentColor"
-        fillOpacity="0.2"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="12" r="1.2" fill="currentColor" />
+      {/* Soleira / base do portal */}
+      <line x1="2.5" y1="21" x2="21.5" y2="21" strokeWidth="1.6" strokeLinecap="round" />
+      {/* Orbe sagrado flutuando no coração do portal */}
+      <circle cx="12" cy="12" r="2.2" strokeWidth="1.3" fill="currentColor" fillOpacity="0.25" />
+      <circle cx="12" cy="12" r="0.9" fill="currentColor" />
+      {/* Raio estelar ascendente */}
+      <line x1="12" y1="8" x2="12" y2="9.8" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="12" y1="14.2" x2="12" y2="16" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   )
 }
 
 /**
- * Fichas & Crônicas:
- * Pergaminho medieval rúnico com fita selada e pena/quill geométrica refinada.
+ * 2. Fichas e Crônicas:
+ * Pergaminho medieval aberto na diagonal com pontas enroladas e pena (quill) cruzada.
+ * Silhueta: Folha/rolo retangular fluido com pena longa oblíqua.
  */
 export function RuneScrollIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -65,62 +67,40 @@ export function RuneScrollIcon({ className = 'w-4 h-4', size, ...props }: Eternu
       aria-hidden="true"
       {...props}
     >
-      {/* Rolo superior do pergaminho */}
+      {/* Rolo superior virado */}
       <path
-        d="M6 4 C4.5 4 3.5 5 3.5 6 C3.5 7 4.5 8 6 8 L17 8 C18.5 8 19.5 7 19.5 6 C19.5 5 18.5 4 17 4 L6 4 Z"
+        d="M4.5 5.5 C4.5 4 6 3 8 3 L17.5 3 C19 3 20 4 20 5 C20 6.2 19 7 17.5 7 L5.5 7 C4.5 7 4 6.2 4.5 5.5 Z"
         strokeWidth="1.4"
         strokeLinejoin="round"
       />
-      {/* Corpo do pergaminho */}
+      {/* Corpo principal do pergaminho */}
       <path
-        d="M4.2 7.5 L4.2 18 C4.2 19.2 5.2 20 6.5 20 L16 20 C18 20 19.5 18.8 19.5 17 L19.5 7"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* Linhas de escrita arcana rúnica */}
-      <line
-        x1="7.5"
-        y1="11.5"
-        x2="13.5"
-        y2="11.5"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
-      <line
-        x1="7.5"
-        y1="14.5"
-        x2="15.5"
-        y2="14.5"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.8"
-      />
-      <line
-        x1="7.5"
-        y1="17"
-        x2="11.5"
-        y2="17"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.6"
-      />
-      {/* Pena / Quill elegante pousada na diagonal */}
-      <path
-        d="M14.5 18 L19.5 9.5 C20.5 7.8 21.2 5 21 3 C19 3.2 16.5 4 14.8 5.5 L12.5 11"
+        d="M5 7 L5 18 C5 19.8 6.5 21 8.5 21 L16.5 21 C18.5 21 19.5 19.8 19.5 18 L19.5 7"
         strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="13" cy="17.5" r="0.8" fill="currentColor" />
+      {/* Rolo inferior dobrado */}
+      <path d="M5 18.5 C5 19.8 6.2 20.8 7.8 20.8 L18 20.8" strokeWidth="1.2" opacity="0.7" />
+      {/* Linhas de escrita rúnica */}
+      <line x1="8" y1="10" x2="14" y2="10" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
+      <line x1="8" y1="13" x2="16" y2="13" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
+      <line x1="8" y1="16" x2="12" y2="16" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+      {/* Pena de escriba pousada na lateral direita */}
+      <path
+        d="M14 19 L18.5 9 C19.5 7 21 4 21 3 C20 4.5 17.5 6 16.5 8 L13 15"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
 
 /**
- * Mural de Missões / Quests:
- * Espada rúnica com empunhadura heráldica e escudo de contratos entrelaçados.
+ * 3. Mural de Missões / Quests:
+ * Espada rúnica de lâmina triangular erguida sobreposta a estandarte heráldico bifurcado.
+ * Silhueta: Espada vertical marcial com guarda alada e pontas de estandarte.
  */
 export function RuneSwordIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -135,37 +115,41 @@ export function RuneSwordIcon({ className = 'w-4 h-4', size, ...props }: Eternum
       aria-hidden="true"
       {...props}
     >
-      {/* Lâmina central com chanfro */}
+      {/* Estandarte / flâmula de fundo bifurcada */}
       <path
-        d="M12 2 L13.8 5 L13.5 15 L12 16 L10.5 15 L10.2 5 Z"
-        strokeWidth="1.4"
+        d="M5 4.5 H19 V14 L12 11 L5 14 Z"
+        strokeWidth="1"
+        strokeDasharray="2 1.5"
+        opacity="0.45"
+      />
+      {/* Ponta e lâmina da espada */}
+      <path
+        d="M12 2 L14 5 L13.5 15 L12 16.2 L10.5 15 L10 5 Z"
+        strokeWidth="1.5"
         fill="currentColor"
-        fillOpacity="0.12"
+        fillOpacity="0.18"
         strokeLinejoin="round"
       />
-      <line x1="12" y1="3.5" x2="12" y2="15" strokeWidth="1" opacity="0.6" />
-      {/* Guarda da espada estilizada com asas geométricas */}
+      <line x1="12" y1="3" x2="12" y2="15" strokeWidth="1" opacity="0.7" />
+      {/* Guarda heráldica alada */}
       <path
-        d="M6.5 15.5 L10.5 15.5 L12 16.5 L13.5 15.5 L17.5 15.5 C18 15.5 18.5 16 18 16.8 L16.8 17.5 L13.5 17 L12 17.5 L10.5 17 L7.2 17.5 L6 16.8 C5.5 16 6 15.5 6.5 15.5 Z"
+        d="M6 15.5 L10.5 15.5 L12 16.5 L13.5 15.5 L18 15.5 L17 17.5 L13 17 L12 17.5 L11 17 L7 17.5 Z"
         strokeWidth="1.2"
         fill="currentColor"
-        fillOpacity="0.25"
+        fillOpacity="0.3"
         strokeLinejoin="round"
       />
-      {/* Empunhadura e pomo */}
-      <line x1="12" y1="17.5" x2="12" y2="20.5" strokeWidth="1.6" strokeLinecap="round" />
-      {/* Pomo com gema rúnica */}
-      <polygon points="12,20.5 13.5,22 12,23.2 10.5,22" strokeWidth="1.1" fill="currentColor" />
-      {/* Runas radiantes laterais de missão */}
-      <path d="M4 11 L6 11" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
-      <path d="M18 11 L20 11" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
+      {/* Empunhadura e pomo com gema */}
+      <line x1="12" y1="17.5" x2="12" y2="21" strokeWidth="1.6" strokeLinecap="round" />
+      <polygon points="12,21 13.5,22.5 12,23.5 10.5,22.5" strokeWidth="1" fill="currentColor" />
     </svg>
   )
 }
 
 /**
- * Códices Arcanos / Bestiários / Tabelas:
- * Grimório antigo encadernado com fecho rúnico e fita marcadora.
+ * 4. Códices Arcanos / Bestiários / Tabelas:
+ * Grimório clássico aberto horizontalmente, com páginas arqueadas e encadernação central.
+ * Silhueta: Livro aberto em V com fitas e lombada.
  */
 export function RuneTomeIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -180,58 +164,79 @@ export function RuneTomeIcon({ className = 'w-4 h-4', size, ...props }: EternumI
       aria-hidden="true"
       {...props}
     >
-      {/* Capa do Tomo Aberto / Grimório */}
+      {/* Páginas abertas em curva */}
       <path
-        d="M4 19.5 C7 18.2 10.5 18.5 12 20 C13.5 18.5 17 18.2 20 19.5 L20 5 C17 3.8 13.5 4 12 5.5 C10.5 4 7 3.8 4 5 L4 19.5 Z"
-        strokeWidth="1.4"
+        d="M2.5 6 C6.5 4.5 10.5 4.8 12 6.5 C13.5 4.8 17.5 4.5 21.5 6 V19.5 C17.5 18 13.5 18.2 12 20 C10.5 18.2 6.5 18 2.5 19.5 Z"
+        strokeWidth="1.5"
         strokeLinejoin="round"
       />
       {/* Lombada central */}
-      <line x1="12" y1="5.5" x2="12" y2="20" strokeWidth="1.4" strokeLinecap="round" />
-      {/* Símbolo rúnico na página esquerda */}
-      <polygon
-        points="8,9 9.5,11.5 8,14 6.5,11.5"
-        strokeWidth="1.1"
-        fill="currentColor"
-        fillOpacity="0.25"
-      />
-      {/* Linhas de encantamento na página direita */}
+      <line x1="12" y1="6.5" x2="12" y2="20" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Marcador de página / fita rúnica */}
+      <path d="M12 6.5 V2.5 L14 4 L12 5.5" strokeWidth="1" strokeLinejoin="round" />
+      {/* Linhas de encantamento nas duas páginas */}
       <line
-        x1="14.5"
-        y1="9"
-        x2="17.5"
-        y2="9"
+        x1="5.5"
+        y1="10"
+        x2="9.5"
+        y2="9.5"
         strokeWidth="1.1"
         strokeLinecap="round"
-        opacity="0.7"
+        opacity="0.8"
+      />
+      <line
+        x1="5.5"
+        y1="13"
+        x2="9.5"
+        y2="12.5"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        opacity="0.8"
+      />
+      <line
+        x1="5.5"
+        y1="16"
+        x2="8.5"
+        y2="15.5"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        opacity="0.6"
       />
       <line
         x1="14.5"
-        y1="11.5"
-        x2="17.5"
-        y2="11.5"
+        y1="9.5"
+        x2="18.5"
+        y2="10"
         strokeWidth="1.1"
         strokeLinecap="round"
-        opacity="0.7"
+        opacity="0.8"
       />
       <line
         x1="14.5"
-        y1="14"
-        x2="16.5"
-        y2="14"
+        y1="12.5"
+        x2="18.5"
+        y2="13"
         strokeWidth="1.1"
         strokeLinecap="round"
-        opacity="0.7"
+        opacity="0.8"
       />
-      {/* Fita marcadora caindo */}
-      <path d="M12 5.5 L12 2 C12.8 2.5 13.5 2 14 2.5 L13 5.5" strokeWidth="0.9" opacity="0.6" />
+      <line
+        x1="15.5"
+        y1="15.5"
+        x2="18.5"
+        y2="16"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
     </svg>
   )
 }
 
 /**
- * Calendário de Sessões:
- * Astrolábio / Ciclos Lunares com anel astronômico e quarto crescente.
+ * 5. Calendário de Sessões / Encontros:
+ * Astrolábio astronômico esférico com anéis cruzados, ponteiro e lua crescente.
+ * Silhueta: Círculo astronômico com anel equatorial suspenso por argola.
  */
 export function RuneAstrolabeIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -246,47 +251,40 @@ export function RuneAstrolabeIcon({ className = 'w-4 h-4', size, ...props }: Ete
       aria-hidden="true"
       {...props}
     >
-      {/* Anel exterior do astrolábio */}
-      <circle cx="12" cy="13" r="8.5" strokeWidth="1.4" />
       {/* Argola superior de suspensão */}
-      <circle cx="12" cy="3" r="1.5" strokeWidth="1.2" />
-      <line x1="12" y1="4.5" x2="12" y2="5.5" strokeWidth="1.3" />
-      {/* Lua crescente / Ciclo lunar interior */}
+      <circle cx="12" cy="3" r="1.5" strokeWidth="1.3" />
+      <line x1="12" y1="4.5" x2="12" y2="5.5" strokeWidth="1.4" />
+      {/* Anel exterior do astrolábio */}
+      <circle cx="12" cy="13.5" r="8" strokeWidth="1.5" />
+      {/* Elipse equatorial inclinada de navegação celeste */}
+      <ellipse
+        cx="12"
+        cy="13.5"
+        rx="8"
+        ry="3.2"
+        strokeWidth="1.1"
+        strokeDasharray="2 1.5"
+        opacity="0.75"
+      />
+      {/* Lua crescente interior */}
       <path
-        d="M13 7.5 C10 8.5 8.5 11.5 9 14.5 C9.5 17 11.5 18.5 14 18.5 C12 17 11.5 14 12.5 11.5 C13.2 9.8 14.5 8.8 16 8.5 C15 7.8 14 7.5 13 7.5 Z"
+        d="M13.5 9 C11 10 9.8 12.5 10.2 15 C10.6 17 12 18 14 18 C11.5 17 11 14 12.5 11.5 C13 10.5 14 9.5 15.2 9 C14.5 8.9 14 8.9 13.5 9 Z"
         strokeWidth="1.1"
         fill="currentColor"
         fillOpacity="0.25"
         strokeLinejoin="round"
       />
-      {/* Eixo estelar / Agulha de navegação */}
-      <line
-        x1="6.5"
-        y1="13"
-        x2="17.5"
-        y2="13"
-        strokeWidth="0.9"
-        strokeDasharray="1.5 1.5"
-        opacity="0.7"
-      />
-      <line
-        x1="12"
-        y1="7.5"
-        x2="12"
-        y2="18.5"
-        strokeWidth="0.9"
-        strokeDasharray="1.5 1.5"
-        opacity="0.7"
-      />
-      {/* Gema focal central */}
-      <circle cx="12" cy="13" r="1.2" fill="currentColor" />
+      {/* Eixo central e gema focal */}
+      <line x1="12" y1="5.5" x2="12" y2="21.5" strokeWidth="1" opacity="0.6" />
+      <circle cx="12" cy="13.5" r="1.3" fill="currentColor" />
     </svg>
   )
 }
 
 /**
- * Forja do Tesouro (Loot):
- * Martelo rúnico forjador sobreposto a labareda ancestral / bigorna.
+ * 6. Forja do Tesouro (Loot) / Relíquias:
+ * Bigorna ancestral com martelo pesado inclinado e centelha de forja rúnica.
+ * Silhueta: Bigorna horizontal robusta com bico lateral e martelo pousado.
  */
 export function RuneHammerIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -301,37 +299,44 @@ export function RuneHammerIcon({ className = 'w-4 h-4', size, ...props }: Eternu
       aria-hidden="true"
       {...props}
     >
-      {/* Cabeça do Martelo de Guerra Rúnico */}
+      {/* Bigorna: tampo, bico cônico esquerdo e corpo */}
       <path
-        d="M7.5 5 L16.5 5 L16.5 9 L15 10 L9 10 L7.5 9 Z"
-        strokeWidth="1.4"
+        d="M3 13 L6 13 L8 14 L18 14 C19.5 14 20.5 14.8 20 16 L17 17 L18 20 L6 20 L7 17 L5 16 C3 15 2 14 3 13 Z"
+        strokeWidth="1.5"
         fill="currentColor"
-        fillOpacity="0.2"
+        fillOpacity="0.16"
         strokeLinejoin="round"
       />
-      {/* Bico pontiagudo / quebra-armadura traseiro */}
-      <path d="M7.5 5.5 L4.5 7 L7.5 8.5" strokeWidth="1.3" strokeLinejoin="round" />
-      {/* Face de impacto frontal biselada */}
-      <line x1="16.5" y1="5.5" x2="18.5" y2="7" strokeWidth="1.3" />
-      <line x1="18.5" y1="7" x2="16.5" y2="8.5" strokeWidth="1.3" />
-      {/* Cabo reforçado com anéis rúnicos */}
-      <line x1="12" y1="10" x2="12" y2="21" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="10.5" y1="14" x2="13.5" y2="14" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="10.5" y1="17" x2="13.5" y2="17" strokeWidth="1.2" strokeLinecap="round" />
-      {/* Centelha / Faísca de forja mágica */}
+      {/* Base sólida da bigorna */}
+      <line x1="5" y1="20" x2="19" y2="20" strokeWidth="1.6" strokeLinecap="round" />
+      {/* Martelo forjador inclinado */}
+      <g transform="rotate(-30 14 6)">
+        <rect
+          x="12"
+          y="3"
+          width="7"
+          height="4.5"
+          rx="1"
+          strokeWidth="1.3"
+          fill="currentColor"
+          fillOpacity="0.3"
+        />
+        <line x1="15.5" y1="7.5" x2="15.5" y2="15" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
+      {/* Centelhas / Faíscas de forja no ponto de impacto */}
       <path
-        d="M17.5 13 L18.5 11 L19.5 13 L21.5 14 L19.5 15 L18.5 17 L17.5 15 L15.5 14 Z"
-        strokeWidth="1"
+        d="M14 10 L14.8 8.5 L15.6 10 L17 10.5 L15.6 11 L14.8 12.5 L14 11 L12.5 10.5 Z"
+        strokeWidth="0.9"
         fill="currentColor"
-        fillOpacity="0.3"
       />
     </svg>
   )
 }
 
 /**
- * Fichas de NPCs / Personagens:
- * Busto heráldico nobre / elmo com insígnia de fera discreta e elegante.
+ * 7. Fichas de NPCs / Personagens / Relações:
+ * Busto heráldico nobre estilizado, coroa/tiara sutil e manto com broche.
+ * Silhueta: Perfil nobre de cabeça e ombros aristocráticos.
  */
 export function RuneNpcIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -346,32 +351,40 @@ export function RuneNpcIcon({ className = 'w-4 h-4', size, ...props }: EternumIc
       aria-hidden="true"
       {...props}
     >
-      {/* Cabeça / Elmo estilizado com sutis orelhas nobres */}
+      {/* Tiara / Coroa rúnica sutil com orelhas discretas de fera nobre */}
       <path
-        d="M8 8 L9.5 4 L11 7 L13 7 L14.5 4 L16 8 C17.5 10 17 13 15 14 L12 15.5 L9 14 C7 13 6.5 10 8 8 Z"
+        d="M8.5 7.5 L9.5 3.5 L11 6.5 L12 5 L13 6.5 L14.5 3.5 L15.5 7.5"
         strokeWidth="1.3"
-        fill="currentColor"
-        fillOpacity="0.15"
-        strokeLinejoin="round"
-      />
-      {/* Visor / Runa frontal */}
-      <circle cx="12" cy="10" r="1.3" fill="currentColor" />
-      {/* Ombros / Gibão de viagem heráldico */}
-      <path
-        d="M4.5 21 C4.5 18 7.5 16.5 10 16.2 L12 17.5 L14 16.2 C16.5 16.5 19.5 18 19.5 21"
-        strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      {/* Broche rúnico no peitoral */}
-      <polygon points="12,17.5 13,19 12,20.2 11,19" strokeWidth="0.9" fill="currentColor" />
+      {/* Cabeça / Máscara nobre */}
+      <path
+        d="M9 7.5 C8 9.5 8 12 9.5 13.5 L12 15 L14.5 13.5 C16 12 16 9.5 15 7.5 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      {/* Gema rúnica no centro da fronte */}
+      <circle cx="12" cy="10" r="1.1" fill="currentColor" />
+      {/* Ombros e capa aristocrática */}
+      <path
+        d="M3.5 21 C3.5 17.5 7 15.5 10.5 15.5 L12 17 L13.5 15.5 C17 15.5 20.5 17.5 20.5 21"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Broche do manto */}
+      <polygon points="12,17.5 13.2,19 12,20.2 10.8,19" strokeWidth="0.9" fill="currentColor" />
     </svg>
   )
 }
 
 /**
- * Oráculo de Éternum (IA):
- * Olho místico ancestral inscrito em cristal / losango radiante.
+ * 8. Oráculo de Éternum (IA Arcana):
+ * Olho profético místico inscrito dentro de um losango/cristal com pupila de fenda e raios.
+ * Silhueta: Losango vertical radiante com olho estelar.
  */
 export function RuneOracleIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -386,28 +399,32 @@ export function RuneOracleIcon({ className = 'w-4 h-4', size, ...props }: Eternu
       aria-hidden="true"
       {...props}
     >
-      {/* Losango / Cristal arcano exterior */}
-      <polygon points="12,2.5 20.5,12 12,21.5 3.5,12" strokeWidth="1.3" strokeLinejoin="round" />
-      {/* Olho místico de visão profética */}
+      {/* Cristal / Losango arcano exterior */}
+      <polygon points="12,2 21,12 12,22 3,12" strokeWidth="1.4" strokeLinejoin="round" />
+      {/* Olho místico aberto no horizonte */}
       <path
-        d="M5.5 12 C7.5 8.5 10 7.5 12 7.5 C14 7.5 16.5 8.5 18.5 12 C16.5 15.5 14 16.5 12 16.5 C10 16.5 7.5 15.5 5.5 12 Z"
-        strokeWidth="1.2"
+        d="M5 12 C7.5 8.5 10 7.8 12 7.8 C14 7.8 16.5 8.5 19 12 C16.5 15.5 14 16.2 12 16.2 C10 16.2 7.5 15.5 5 12 Z"
+        strokeWidth="1.3"
         fill="currentColor"
-        fillOpacity="0.15"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
       />
-      {/* Pupila de cristal / gema viva */}
-      <circle cx="12" cy="12" r="2.2" strokeWidth="1.2" />
-      <circle cx="12" cy="12" r="1" fill="currentColor" />
-      {/* Raios sutis de visão */}
-      <line x1="12" y1="4.5" x2="12" y2="6" strokeWidth="1" strokeLinecap="round" />
-      <line x1="12" y1="18" x2="12" y2="19.5" strokeWidth="1" strokeLinecap="round" />
+      {/* Íris e pupila viva em cristal */}
+      <circle cx="12" cy="12" r="2.4" strokeWidth="1.2" />
+      <ellipse cx="12" cy="12" rx="0.9" ry="1.8" fill="currentColor" />
+      {/* Raios pontuais de adivinhação nos vértices */}
+      <line x1="12" y1="3.5" x2="12" y2="6" strokeWidth="1" strokeLinecap="round" />
+      <line x1="12" y1="18" x2="12" y2="20.5" strokeWidth="1" strokeLinecap="round" />
+      <line x1="4.5" y1="12" x2="6.5" y2="12" strokeWidth="1" strokeLinecap="round" />
+      <line x1="17.5" y1="12" x2="19.5" y2="12" strokeWidth="1" strokeLinecap="round" />
     </svg>
   )
 }
 
 /**
- * Santuário / Configurações:
- * Engrenagem rúnica ancestral com centro octaédrico e dentes geométricos chanfrados.
+ * 9. Santuário / Configurações:
+ * Engrenagem rúnica ancestral mecânica com 8 dentes angulares e miolo vazado octogonal.
+ * Silhueta: Engrenagem denteada inconfundível.
  */
 export function RuneGearIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -422,32 +439,25 @@ export function RuneGearIcon({ className = 'w-4 h-4', size, ...props }: EternumI
       aria-hidden="true"
       {...props}
     >
-      {/* Círculo base da engrenagem */}
-      <circle cx="12" cy="12" r="7.5" strokeWidth="1.3" />
-      {/* 8 Dentes rúnicos chanfrados */}
-      <path d="M11 2.5 L13 2.5 L13.5 4.5 L10.5 4.5 Z" strokeWidth="1" fill="currentColor" />
-      <path d="M11 21.5 L13 21.5 L13.5 19.5 L10.5 19.5 Z" strokeWidth="1" fill="currentColor" />
-      <path d="M2.5 11 L2.5 13 L4.5 13.5 L4.5 10.5 Z" strokeWidth="1" fill="currentColor" />
-      <path d="M21.5 11 L21.5 13 L19.5 13.5 L19.5 10.5 Z" strokeWidth="1" fill="currentColor" />
-      <path d="M5.5 5.5 L7 4 L8.2 5.5 L6.8 7 Z" strokeWidth="0.8" fill="currentColor" />
-      <path d="M18.5 18.5 L17 20 L15.8 18.5 L17.2 17 Z" strokeWidth="0.8" fill="currentColor" />
-      <path d="M18.5 5.5 L20 7 L18.5 8.2 L17 6.8 Z" strokeWidth="0.8" fill="currentColor" />
-      <path d="M5.5 18.5 L4 17 L5.5 15.8 L7 17.2 Z" strokeWidth="0.8" fill="currentColor" />
-      {/* Núcleo rúnico octogonal / losango */}
-      <polygon
-        points="12,8.5 15.5,12 12,15.5 8.5,12"
-        strokeWidth="1.2"
+      {/* Roda dentada exterior com dentes chanfrados */}
+      <path
+        d="M10 2.5 H14 L14.5 5 C15.5 5.4 16.4 6 17.2 6.8 L19.5 5.8 L21.5 8.2 L19.8 10.2 C20.1 11.2 20.2 12.2 20 13.2 L22 14.8 L20.5 17.8 L18 17.2 C17.2 18 16.2 18.7 15.2 19.1 L14.5 21.5 H10 L9.4 19.1 C8.3 18.7 7.4 18 6.5 17.2 L4.2 18 L2.5 15.5 L4.3 13.5 C4.1 12.5 4.1 11.5 4.4 10.5 L2.5 8.5 L4.5 6 L6.8 6.8 C7.6 6 8.5 5.4 9.5 5 Z"
+        strokeWidth="1.4"
         fill="currentColor"
-        fillOpacity="0.25"
+        fillOpacity="0.12"
+        strokeLinejoin="round"
       />
-      <circle cx="12" cy="12" r="1.3" fill="currentColor" />
+      {/* Círculo interno */}
+      <circle cx="12" cy="12" r="4.2" strokeWidth="1.4" />
+      {/* Eixo central em gema */}
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" />
     </svg>
   )
 }
 
 /**
- * Consultar Oráculo / Busca Rápida:
- * Lente de adivinhação geométrica com feixe de visão rúnico.
+ * 10. Busca / Consultar Oráculo:
+ * Lente de adivinhação geométrica com feixe óptico e cabo entalhado.
  */
 export function RuneSearchIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
@@ -462,22 +472,536 @@ export function RuneSearchIcon({ className = 'w-4 h-4', size, ...props }: Eternu
       aria-hidden="true"
       {...props}
     >
-      {/* Lente rúnica circular com anel duplo */}
-      <circle cx="10.5" cy="10.5" r="7" strokeWidth="1.4" />
-      <circle cx="10.5" cy="10.5" r="5" strokeWidth="0.8" strokeDasharray="2 1.5" opacity="0.6" />
-      {/* Ponto focal de adivinhação */}
-      <circle cx="10.5" cy="10.5" r="1.2" fill="currentColor" />
-      {/* Cabo entalhado e pomo */}
-      <line x1="15.5" y1="15.5" x2="21" y2="21" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="21" cy="21" r="1" fill="currentColor" />
+      <circle cx="10" cy="10" r="6.8" strokeWidth="1.5" />
+      <circle cx="10" cy="10" r="4.5" strokeWidth="0.8" strokeDasharray="2 1.5" opacity="0.6" />
+      <circle cx="10" cy="10" r="1.2" fill="currentColor" />
+      <line x1="15" y1="15" x2="21" y2="21" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="21" cy="21" r="0.9" fill="currentColor" />
     </svg>
   )
 }
 
 /**
- * Seletor rápido de ícone por chave temática:
- * Permite mapear 'home', 'pages', 'boards', 'databases', 'sessions', 'loot', 'npcs', 'oracle', 'settings'.
+ * Insígnias Rúnicas SVG autorais para substituir emojis (Frente 1 e Frente 2):
+ * Usadas em fichas, bestiários, tipos de loot, cards e seletores de ícones.
  */
+
+// Gema / Cristal arcano (substitui 💎)
+export function RuneGemIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M6 3.5 L18 3.5 L22 9 L12 21.5 L2 9 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      <line x1="2" y1="9" x2="22" y2="9" strokeWidth="1.2" />
+      <line x1="6" y1="3.5" x2="10" y2="9" strokeWidth="1.1" />
+      <line x1="18" y1="3.5" x2="14" y2="9" strokeWidth="1.1" />
+      <line x1="10" y1="9" x2="12" y2="21.5" strokeWidth="1.1" />
+      <line x1="14" y1="9" x2="12" y2="21.5" strokeWidth="1.1" />
+    </svg>
+  )
+}
+
+// Escudo heráldico (substitui 🛡️)
+export function RuneShieldIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M12 2.5 C16 3 20 4.5 20 6.5 C20 14 16 19.5 12 22 C8 19.5 4 14 4 6.5 C4 4.5 8 3 12 2.5 Z"
+        strokeWidth="1.5"
+        fill="currentColor"
+        fillOpacity="0.15"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="12"
+        y1="5"
+        x2="12"
+        y2="19"
+        strokeWidth="1.1"
+        strokeDasharray="2 1.5"
+        opacity="0.7"
+      />
+      <line x1="7" y1="10" x2="17" y2="10" strokeWidth="1.1" opacity="0.7" />
+      <circle cx="12" cy="10" r="1.3" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Chama / Fogo rúnico (substitui 🔥)
+export function RuneFlameIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M12 2 C12 2 15 5.5 15 8 C15 9.5 14 10.5 13 11 C16 11 19 13.5 19 17 C19 20 16 22 12 22 C8 22 5 20 5 17 C5 13.5 8 11.5 10 9 C10.5 6 12 2 12 2 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 13 C13.5 13 15 14.5 15 16.5 C15 18.5 13.5 19.5 12 19.5 C10.5 19.5 9 18.5 9 16.5 C9 14.5 11 13.5 12 13 Z"
+        strokeWidth="1.1"
+        fill="currentColor"
+        fillOpacity="0.4"
+      />
+    </svg>
+  )
+}
+
+// Frasco / Poção / Elixir (substitui 🧪)
+export function RunePotionIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M10 2.5 H14" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="11" y1="2.5" x2="11" y2="6.5" strokeWidth="1.3" />
+      <line x1="13" y1="2.5" x2="13" y2="6.5" strokeWidth="1.3" />
+      <path
+        d="M11 6.5 L6 16 C5 18 6.5 21.5 10 21.5 H14 C17.5 21.5 19 18 18 16 L13 6.5 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.15"
+        strokeLinejoin="round"
+      />
+      {/* Nível do líquido */}
+      <path
+        d="M7.8 15 C9 14.2 10.5 14.8 12 14.2 C13.5 13.6 15 14.5 16.2 15 L17 17 C16.5 19.5 15 20.5 12 20.5 C9 20.5 7.5 19.5 7 17 Z"
+        strokeWidth="1"
+        fill="currentColor"
+        fillOpacity="0.3"
+      />
+      <circle cx="10" cy="17.5" r="0.8" fill="currentColor" />
+      <circle cx="13.5" cy="16.5" r="0.8" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Chave antiga / Curiosidade (substitui 🗝️)
+export function RuneKeyIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Cabeça da chave em formato de trevo/losango */}
+      <circle cx="7.5" cy="7.5" r="4.5" strokeWidth="1.4" />
+      <circle cx="7.5" cy="7.5" r="2" strokeWidth="1.1" fill="currentColor" fillOpacity="0.2" />
+      {/* Haste longa */}
+      <line x1="11" y1="11" x2="21" y2="21" strokeWidth="1.6" strokeLinecap="round" />
+      {/* Dentes da chave */}
+      <path d="M18 18 L20 16" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M19.5 19.5 L22 17" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// Anel / Relíquia / Aliança sagrada (substitui 💍)
+export function RuneRingIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Aro do anel */}
+      <circle cx="12" cy="14" r="6.8" strokeWidth="1.5" />
+      <circle cx="12" cy="14" r="4.5" strokeWidth="1" strokeDasharray="2 1.5" opacity="0.6" />
+      {/* Gema engastada no topo */}
+      <polygon
+        points="12,2.5 15,5.5 13.5,7.5 10.5,7.5 9,5.5"
+        strokeWidth="1.3"
+        fill="currentColor"
+        fillOpacity="0.35"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+// Arco e Flecha (substitui 🏹)
+export function RuneBowIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Arco curvo */}
+      <path d="M4.5 4 C11 5 18 10 20 20" strokeWidth="1.5" strokeLinecap="round" />
+      {/* Corda do arco */}
+      <line x1="4.5" y1="4" x2="20" y2="20" strokeWidth="1" strokeDasharray="2 1.5" opacity="0.7" />
+      {/* Flecha cruzada */}
+      <line x1="5" y1="19" x2="19" y2="5" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M14.5 5 H19 V9.5" strokeWidth="1.4" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+// Fera Nobre Canina / Lobo (substitui 🐺)
+export function RuneWolfIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Silhueta geométrica elegante de lobo / fera canina nobre */}
+      <path
+        d="M5 6 L8 3 L10.5 7 L13.5 7 L16 3 L19 6 L18 12 L15 15 L12 18.5 L9 15 L6 12 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      {/* Olhos rúnicos */}
+      <circle cx="9.5" cy="10" r="0.9" fill="currentColor" />
+      <circle cx="14.5" cy="10" r="0.9" fill="currentColor" />
+      {/* Focinho nobre e marcas rúnicas */}
+      <polygon points="12,14 13,15.5 11,15.5" strokeWidth="0.8" fill="currentColor" />
+      <line x1="12" y1="8" x2="12" y2="12" strokeWidth="0.9" opacity="0.6" />
+    </svg>
+  )
+}
+
+// Fera Nobre Astuta / Raposa (substitui 🦊)
+export function RuneFoxIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Orelhas pontudas e rosto triangular refinado */}
+      <path
+        d="M4 5 L8 3.5 L10 8 L14 8 L16 3.5 L20 5 L17 13 L12 20.5 L7 13 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      {/* Bochechas brancas/pelagem geométrica */}
+      <path d="M7 13 L10 12 L12 17 L14 12 L17 13" strokeWidth="1" opacity="0.6" />
+      <circle cx="9" cy="9.5" r="0.9" fill="currentColor" />
+      <circle cx="15" cy="9.5" r="0.9" fill="currentColor" />
+      <circle cx="12" cy="16.5" r="0.9" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Fera Felina / Leopardo (substitui 🐆)
+export function RuneFelineIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Orelhas arredondadas felinas */}
+      <path
+        d="M6 7 C5 5 7 3.5 9 5 L10.5 7.5 H13.5 L15 5 C17 3.5 19 5 18 7 L19 12 C18.5 16 15.5 19 12 19 C8.5 19 5.5 16 5 12 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      <circle cx="9.5" cy="11" r="0.9" fill="currentColor" />
+      <circle cx="14.5" cy="11" r="0.9" fill="currentColor" />
+      <polygon points="12,14 13,15.5 11,15.5" strokeWidth="0.8" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Dragão Ancestral / Répteis Nobres (substitui 🐉)
+export function RuneDragonIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Cabeça com chifres curvados */}
+      <path
+        d="M5 3 C7 4.5 9 6.5 10 9 L12 7 L14 9 C15 6.5 17 4.5 19 3 C18 6 17 8 18 10 L20 13 L17 15 L12 21 L7 15 L4 13 L6 10 C7 8 6 6 5 3 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.2"
+        strokeLinejoin="round"
+      />
+      <circle cx="9.5" cy="11.5" r="0.9" fill="currentColor" />
+      <circle cx="14.5" cy="11.5" r="0.9" fill="currentColor" />
+      <line x1="12" y1="12" x2="12" y2="16" strokeWidth="1" opacity="0.7" />
+    </svg>
+  )
+}
+
+// Águia / Ave Nobre (substitui 🦅)
+export function RuneEagleIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Bico recurvo e cabeça com penacho */}
+      <path
+        d="M6 9 C6 5 9 3 13 3 C17 3 20 6 20 10 C20 13 18 15.5 15 16 L12 21 C11.5 19 10 16 8 15 C7 14 6 12 6 9 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.18"
+        strokeLinejoin="round"
+      />
+      {/* Bico pontudo adunco */}
+      <path d="M15 11 L22 13 L18 15" strokeWidth="1.3" strokeLinejoin="round" />
+      <circle cx="13" cy="8.5" r="1" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Centelha / Estrela Mística (substitui ✨)
+export function RuneSparkleIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M12 2 L13.8 8.2 L20 10 L13.8 11.8 L12 18 L10.2 11.8 L4 10 L10.2 8.2 Z"
+        strokeWidth="1.3"
+        fill="currentColor"
+        fillOpacity="0.25"
+        strokeLinejoin="round"
+      />
+      <circle cx="19" cy="4" r="1.2" fill="currentColor" opacity="0.8" />
+      <circle cx="5" cy="18" r="1" fill="currentColor" opacity="0.7" />
+    </svg>
+  )
+}
+
+// Busto / Silhueta Nobre (substitui 👤)
+export function RuneUserIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <circle cx="12" cy="8" r="4.2" strokeWidth="1.5" fill="currentColor" fillOpacity="0.15" />
+      <path
+        d="M5 20.5 C5 16.5 8 14.5 12 14.5 C16 14.5 19 16.5 19 20.5"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Seletor universal de insígnia rúnica por chave textual (elimina emojis em todo o sistema)
+ */
+export type RunicInsigniaKey =
+  | 'scroll'
+  | 'sword'
+  | 'tome'
+  | 'astrolabe'
+  | 'hammer'
+  | 'npc'
+  | 'oracle'
+  | 'gear'
+  | 'gem'
+  | 'shield'
+  | 'flame'
+  | 'potion'
+  | 'key'
+  | 'ring'
+  | 'bow'
+  | 'wolf'
+  | 'fox'
+  | 'feline'
+  | 'dragon'
+  | 'eagle'
+  | 'sparkle'
+  | 'crest'
+  | 'user'
+
+export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] = [
+  { id: 'sword', label: 'Espada de Honra' },
+  { id: 'wolf', label: 'Lobo Nobre' },
+  { id: 'fox', label: 'Raposa Astuta' },
+  { id: 'feline', label: 'Leopardo Ágil' },
+  { id: 'dragon', label: 'Dragão Guardião' },
+  { id: 'eagle', label: 'Águia Espectral' },
+  { id: 'shield', label: 'Escudo Protetor' },
+  { id: 'scroll', label: 'Pergaminho Sagrado' },
+  { id: 'oracle', label: 'Olho do Oráculo' },
+  { id: 'bow', label: 'Arco de Caça' },
+  { id: 'gem', label: 'Gema Estelar' },
+  { id: 'flame', label: 'Chama Eterna' },
+]
+
+export function RunicInsignia({
+  name,
+  className = 'w-4 h-4',
+  size,
+  ...props
+}: EternumIconProps & { name?: string | null }) {
+  const norm = (name || '').trim().toLowerCase()
+
+  // Converte legados de emojis para nomes autorais sem falhas
+  if (norm === 'sword' || norm === '⚔️' || norm === '⚔')
+    return <RuneSwordIcon className={className} size={size} {...props} />
+  if (norm === 'wolf' || norm === '🐺')
+    return <RuneWolfIcon className={className} size={size} {...props} />
+  if (norm === 'fox' || norm === '🦊')
+    return <RuneFoxIcon className={className} size={size} {...props} />
+  if (norm === 'feline' || norm === 'leopard' || norm === '🐆')
+    return <RuneFelineIcon className={className} size={size} {...props} />
+  if (norm === 'dragon' || norm === '🐉')
+    return <RuneDragonIcon className={className} size={size} {...props} />
+  if (norm === 'eagle' || norm === '🦅')
+    return <RuneEagleIcon className={className} size={size} {...props} />
+  if (norm === 'shield' || norm === '🛡️' || norm === '🛡')
+    return <RuneShieldIcon className={className} size={size} {...props} />
+  if (norm === 'scroll' || norm === '📜' || norm === '📝')
+    return <RuneScrollIcon className={className} size={size} {...props} />
+  if (norm === 'oracle' || norm === '🔮')
+    return <RuneOracleIcon className={className} size={size} {...props} />
+  if (norm === 'bow' || norm === '🏹')
+    return <RuneBowIcon className={className} size={size} {...props} />
+  if (norm === 'gem' || norm === '💎')
+    return <RuneGemIcon className={className} size={size} {...props} />
+  if (norm === 'flame' || norm === 'fire' || norm === '🔥')
+    return <RuneFlameIcon className={className} size={size} {...props} />
+  if (norm === 'potion' || norm === '🧪')
+    return <RunePotionIcon className={className} size={size} {...props} />
+  if (norm === 'key' || norm === '🗝️' || norm === '🗝')
+    return <RuneKeyIcon className={className} size={size} {...props} />
+  if (norm === 'ring' || norm === '💍')
+    return <RuneRingIcon className={className} size={size} {...props} />
+  if (norm === 'sparkle' || norm === '✨')
+    return <RuneSparkleIcon className={className} size={size} {...props} />
+  if (norm === 'user' || norm === '👤' || norm === '🧙‍♂️' || norm === '🧙')
+    return <RuneUserIcon className={className} size={size} {...props} />
+  if (norm === 'tome' || norm === 'livro' || norm === '📊')
+    return <RuneTomeIcon className={className} size={size} {...props} />
+  if (norm === 'astrolabe' || norm === 'calendario')
+    return <RuneAstrolabeIcon className={className} size={size} {...props} />
+  if (norm === 'hammer' || norm === 'forja')
+    return <RuneHammerIcon className={className} size={size} {...props} />
+  if (norm === 'gear' || norm === 'santuario')
+    return <RuneGearIcon className={className} size={size} {...props} />
+  if (norm === 'crest' || norm === 'portal')
+    return <RuneCrestIcon className={className} size={size} {...props} />
+
+  // Fallback padrão seguro (Pergaminho rúnico suave)
+  return <RuneScrollIcon className={className} size={size} {...props} />
+}
+
 export type EternumIconKey =
   | 'home'
   | 'pages'

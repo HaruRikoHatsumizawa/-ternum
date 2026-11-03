@@ -182,11 +182,11 @@ const DESCRIPTIONS = [
 ]
 
 const TYPE_ICONS: Record<LootType, string> = {
-  Arma: '⚔️',
-  Armadura: '🛡️',
-  Consumível: '🧪',
-  Relíquia: '💍',
-  Curiosidade: '🗝️',
+  Arma: 'sword',
+  Armadura: 'shield',
+  Consumível: 'potion',
+  Relíquia: 'ring',
+  Curiosidade: 'key',
 }
 
 function pickRandom<T>(arr: T[]): T {
@@ -262,7 +262,7 @@ export function generateLoot(forcedRarity?: LootRarity, forcedType?: LootType): 
     valueGold,
     description: pickRandom(DESCRIPTIONS),
     effects,
-    icon: TYPE_ICONS[type] || '✨',
+    icon: TYPE_ICONS[type] || 'gem',
     source: 'Forja do Tesouro de Éternum',
   }
 }

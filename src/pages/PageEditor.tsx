@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
-import { RuneSwordIcon } from '@/components/rpg/EternumIcons'
+import { RuneSwordIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
 import {
   Trash2,
   Star,
@@ -45,17 +45,15 @@ const BLOCK_TYPES = [
   { id: 'callout', label: 'Espécie, Classe ou Destaque', icon: AlertCircle },
 ] as const
 
-const EMOJI_OPTIONS = ['⚔️', '🐺', '🦊', '🐆', '🐉', '🦅', '🛡️', '📜', '🔮', '🏹', '💎', '🔥']
-
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
   const { mode } = useAppMode()
   const navigate = useNavigate()
-
   const [page, setPage] = useState<PageRecord | null>(null)
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [title, setTitle] = useState('')
-  const [icon, setIcon] = useState('📝')
+  const [icon, setIcon] = useState('scroll')
   const [blocks, setBlocks] = useState<PageBlock[]>([])
   const [isFavorite, setIsFavorite] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -69,7 +67,7 @@ export default function PageEditor() {
         const data = await pagesService.getById(id)
         setPage(data)
         setTitle(data.title || '')
-        setIcon(data.icon || '📝')
+        setIcon(data.icon || 'scroll')
         setBlocks(
           data.blocks && data.blocks.length > 0
             ? data.blocks
@@ -203,27 +201,32 @@ export default function PageEditor() {
       {/* Top Bar da Página */}
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          {/* Seletor de Emoji / Insígnia Rúnica */}
+          {/* Seletor de Insígnia Rúnica Autoral */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="text-3xl p-2 rounded-xl bg-[#121620] border border-amber-500/30 hover:border-amber-500/60 shadow-md transition-all hover:scale-105"
-                title="Alterar insígnia da ficha"
+                className="p-2.5 rounded-xl bg-[#121620] border border-amber-500/30 hover:border-amber-500/60 shadow-md transition-all hover:scale-105 text-amber-300 flex items-center justify-center min-w-[48px] min-h-[48px]"
+                title="Alterar insígnia rúnica da ficha"
               >
-                {icon}
+                <RunicInsignia name={icon} className="w-6 h-6" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="p-2 grid grid-cols-4 gap-1.5 w-48 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+              className="p-2.5 grid grid-cols-4 gap-1.5 w-56 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
             >
-              {EMOJI_OPTIONS.map((e) => (
+              {RUNIC_INSIGNIA_CATALOG.map((item) => (
                 <button
-                  key={e}
-                  onClick={() => handleIconSelect(e)}
-                  className="text-2xl p-2 rounded hover:bg-amber-500/20 text-center transition-colors border border-transparent hover:border-amber-500/30"
+                  key={item.id}
+                  title={item.label}
+                  onClick={() => handleIconSelect(item.id)}
+                  className={`p-2 rounded text-center transition-colors border flex items-center justify-center ${
+                    icon === item.id
+                      ? 'bg-amber-500/20 border-amber-500/50 text-amber-200'
+                      : 'border-transparent text-amber-400/80 hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-200'
+                  }`}
                 >
-                  {e}
+                  <RunicInsignia name={item.id} className="w-5 h-5" />
                 </button>
               ))}
             </DropdownMenuContent>

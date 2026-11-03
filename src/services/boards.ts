@@ -68,7 +68,7 @@ export const boardsService = {
       user,
       name: data.name || 'Novo Mural de Missões',
       description: data.description || 'Quadro de aventuras e contratos da mesa',
-      icon: data.icon || '🛡️',
+      icon: data.icon || 'sword',
       columns: data.columns || defaultColumns,
       cards: data.cards || [],
     })
