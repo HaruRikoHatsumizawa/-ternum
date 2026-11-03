@@ -292,6 +292,18 @@
     animation: spotlight 2s ease forwards;
   }
 
+  @keyframes eternumShimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(120%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+
   /* RPG Ornament Utilities */
   .rpg-border {
     border: 1px solid rgba(var(--mode-accent-rgb), 0.22);

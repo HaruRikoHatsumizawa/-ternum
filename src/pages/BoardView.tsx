@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { boardsService, BoardRecord, BoardCard, BoardColumn } from '@/services/boards'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   Plus,
   Trash2,
@@ -198,9 +199,11 @@ export default function BoardView() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-400 text-sm">
-        Carregando quadro...
-      </div>
+      <EternumLoadingScreen
+        message="Consultando os contratos e missões do mural..."
+        submessage="Organizando arcos narrativos"
+        fullScreen={false}
+      />
     )
   }
 

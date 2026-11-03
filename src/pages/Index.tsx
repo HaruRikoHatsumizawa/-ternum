@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode } from '@/contexts/ModeContext'
 import { AvatarFrame } from '@/components/rpg/AvatarFrame'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { pagesService, PageRecord } from '@/services/pages'
 import { boardsService, BoardRecord } from '@/services/boards'
 import { databasesService, DatabaseRecord } from '@/services/databases'
@@ -154,6 +155,16 @@ export default function Index() {
     0,
   )
   const questProgress = totalQuests > 0 ? Math.round((completedQuests / totalQuests) * 100) : 0
+
+  if (loading) {
+    return (
+      <EternumLoadingScreen
+        message="Abrindo o Salão Principal de Éternum..."
+        submessage="Invocando pergaminhos, murais e personagens"
+        fullScreen={false}
+      />
+    )
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-8 sm:py-10 px-4 sm:px-8 space-y-10">

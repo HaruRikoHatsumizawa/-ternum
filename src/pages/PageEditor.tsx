@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   Trash2,
   Star,
@@ -188,9 +189,11 @@ export default function PageEditor() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-400 text-sm">
-        Carregando página...
-      </div>
+      <EternumLoadingScreen
+        message="Decifrando o tomo e suas crônicas..."
+        submessage="Carregando anotações arcanas"
+        fullScreen={false}
+      />
     )
   }
 

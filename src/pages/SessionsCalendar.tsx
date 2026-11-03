@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
 import { sessionsService, SessionRecord, SessionStatus } from '@/services/sessions'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   Calendar as CalendarIcon,
   Plus,
@@ -219,6 +220,16 @@ export default function SessionsCalendar() {
         d.getDate() === day
       )
     })
+  }
+
+  if (loading) {
+    return (
+      <EternumLoadingScreen
+        message="Consultando os astros e o calendário de sessões..."
+        submessage="Carregando crônicas e datas da mesa"
+        fullScreen={false}
+      />
+    )
   }
 
   return (

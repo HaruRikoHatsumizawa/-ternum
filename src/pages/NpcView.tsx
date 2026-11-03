@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   Users,
   Plus,
@@ -165,6 +166,16 @@ export default function NpcView() {
   }
 
   const active = isEditing ? (formData as NpcRecord) : selectedNpc
+
+  if (loading) {
+    return (
+      <EternumLoadingScreen
+        message="Invocando as fichas de NPCs e aliados..."
+        submessage="Carregando biografias e traços"
+        fullScreen={false}
+      />
+    )
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-8">

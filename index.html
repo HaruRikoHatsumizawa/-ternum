@@ -11,9 +11,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=MedievalSharp&family=Metamorphous&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <meta name="author" content="Skip (https://goskip.dev)" />
     <meta property="og:image" content="/og-image.png" />
+    <style>
+      /* Evita flash preto antes do React montar */
+      html, body {
+        background-color: #0c0f14;
+        color: #f1ede3;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
 
-  <body>
+  <body style="background-color: #0c0f14;">
     <div id="root"></div>
     <!-- @skip-protected: Do not remove. Required for app features. -->
     <script src="https://goskip.dev/skip.js"></script>

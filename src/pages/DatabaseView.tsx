@@ -8,6 +8,7 @@ import {
   DatabaseRow,
   ColumnType,
 } from '@/services/databases'
+import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   Plus,
   Trash2,
@@ -203,9 +204,11 @@ export default function DatabaseView() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-400 text-sm">
-        Carregando tabela...
-      </div>
+      <EternumLoadingScreen
+        message="Abrindo os registros do códice arcano..."
+        submessage="Compilando bestiário e itens"
+        fullScreen={false}
+      />
     )
   }
 
