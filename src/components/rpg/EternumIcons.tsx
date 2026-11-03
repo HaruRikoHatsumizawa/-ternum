@@ -234,6 +234,49 @@ export function RuneTomeIcon({ className = 'w-4 h-4', size, ...props }: EternumI
 }
 
 /**
+ * 4b. Glossário Arcano:
+ * Tomo léxico FECHADO (distinto do Códice aberto) com selo rúnico na capa
+ * e lupa de escriba — o verbete pesquisado.
+ * Silhueta: Volume fechado vertical com lente circular e cabo.
+ */
+export function RuneLexiconIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Capa fechada do tomo léxico */}
+      <path
+        d="M4.5 3.5 H16.5 C18.4 3.5 19.5 4.9 19.5 6.8 V17.2 C19.5 19.1 18.4 20.5 16.5 20.5 H4.5 Z"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {/* Lombada com cortes de encadernação */}
+      <path d="M7 3.5 V20.5" strokeWidth="1" opacity="0.7" />
+      <path d="M4.5 7 H7 M4.5 17 H7" strokeWidth="1" opacity="0.6" />
+      {/* Selo rúnico estampado na capa */}
+      <circle cx="10.5" cy="8.5" r="2.3" strokeWidth="1.2" fill="currentColor" fillOpacity="0.18" />
+      <path
+        d="M10.5 7.2 L11.6 9.6 L10.5 8.6 L9.4 9.6 Z"
+        strokeWidth="0.8"
+        fill="currentColor"
+        strokeLinejoin="round"
+      />
+      {/* Lupa de escriba sobre o verbete */}
+      <circle cx="14.5" cy="14.5" r="3.1" strokeWidth="1.4" />
+      <line x1="16.8" y1="16.8" x2="20" y2="20" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+/**
  * 5. Calendário de Sessões / Encontros:
  * Astrolábio astronômico esférico com anéis cruzados, ponteiro e lua crescente.
  * Silhueta: Círculo astronômico com anel equatorial suspenso por argola.
