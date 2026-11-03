@@ -218,8 +218,8 @@ export default function BoardView() {
             />
           </div>
           <p className="text-xs text-[#a39b8d] pl-8">
-            Mural de Contratos e Quests: arraste os pergaminhos entre as colunas para atualizar o
-            avanço do grupo.
+            Mural de Contratos, Quests & Tramas Narrativas (RPG & RP): arraste os pergaminhos entre
+            as colunas para acompanhar missões e arcos dos personagens.
           </p>
         </div>
 
@@ -428,12 +428,12 @@ export default function BoardView() {
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
               <label className="text-xs font-fantasy font-bold text-amber-200">
-                Título do Contrato / Missão
+                Título do Contrato / Trama Narrativa
               </label>
               <Input
                 value={cardTitle}
                 onChange={(e) => setCardTitle(e.target.value)}
-                placeholder="Ex: Caçar a Manticora dos Picos Gelados"
+                placeholder="Ex: Investigar o Pacto do Clã das Sombras / Resgatar a Relíquia"
                 className="text-sm bg-[#090c10] border-[#2a3346] text-amber-100 placeholder:text-amber-200/40"
                 autoFocus
               />

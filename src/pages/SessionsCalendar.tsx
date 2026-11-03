@@ -227,22 +227,21 @@ export default function SessionsCalendar() {
           <div className="flex items-center gap-2">
             <RunicCircle className="w-6 h-6 text-amber-400 animate-spin-slow" />
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              Calendário de Sessões de Jogo
+              Calendário de Sessões & Cenas (RPG e RP)
             </h1>
           </div>
           <p className="text-xs text-[#a8a090] max-w-xl">
-            Programe as próximas reuniões da mesa, registre as crônicas realizadas e mantenha seu
-            grupo de aventureiros sempre alinhado com o destino.
-          </p>
+            Programe as reuniões da mesa de RPG e sessões/cenas narrativas de RP, registre as
+            crônicas realizadas e mantenha seu grupo alinhado nos mesmos ciclos lunares.
+          </p>{' '}
         </div>
-
         <Button
           onClick={() => openNewSessionModal()}
           className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold gap-1.5 border border-amber-300/40 shadow-sm"
         >
           <Plus className="h-4 w-4" />
-          <span>Agendar Nova Sessão</span>
-        </Button>
+          <span>Agendar Sessão / Cena</span>
+        </Button>{' '}
       </div>
 
       {/* Grid Calendário + Lista de Próximas */}
@@ -553,7 +552,7 @@ export default function SessionsCalendar() {
                 <Input
                   value={formLocation}
                   onChange={(e) => setFormLocation(e.target.value)}
-                  placeholder="Ex: Discord / Taverna"
+                  placeholder="Ex: Discord / Sala de RP / Mesa Presencial"
                   className="bg-[#090c10] border-[#262e40] text-amber-100"
                 />
               </div>

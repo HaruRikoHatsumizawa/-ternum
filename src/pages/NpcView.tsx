@@ -16,11 +16,14 @@ import {
   Save,
   X,
   Swords,
+  BookOpen,
+  HeartHandshake,
+  Compass,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { RunicCircle, TomeOrnament, CrestShield } from '@/components/rpg/RpgArtwork'
+import { RunicCircle, TomeOrnament, CrestShield, RunicPawIcon } from '@/components/rpg/RpgArtwork'
 import { toast } from '@/hooks/use-toast'
 
 function getModifier(score?: number): string {
@@ -35,6 +38,9 @@ export default function NpcView() {
   const [isEditing, setIsEditing] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  // Modo de visualização/edição da ficha: 'hibrido' | 'rp' | 'rpg'
+  const [sheetTab, setSheetTab] = useState<'hibrido' | 'rp' | 'rpg'>('hibrido')
 
   // Edit form states
   const [formData, setFormData] = useState<Partial<NpcRecord>>({})
@@ -70,31 +76,35 @@ export default function NpcView() {
     setIsEditing(true)
     setSelectedNpc(null)
     setFormData({
-      name: 'Novo Personagem Não Jogável',
-      race: 'Humano',
-      occupation: 'Cidadão / Mercador',
+      name: 'Novo Personagem / NPC',
+      species: 'Lobo Cinzento Antropomórfico',
+      race: 'Canino / Fera Nobre',
+      occupation: 'Batedor / Viajante',
       location: 'Vila da Pedra Alta',
       alignment: 'Neutro e Bom',
       status: 'Vivo',
-      appearance: 'Aparência, vestes e traços marcantes...',
-      hp: 20,
-      ac: 12,
+      appearance:
+        'Pelagem cinzenta densa, olhos cor de âmbar vigilantes, gibão de couro reforçado e capa de viagem com broche rúnico...',
+      bio: 'Biografia de roleplay: origens, acontecimentos que moldaram o personagem e motivações...',
+      relationships: 'Vínculos com aliados, facções, rivais ou mentores da campanha...',
+      hp: 24,
+      ac: 13,
       cr: 'ND 1',
-      str: 10,
-      dex: 10,
-      con: 10,
+      str: 12,
+      dex: 14,
+      con: 12,
       int: 10,
-      wis: 10,
+      wis: 14,
       cha: 10,
       personality: {
-        traits: 'Traço de personalidade...',
-        ideals: 'Ideal ou crença...',
-        bonds: 'Vínculo importante...',
-        flaws: 'Defeito ou fraqueza...',
+        traits: 'Calmo e observador, confia nos instintos e escuta o vento antes de agir.',
+        ideals: 'A lealdade à matilha e a proteção dos que não podem lutar.',
+        bonds: 'Guarda uma bússola de prata legada por sua família.',
+        flaws: 'Reticente em confiar em estranhos que ocultam o rosto.',
       },
-      secrets: 'Segredo oculto deste NPC que o grupo pode descobrir...',
-      notes: 'Relações com a trama da campanha...',
-      avatar: '👤',
+      secrets: 'Segredo oculto deste personagem que os outros podem descobrir durante o jogo...',
+      notes: 'Ganchos de cenas narrativas e missões...',
+      avatar: '🐺',
     })
   }
 
@@ -117,20 +127,20 @@ export default function NpcView() {
     try {
       if (isCreating) {
         const created = await npcsService.create(formData as any)
-        toast({ title: 'NPC Criado com Sucesso!' })
+        toast({ title: 'Personagem Criado com Sucesso!' })
         setIsCreating(false)
         setIsEditing(false)
         await loadNpcs()
         setSelectedNpc(created)
       } else if (selectedNpc) {
         const updated = await npcsService.update(selectedNpc.id, formData)
-        toast({ title: 'Ficha de NPC Atualizada!' })
+        toast({ title: 'Ficha Atualizada!' })
         setIsEditing(false)
         await loadNpcs()
         setSelectedNpc(updated)
       }
     } catch (err: any) {
-      toast({ title: 'Falha ao salvar NPC', description: err?.message })
+      toast({ title: 'Falha ao salvar personagem', description: err?.message })
     }
   }
 
@@ -140,7 +150,7 @@ export default function NpcView() {
 
     try {
       await npcsService.delete(selectedNpc.id)
-      toast({ title: 'NPC removido do códice' })
+      toast({ title: 'Personagem removido do códice' })
       const remaining = npcs.filter((n) => n.id !== selectedNpc.id)
       setNpcs(remaining)
       setSelectedNpc(remaining[0] || null)
@@ -160,12 +170,13 @@ export default function NpcView() {
           <div className="flex items-center gap-2">
             <Users className="w-6 h-6 text-amber-400" />
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              Fichas de NPCs & Personagens Notáveis
+              Fichas de Personagens & NPCs (RPG & RP)
             </h1>
           </div>
-          <p className="text-xs text-[#a8a090] max-w-xl">
-            Stat blocks ricos e detalhados com layout de pergaminho antigo: atributos, personalidade
-            (ideais, vínculos e defeitos), segredos e conexões de enredo.
+          <p className="text-xs text-[#a8a090] max-w-2xl leading-relaxed">
+            Fichas híbridas projetadas tanto para <strong>RP narrativo</strong> (espécie
+            antropomórfica, biografia, aparência, personalidade e relações) quanto para{' '}
+            <strong>RPG clássico</strong> (CA, HP, ND e atributos), sem forçar um único formato.
           </p>
         </div>
 
@@ -174,7 +185,7 @@ export default function NpcView() {
           className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold gap-1.5 border border-amber-300/40 shadow-sm"
         >
           <Plus className="h-4 w-4" />
-          <span>Novo NPC</span>
+          <span>Novo Personagem</span>
         </Button>
       </div>
 
@@ -182,7 +193,10 @@ export default function NpcView() {
         {/* Coluna Esquerda: Lista de NPCs */}
         <div className="lg:col-span-4 space-y-3">
           <div className="flex items-center justify-between text-xs font-fantasy font-bold text-amber-300 uppercase tracking-wider px-1">
-            <span>Personagens no Tomo ({npcs.length})</span>
+            <span className="flex items-center gap-1.5">
+              <RunicPawIcon className="w-3.5 h-3.5 text-amber-400" />
+              Personagens no Tomo ({npcs.length})
+            </span>
           </div>
 
           <div className="space-y-2">
@@ -205,8 +219,8 @@ export default function NpcView() {
                     <h3 className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                       {npc.name}
                     </h3>
-                    <p className="text-[11px] text-[#9e9688] truncate">
-                      {npc.occupation || npc.race}
+                    <p className="text-[11px] text-[#9e9688] truncate flex items-center gap-1">
+                      {npc.species || npc.race} • {npc.occupation}
                     </p>
                   </div>
                   <span
@@ -226,71 +240,111 @@ export default function NpcView() {
 
             {npcs.length === 0 && !loading && (
               <div className="p-8 text-center border border-dashed border-[#262c3a] rounded-xl text-xs text-[#8e8678]">
-                Nenhum NPC registrado. Clique em "+ Novo NPC" para forjar sua primeira ficha!
+                Nenhum personagem registrado. Clique em "+ Novo Personagem" para forjar sua primeira
+                ficha!
               </div>
             )}
           </div>
         </div>
 
-        {/* Coluna Direita: Stat Block em Pergaminho */}
+        {/* Coluna Direita: Ficha / Stat Block Híbrido */}
         <div className="lg:col-span-8">
           {active ? (
             <div className="relative rounded-2xl border-2 border-amber-500/40 bg-[#161b26] p-6 sm:p-8 shadow-2xl space-y-6">
-              {/* Botões de Ação da Ficha */}
-              <div className="flex items-center justify-between border-b border-[#2a3448] pb-4">
+              {/* Botões de Ação & Abas de Formato (Híbrido / RP / RPG) */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#2a3448] pb-4">
                 <div className="flex items-center gap-2">
                   <CrestShield className="w-5 h-5 text-amber-400" />
                   <span className="text-xs font-fantasy font-bold uppercase tracking-wider text-amber-300">
                     {isCreating
                       ? 'Forjando Nova Ficha'
                       : isEditing
-                        ? 'Editando Stat Block'
-                        : 'Stat Block Oficial de Campanha'}
+                        ? 'Editando Ficha de Personagem'
+                        : 'Ficha de Campanha & Interpretação'}
                   </span>
                 </div>
 
+                {/* Alternador de visualização rápida */}
                 <div className="flex items-center gap-2">
-                  {isEditing ? (
-                    <>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setIsEditing(false)
-                          setIsCreating(false)
-                        }}
-                        className="text-xs text-[#a39b8d]"
-                      >
-                        <X className="h-3.5 w-3.5 mr-1" /> Cancelar
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={handleSave}
-                        className="text-xs font-fantasy font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
-                      >
-                        <Save className="h-3.5 w-3.5 mr-1" /> Salvar Ficha
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleStartEdit}
-                        className="text-xs border-[#2a3448] text-amber-300 hover:bg-amber-500/10"
-                      >
-                        <Edit className="h-3.5 w-3.5 mr-1" /> Editar
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleDelete}
-                        className="text-xs text-rose-400 hover:bg-rose-950/30"
-                      >
-                        <Trash2 className="h-3.5 w-3.5 mr-1" /> Excluir
-                      </Button>
-                    </>
-                  )}
+                  <div className="flex rounded-lg bg-[#0e121a] p-0.5 border border-[#2a3448]">
+                    <button
+                      onClick={() => setSheetTab('hibrido')}
+                      className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
+                        sheetTab === 'hibrido'
+                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
+                          : 'text-[#9c9486] hover:text-amber-200'
+                      }`}
+                      title="Exibir seções narrativas de RP e dados de RPG lado a lado"
+                    >
+                      Completo
+                    </button>
+                    <button
+                      onClick={() => setSheetTab('rp')}
+                      className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
+                        sheetTab === 'rp'
+                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
+                          : 'text-[#9c9486] hover:text-amber-200'
+                      }`}
+                      title="Foco narrativo de RP: espécie, bio, personalidade, relações"
+                    >
+                      RP Narrativo
+                    </button>
+                    <button
+                      onClick={() => setSheetTab('rpg')}
+                      className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
+                        sheetTab === 'rpg'
+                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
+                          : 'text-[#9c9486] hover:text-amber-200'
+                      }`}
+                      title="Foco tático de RPG: CA, HP, atributos e ND"
+                    >
+                      RPG Tático
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 ml-auto">
+                    {isEditing ? (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setIsEditing(false)
+                            setIsCreating(false)
+                          }}
+                          className="text-xs text-[#a39b8d]"
+                        >
+                          <X className="h-3.5 w-3.5 mr-1" /> Cancelar
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={handleSave}
+                          className="text-xs font-fantasy font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
+                        >
+                          <Save className="h-3.5 w-3.5 mr-1" /> Salvar Ficha
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleStartEdit}
+                          className="text-xs border-[#2a3448] text-amber-300 hover:bg-amber-500/10"
+                        >
+                          <Edit className="h-3.5 w-3.5 mr-1" /> Editar
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleDelete}
+                          className="text-xs text-rose-400 hover:bg-rose-950/30"
+                        >
+                          <Trash2 className="h-3.5 w-3.5 mr-1" /> Excluir
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -300,7 +354,7 @@ export default function NpcView() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="sm:col-span-2 space-y-1">
                       <label className="text-[11px] font-fantasy font-bold text-amber-200">
-                        Nome do NPC
+                        Nome do Personagem
                       </label>
                       <Input
                         value={formData.name || ''}
@@ -315,7 +369,7 @@ export default function NpcView() {
                       <Input
                         value={formData.avatar || ''}
                         onChange={(e) => setFormData({ ...formData, avatar: e.target.value })}
-                        placeholder="Ex: 🧙‍♂️, 🎴, 🛡️"
+                        placeholder="Ex: 🐺, 🦊, 🐆, 🐉"
                         className="bg-[#0c1017] border-[#2c3548] text-amber-100 text-center"
                       />
                     </div>
@@ -329,25 +383,44 @@ export default function NpcView() {
                       <h2 className="text-2xl sm:text-3xl font-fantasy font-extrabold text-amber-100">
                         {active.name}
                       </h2>
-                      <p className="text-xs text-amber-300/80 italic font-serif">
-                        {active.race} • {active.occupation} • {active.alignment}
+                      <p className="text-xs text-amber-300/80 italic font-serif flex items-center gap-1.5 flex-wrap">
+                        <span className="inline-flex items-center gap-1 text-amber-200 font-semibold not-italic">
+                          <RunicPawIcon className="w-3 h-3 text-amber-400" />
+                          {active.species || active.race || 'Espécie não anotada'}
+                        </span>
+                        <span>•</span>
+                        <span>{active.occupation}</span>
+                        <span>•</span>
+                        <span>{active.alignment}</span>
                       </p>
                     </div>
                   </div>
                 )}
 
                 {isEditing && (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                    <div className="space-y-1">
-                      <label className="text-[11px] font-fantasy text-amber-200">Raça</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
+                    <div className="space-y-1 sm:col-span-1">
+                      <label className="text-[11px] font-fantasy text-amber-200 flex items-center gap-1">
+                        <RunicPawIcon className="w-3 h-3 text-amber-400" />
+                        Espécie Antropomórfica
+                      </label>
                       <Input
-                        value={formData.race || ''}
-                        onChange={(e) => setFormData({ ...formData, race: e.target.value })}
+                        value={formData.species || formData.race || ''}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            species: e.target.value,
+                            race: e.target.value,
+                          })
+                        }
+                        placeholder="Ex: Raposa, Lobo, Leopardo, Dragão..."
                         className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[11px] font-fantasy text-amber-200">Ocupação</label>
+                      <label className="text-[11px] font-fantasy text-amber-200">
+                        Ocupação / Classe
+                      </label>
                       <Input
                         value={formData.occupation || ''}
                         onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
@@ -382,131 +455,205 @@ export default function NpcView() {
 
               <TomeOrnament className="w-full h-3 text-amber-500/40" />
 
-              {/* Métricas de Combate: CA, HP, ND */}
-              <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-[#0e121a] border border-[#262f42] text-center">
-                <div>
-                  <span className="text-[10px] font-fantasy uppercase text-amber-400/80 block">
-                    Classe de Armadura (CA)
-                  </span>
-                  {isEditing ? (
-                    <Input
-                      type="number"
-                      value={formData.ac ?? 10}
-                      onChange={(e) =>
-                        setFormData({ ...formData, ac: parseInt(e.target.value) || 10 })
-                      }
-                      className="bg-[#121620] border-[#2c3548] text-amber-200 text-center font-mono font-bold mt-1"
-                    />
-                  ) : (
-                    <span className="text-xl font-mono font-bold text-amber-200">
-                      {active.ac || 10}
+              {/* SEÇÃO RP NARRATIVO: Biografia, Relações e Cenas (Exibida em 'hibrido' e 'rp') */}
+              {(sheetTab === 'hibrido' || sheetTab === 'rp') && (
+                <div className="p-4 rounded-xl bg-[#0f141f] border border-amber-500/25 space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#242c3d] pb-2">
+                    <span className="text-xs font-fantasy font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                      <BookOpen className="w-4 h-4 text-amber-400" />
+                      Dimensão de RP (Roleplay & Narrativa)
                     </span>
-                  )}
-                </div>
-
-                <div>
-                  <span className="text-[10px] font-fantasy uppercase text-rose-400/80 block">
-                    Pontos de Vida (HP)
-                  </span>
-                  {isEditing ? (
-                    <Input
-                      type="number"
-                      value={formData.hp ?? 10}
-                      onChange={(e) =>
-                        setFormData({ ...formData, hp: parseInt(e.target.value) || 10 })
-                      }
-                      className="bg-[#121620] border-[#2c3548] text-rose-300 text-center font-mono font-bold mt-1"
-                    />
-                  ) : (
-                    <span className="text-xl font-mono font-bold text-rose-300">
-                      {active.hp || 10}
+                    <span className="text-[10px] text-amber-300/60 font-fantasy">
+                      Espécie:{' '}
+                      <strong>{active.species || active.race || 'Definida na ficha'}</strong>
                     </span>
-                  )}
-                </div>
+                  </div>
 
-                <div>
-                  <span className="text-[10px] font-fantasy uppercase text-blue-400/80 block">
-                    Nível de Desafio (ND)
-                  </span>
-                  {isEditing ? (
-                    <Input
-                      value={formData.cr || 'ND 1'}
-                      onChange={(e) => setFormData({ ...formData, cr: e.target.value })}
-                      className="bg-[#121620] border-[#2c3548] text-blue-200 text-center font-mono font-bold mt-1"
-                    />
-                  ) : (
-                    <span className="text-xl font-mono font-bold text-blue-200">
-                      {active.cr || 'ND 1'}
+                  {/* Biografia Narrativa */}
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-fantasy font-bold text-amber-200 block">
+                      Biografia & Origem do Personagem
+                    </label>
+                    {isEditing ? (
+                      <Textarea
+                        rows={3}
+                        value={formData.bio || ''}
+                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                        placeholder="Origens, histórico do clã/matilha e o que move o personagem..."
+                        className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100 leading-relaxed"
+                      />
+                    ) : (
+                      <p className="text-xs text-[#c4bcaa] leading-relaxed italic bg-[#0c1017]/60 p-3 rounded-lg border border-[#222a3b]">
+                        {active.bio || 'Nenhuma biografia detalhada inscrita ainda.'}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Vínculos e Relações (RP) */}
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-fantasy font-bold text-amber-200 flex items-center gap-1">
+                      <HeartHandshake className="w-3.5 h-3.5 text-amber-400" />
+                      Relações & Dinâmica com Outros Personagens
+                    </label>
+                    {isEditing ? (
+                      <Textarea
+                        rows={2}
+                        value={formData.relationships || ''}
+                        onChange={(e) =>
+                          setFormData({ ...formData, relationships: e.target.value })
+                        }
+                        placeholder="Quem são seus aliados, mentores, rivais ou companheiros de bando?"
+                        className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100"
+                      />
+                    ) : (
+                      <p className="text-xs text-[#a8a090] bg-[#0c1017]/60 p-2.5 rounded-lg border border-[#222a3b]">
+                        {active.relationships || 'Nenhuma relação registrada.'}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* SEÇÃO RPG CLÁSSICO: CA, HP, ND e Atributos (Exibida em 'hibrido' e 'rpg') */}
+              {(sheetTab === 'hibrido' || sheetTab === 'rpg') && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#242c3d] pb-2">
+                    <span className="text-xs font-fantasy font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                      <Swords className="w-4 h-4 text-amber-400" />
+                      Dimensão de RPG (Métricas de Jogo & Combate)
                     </span>
-                  )}
-                </div>
-              </div>
+                    <span className="text-[10px] text-amber-300/60 font-fantasy">
+                      Opcional para quem joga puramente RP
+                    </span>
+                  </div>
 
-              {/* Atributos: FOR, DES, CON, INT, SAB, CAR */}
-              <div className="space-y-1.5">
-                <span className="text-[11px] font-fantasy font-bold uppercase tracking-wider text-amber-300/80">
-                  Atributos Essenciais
-                </span>
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center">
-                  {[
-                    { key: 'str', label: 'FOR' },
-                    { key: 'dex', label: 'DES' },
-                    { key: 'con', label: 'CON' },
-                    { key: 'int', label: 'INT' },
-                    { key: 'wis', label: 'SAB' },
-                    { key: 'cha', label: 'CAR' },
-                  ].map(({ key, label }) => {
-                    const score = (active as any)[key] ?? 10
-                    const mod = getModifier(score)
-                    return (
-                      <div
-                        key={key}
-                        className="p-2 rounded-lg bg-[#0e121a] border border-[#262f42] flex flex-col items-center justify-center"
-                      >
-                        <span className="text-[10px] font-fantasy font-bold text-amber-400">
-                          {label}
+                  {/* Métricas de Combate: CA, HP, ND */}
+                  <div className="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-[#0e121a] border border-[#262f42] text-center">
+                    <div>
+                      <span className="text-[10px] font-fantasy uppercase text-amber-400/80 block">
+                        Classe de Armadura (CA)
+                      </span>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={formData.ac ?? 10}
+                          onChange={(e) =>
+                            setFormData({ ...formData, ac: parseInt(e.target.value) || 10 })
+                          }
+                          className="bg-[#121620] border-[#2c3548] text-amber-200 text-center font-mono font-bold mt-1"
+                        />
+                      ) : (
+                        <span className="text-xl font-mono font-bold text-amber-200">
+                          {active.ac || 10}
                         </span>
-                        {isEditing ? (
-                          <Input
-                            type="number"
-                            value={score}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                [key]: parseInt(e.target.value) || 10,
-                              })
-                            }
-                            className="h-7 w-14 bg-[#121620] border-[#2c3548] text-center font-mono text-xs text-amber-100 my-0.5 px-0"
-                          />
-                        ) : (
-                          <span className="text-sm font-mono font-bold text-amber-100">
-                            {score}
-                          </span>
-                        )}
-                        <span className="text-[10px] font-mono text-amber-300/70">({mod})</span>
-                      </div>
-                    )
-                  })}
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-fantasy uppercase text-rose-400/80 block">
+                        Pontos de Vida (HP)
+                      </span>
+                      {isEditing ? (
+                        <Input
+                          type="number"
+                          value={formData.hp ?? 10}
+                          onChange={(e) =>
+                            setFormData({ ...formData, hp: parseInt(e.target.value) || 10 })
+                          }
+                          className="bg-[#121620] border-[#2c3548] text-rose-300 text-center font-mono font-bold mt-1"
+                        />
+                      ) : (
+                        <span className="text-xl font-mono font-bold text-rose-300">
+                          {active.hp || 10}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-fantasy uppercase text-blue-400/80 block">
+                        Nível de Desafio (ND)
+                      </span>
+                      {isEditing ? (
+                        <Input
+                          value={formData.cr || 'ND 1'}
+                          onChange={(e) => setFormData({ ...formData, cr: e.target.value })}
+                          className="bg-[#121620] border-[#2c3548] text-blue-200 text-center font-mono font-bold mt-1"
+                        />
+                      ) : (
+                        <span className="text-xl font-mono font-bold text-blue-200">
+                          {active.cr || 'ND 1'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Atributos: FOR, DES, CON, INT, SAB, CAR */}
+                  <div className="space-y-1.5">
+                    <span className="text-[11px] font-fantasy font-bold uppercase tracking-wider text-amber-300/80">
+                      Atributos Essenciais
+                    </span>
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center">
+                      {[
+                        { key: 'str', label: 'FOR' },
+                        { key: 'dex', label: 'DES' },
+                        { key: 'con', label: 'CON' },
+                        { key: 'int', label: 'INT' },
+                        { key: 'wis', label: 'SAB' },
+                        { key: 'cha', label: 'CAR' },
+                      ].map(({ key, label }) => {
+                        const score = (active as any)[key] ?? 10
+                        const mod = getModifier(score)
+                        return (
+                          <div
+                            key={key}
+                            className="p-2 rounded-lg bg-[#0e121a] border border-[#262f42] flex flex-col items-center justify-center"
+                          >
+                            <span className="text-[10px] font-fantasy font-bold text-amber-400">
+                              {label}
+                            </span>
+                            {isEditing ? (
+                              <Input
+                                type="number"
+                                value={score}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    [key]: parseInt(e.target.value) || 10,
+                                  })
+                                }
+                                className="h-7 w-14 bg-[#121620] border-[#2c3548] text-center font-mono text-xs text-amber-100 my-0.5 px-0"
+                              />
+                            ) : (
+                              <span className="text-sm font-mono font-bold text-amber-100">
+                                {score}
+                              </span>
+                            )}
+                            <span className="text-[10px] font-mono text-amber-300/70">({mod})</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Aparência & Localização */}
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-xs font-fantasy font-bold text-amber-300">
                   <MapPin className="h-3.5 w-3.5 text-amber-400" />
-                  <span>Aparência & Onde Encontrar</span>
+                  <span>Aparência Física & Onde Encontrar</span>
                 </div>
                 {isEditing ? (
                   <div className="space-y-2">
                     <Input
-                      placeholder="Local de morada ou estadia..."
+                      placeholder="Local de morada, estalagem ou território..."
                       value={formData.location || ''}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                       className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100"
                     />
                     <Textarea
                       rows={2}
-                      placeholder="Descrição física, vestes, cicatrizes..."
+                      placeholder="Descrição física, pelagem/escamas/penas, vestes, porte e cicatrizes..."
                       value={formData.appearance || ''}
                       onChange={(e) => setFormData({ ...formData, appearance: e.target.value })}
                       className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100"
@@ -579,7 +726,7 @@ export default function NpcView() {
                     rows={2}
                     value={formData.secrets || ''}
                     onChange={(e) => setFormData({ ...formData, secrets: e.target.value })}
-                    placeholder="O que este NPC esconde a sete chaves?"
+                    placeholder="O que este personagem esconde a sete chaves?"
                     className="bg-[#0c1017] border-purple-500/40 text-xs text-purple-200"
                   />
                 ) : (
@@ -589,17 +736,17 @@ export default function NpcView() {
                 )}
               </div>
 
-              {/* Notas de Enredo */}
+              {/* Notas de Enredo / Cenas */}
               <div className="space-y-1 text-xs">
                 <span className="font-fantasy font-bold text-amber-300/80">
-                  Notas de Trama & Relações
+                  Notas de Trama, Cenas & Relações
                 </span>
                 {isEditing ? (
                   <Textarea
                     rows={2}
                     value={formData.notes || ''}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Conexão com missões, facções ou jogadores..."
+                    placeholder="Conexão com missões, cenas narrativas, facções ou jogadores..."
                     className="bg-[#0c1017] border-[#2c3548] text-xs text-amber-100"
                   />
                 ) : (
@@ -611,7 +758,8 @@ export default function NpcView() {
             </div>
           ) : (
             <div className="p-12 text-center border border-dashed border-[#262c3a] rounded-2xl text-xs text-[#8e8678]">
-              Selecione um NPC na lista à esquerda ou forje um novo para ler seu Stat Block.
+              Selecione um personagem na lista à esquerda ou forje um novo para ler sua ficha
+              híbrida.
             </div>
           )}
         </div>

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T12:37:04.470Z",
+  "generatedAt": "2026-11-03T12:52:44.539Z",
   "collections": [
     {
       "name": "users",
@@ -475,6 +475,24 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "species",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "bio",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "relationships",
+          "type": "text",
+          "required": false,
+          "system": false
         }
       ],
       "indexes": [

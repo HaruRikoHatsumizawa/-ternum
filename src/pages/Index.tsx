@@ -32,42 +32,49 @@ import {
   DragonSilhouette,
   CrestShield,
   TomeOrnament,
+  RunicPawIcon,
 } from '@/components/rpg/RpgArtwork'
 
 // Amostras de Heróis em Destaque da Campanha (Fichas prontas)
 const HIGHLIGHT_HEROES = [
   {
     name: 'Valerius Lâmina Rubra',
-    classRole: 'Guerreiro Humano',
+    species: 'Raposa-Vermelha',
+    classRole: 'Espadachim & Mercenário',
     level: 5,
     hpMax: 48,
     hpCurrent: 44,
-    avatar: '⚔️',
+    avatar: '🦊',
     xp: 6800,
     xpNext: 7500,
     alignment: 'Caótico e Bom',
+    rpNote: 'Mestre em fintas e espreita. Leal a quem honra sua palavra.',
   },
   {
     name: 'Lyra Sombra-Estelar',
-    classRole: 'Maga Meio-Elfa',
+    species: 'Loba Cinzenta',
+    classRole: 'Arcanista das Brumas',
     level: 4,
     hpMax: 26,
     hpCurrent: 26,
-    avatar: '🔮',
+    avatar: '🐺',
     xp: 3900,
     xpNext: 4500,
     alignment: 'Neutro e Bom',
+    rpNote: 'Canaliza constelações veladas; protetora silente de sua matilha.',
   },
   {
-    name: 'Thorin Quebra-Montanha',
-    classRole: 'Clérigo Anão da Forja',
+    name: 'Ignis Escama-de-Cinza',
+    species: 'Dragão Viajante',
+    classRole: 'Clérigo da Forja Rúnica',
     level: 4,
     hpMax: 38,
     hpCurrent: 35,
-    avatar: '🔨',
+    avatar: '🐉',
     xp: 4100,
     xpNext: 4500,
     alignment: 'Leal e Neutro',
+    rpNote: 'Sábio eremita que forja lâminas sagradas e coleciona crônicas.',
   },
 ]
 
@@ -163,9 +170,10 @@ export default function Index() {
               <span className="text-2xl">⚔️</span>
             </h1>
             <p className="text-sm text-[#b8b0a0] max-w-2xl leading-relaxed">
-              Bem-vindo ao Éternum, seu grimório dark fantasy de mesa. Gerencie sessões no
-              calendário, forje loots com probabilidades mágicas, consulte o Oráculo de IA e arquive
-              fichas de heróis e NPCs.
+              Bem-vindo ao Éternum, seu grimório dark fantasy desenhado tanto para{' '}
+              <strong>RPG de mesa</strong> quanto para <strong>RP narrativo</strong>. Gerencie
+              sessões e cenas no calendário, mural de contratos, forja de loot, fichas ricas com
+              espécies antropomórficas e o Oráculo arcano de IA.
             </p>
           </div>
 
@@ -191,8 +199,9 @@ export default function Index() {
               Personagens em Destaque (Grupo de Aventureiros)
             </h2>
           </div>
-          <span className="text-xs text-amber-300/60 font-fantasy">
-            Nível da Mesa: Tier 1 Heroico
+          <span className="text-xs text-amber-300/60 font-fantasy flex items-center gap-1">
+            <RunicPawIcon className="w-3.5 h-3.5 text-amber-400" />
+            RPG & RP • Tier 1 Heroico
           </span>
         </div>
 
@@ -215,7 +224,9 @@ export default function Index() {
                       <h3 className="text-sm font-bold font-fantasy text-amber-100 leading-tight">
                         {hero.name}
                       </h3>
-                      <p className="text-xs text-amber-300/70">{hero.classRole}</p>
+                      <p className="text-xs text-amber-300/80 font-medium">
+                        {hero.species} • {hero.classRole}
+                      </p>
                     </div>
                   </div>
                   <span className="px-2 py-0.5 rounded text-[11px] font-fantasy font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -223,7 +234,13 @@ export default function Index() {
                   </span>
                 </div>
 
-                <div className="space-y-2 mt-4 pt-3 border-t border-[#222938]">
+                {hero.rpNote && (
+                  <p className="text-[11px] text-[#b8b0a0] italic mt-3 pt-2 border-t border-[#222938] line-clamp-1">
+                    "{hero.rpNote}"
+                  </p>
+                )}
+
+                <div className="space-y-2 mt-2 pt-2 border-t border-[#222938]">
                   {/* Barra de Vida (HP) */}
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px]">

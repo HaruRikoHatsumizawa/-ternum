@@ -13,12 +13,15 @@ export interface NpcRecord {
   id: string
   user: string
   name: string
+  species?: string // Espécie Antropomórfica (Furry sofisticado)
   race?: string
   occupation?: string
   location?: string
   alignment?: string
   status: NpcStatus
   appearance?: string
+  bio?: string // Biografia narrativa (RP)
+  relationships?: string // Relações com outros personagens/facções (RP)
   hp?: number
   ac?: number
   cr?: string
@@ -38,12 +41,15 @@ export interface NpcRecord {
 
 export interface CreateNpcData {
   name: string
+  species?: string
   race?: string
   occupation?: string
   location?: string
   alignment?: string
   status?: NpcStatus
   appearance?: string
+  bio?: string
+  relationships?: string
   hp?: number
   ac?: number
   cr?: string

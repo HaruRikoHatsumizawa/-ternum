@@ -31,10 +31,10 @@ interface ConversationItem {
 }
 
 const ORACLE_SUGGESTIONS = [
-  'Sugira 3 ganchos misteriosos de masmorra para a próxima sessão.',
-  'Crie um comerciante de itens amaldiçoados com um segredo obscuro.',
-  'Descreva uma espada lendária forjada durante o eclipse de Val-Morath.',
-  'Como conduzir um enigma de runas antigas em uma porta trancada?',
+  'Crie uma ficha híbrida (RPG & RP) de uma Raposa espadachim com segredo de clã.',
+  'Sugira uma cena dramática de RP entre dois nobres feras com visões opostas.',
+  'Sugira 3 ganchos misteriosos de campanha nas brumas de Val-Morath.',
+  'Como conduzir um enigma de runas e constelações em uma cripta selada?',
 ]
 
 export default function OracleChat() {
@@ -219,7 +219,8 @@ export default function OracleChat() {
               O Oráculo de Éternum
             </h1>
             <p className="text-xs text-amber-300/70">
-              Assistente de IA Arcana nativo para mestres de RPG • Ganchos, NPCs, Enigmas & Sessões
+              Assistente de IA Arcana nativo para mestres e jogadores de RPG & RP • Fichas, Cenas,
+              NPCs & Enigmas
             </p>
           </div>
         </div>
@@ -332,7 +333,7 @@ export default function OracleChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Pergunte ao Oráculo (ex: Crie um NPC cartomante com segredo, ideias para a sessão 13...)"
+              placeholder="Pergunte ao Oráculo (ex: Crie um personagem híbrido raposa mercenária, cena de RP, gancho de sessão...)"
               rows={1}
               className="resize-none min-h-[42px] max-h-24 bg-[#141a24] border-[#2c374b] text-xs sm:text-sm text-amber-100 placeholder:text-amber-200/40 focus-visible:ring-amber-500/40"
             />

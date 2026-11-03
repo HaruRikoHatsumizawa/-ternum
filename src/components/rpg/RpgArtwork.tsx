@@ -41,6 +41,7 @@ export function DragonSilhouette({
       className={className}
       {...props}
     >
+      {/* Silhueta nobre de guardião bestial/draconiano antropomórfico alado */}
       <path
         d="M50 10 C46 16, 42 22, 38 28 C34 22, 28 16, 20 18 C12 20, 8 28, 12 36 C16 44, 26 48, 36 50 C26 56, 16 66, 10 80 C18 78, 28 72, 36 64 C36 72, 38 80, 44 88 C46 84, 48 76, 48 68 C50 72, 54 82, 58 88 C62 82, 64 72, 64 64 C72 72, 82 78, 90 80 C84 66, 74 56, 64 50 C74 48, 84 44, 88 36 C92 28, 88 20, 80 18 C72 16, 66 22, 62 28 C58 22, 54 16, 50 10 Z M50 32 C54 38, 56 46, 54 54 C50 58, 46 54, 46 46 C46 38, 48 34, 50 32 Z"
         opacity="0.9"
@@ -49,6 +50,7 @@ export function DragonSilhouette({
   )
 }
 
+// Brasão com detalhe heráldico canino/felino e espada rúnica
 export function CrestShield({ className = 'w-6 h-6', ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -71,10 +73,80 @@ export function CrestShield({ className = 'w-6 h-6', ...props }: React.SVGProps<
         strokeDasharray="3 2"
         opacity="0.7"
       />
-      {/* Espada cruzada central */}
-      <line x1="50" y1="24" x2="50" y2="70" strokeWidth="2.5" />
+      {/* Espada e símbolo de nobre fera central */}
+      <line x1="50" y1="22" x2="50" y2="70" strokeWidth="2.5" />
       <line x1="38" y1="36" x2="62" y2="36" strokeWidth="2.5" />
+      {/* Sutil elmo com orelhas pontiagudas heráldicas no topo do escudo */}
+      <path
+        d="M42 26 L46 18 L50 24 L54 18 L58 26"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        opacity="0.8"
+      />
       <circle cx="50" cy="74" r="3" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Ícone sutil de pegada rúnica / pata heráldica geométrica (discreta e elegante)
+export function RunicPawIcon({ className = 'w-4 h-4', ...props }: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
+      {/* Almofada central em formato de escudo/coração rúnico invertido */}
+      <path
+        d="M12 11.5 C10 11.5 7.5 13 8 16 C8.4 18.5 11 19.5 12 20 C13 19.5 15.6 18.5 16 16 C16.5 13 14 11.5 12 11.5 Z"
+        strokeWidth="1.6"
+        fill="currentColor"
+        fillOpacity="0.18"
+      />
+      {/* 4 Dedos elegantes em forma de gemas/losangos */}
+      <ellipse
+        cx="6.5"
+        cy="10"
+        rx="1.6"
+        ry="2.2"
+        transform="rotate(-20 6.5 10)"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.25"
+      />
+      <ellipse
+        cx="10"
+        cy="6.8"
+        rx="1.6"
+        ry="2.4"
+        transform="rotate(-6 10 6.8)"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.25"
+      />
+      <ellipse
+        cx="14"
+        cy="6.8"
+        rx="1.6"
+        ry="2.4"
+        transform="rotate(6 14 6.8)"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.25"
+      />
+      <ellipse
+        cx="17.5"
+        cy="10"
+        rx="1.6"
+        ry="2.2"
+        transform="rotate(20 17.5 10)"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.25"
+      />
     </svg>
   )
 }

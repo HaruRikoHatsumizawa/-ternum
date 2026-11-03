@@ -32,17 +32,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const BLOCK_TYPES = [
-  { id: 'text', label: 'Crônica / Texto', icon: AlignLeft },
-  { id: 'heading_1', label: 'Título Épico (Capítulo)', icon: Heading1 },
-  { id: 'heading_2', label: 'Seção de Atributos (H2)', icon: Heading2 },
-  { id: 'heading_3', label: 'Subseção de Perícias (H3)', icon: Heading3 },
-  { id: 'todo', label: 'Habilidade / Checklist', icon: CheckSquare },
-  { id: 'bullet', label: 'Item de Inventário', icon: List },
-  { id: 'quote', label: 'Citação / Fala de Personagem', icon: Quote },
-  { id: 'callout', label: 'Destaque de Regra / Alerta', icon: AlertCircle },
+  { id: 'text', label: 'Crônica / Cena Narrativa (RP)', icon: AlignLeft },
+  { id: 'heading_1', label: 'Título Épico / Arco', icon: Heading1 },
+  { id: 'heading_2', label: 'Seção de Perfil / Atributos (H2)', icon: Heading2 },
+  { id: 'heading_3', label: 'Subseção de Perícias / Traços (H3)', icon: Heading3 },
+  { id: 'todo', label: 'Habilidade / Meta de Cena', icon: CheckSquare },
+  { id: 'bullet', label: 'Item / Vínculo de Personagem', icon: List },
+  { id: 'quote', label: 'Citação / Fala & Diálogo (RP)', icon: Quote },
+  { id: 'callout', label: 'Espécie, Classe ou Destaque', icon: AlertCircle },
 ] as const
 
-const EMOJI_OPTIONS = ['⚔️', '🛡️', '📜', '🔮', '🐉', '🏰', '🏹', '💎', '🔥', '💀', '🧙', '🎲']
+const EMOJI_OPTIONS = ['⚔️', '🐺', '🦊', '🐆', '🐉', '🦅', '🛡️', '📜', '🔮', '🏹', '💎', '🔥']
 
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
@@ -263,9 +263,16 @@ export default function PageEditor() {
           type="text"
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          placeholder="Nome do Herói ou Capítulo da Crônica..."
+          placeholder="Nome do Personagem (RPG/RP) ou Capítulo da Crônica..."
           className="w-full text-3xl sm:text-4xl font-fantasy font-bold tracking-tight text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-1"
         />
+        <div className="flex items-center gap-2 text-xs text-amber-300/70 font-fantasy pt-1">
+          <span>Formato Livre:</span>
+          <span className="text-[#a8a090]">
+            Atende Fichas de RPG (atributos, perícias), Fichas de RP (espécie, bio, relações) e
+            Diários de Cenas.
+          </span>
+        </div>
       </div>
 
       {/* Editor em Blocos Estilizados de RPG */}
@@ -469,7 +476,7 @@ export default function PageEditor() {
                       type="text"
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Raça, Classe, Nível ou Alerta de Campanha..."
+                      placeholder="Espécie / Raça, Classe, Nível, Biografia ou Nota de RP..."
                       className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-400/40 bg-transparent py-0.5 font-medium"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
