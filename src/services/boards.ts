@@ -47,16 +47,28 @@ export const boardsService = {
     if (!user) throw new Error('Usuário não autenticado')
 
     const defaultColumns: BoardColumn[] = [
-      { id: 'todo', title: 'A fazer', color: 'bg-slate-100 text-slate-700' },
-      { id: 'in_progress', title: 'Fazendo', color: 'bg-blue-50 text-blue-700' },
-      { id: 'done', title: 'Feito', color: 'bg-emerald-50 text-emerald-700' },
+      {
+        id: 'todo',
+        title: 'Disponível',
+        color: 'border-amber-500/40 text-amber-300 bg-amber-950/30',
+      },
+      {
+        id: 'in_progress',
+        title: 'Em andamento',
+        color: 'border-blue-500/40 text-blue-300 bg-blue-950/30',
+      },
+      {
+        id: 'done',
+        title: 'Concluída',
+        color: 'border-emerald-500/40 text-emerald-300 bg-emerald-950/30',
+      },
     ]
 
     return await pb.collection('boards').create<BoardRecord>({
       user,
-      name: data.name || 'Novo Quadro de Tarefas',
-      description: data.description || '',
-      icon: data.icon || '📌',
+      name: data.name || 'Novo Mural de Missões',
+      description: data.description || 'Quadro de aventuras e contratos da mesa',
+      icon: data.icon || '🛡️',
       columns: data.columns || defaultColumns,
       cards: data.cards || [],
     })

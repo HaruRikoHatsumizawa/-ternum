@@ -46,27 +46,37 @@ export const databasesService = {
     if (!user) throw new Error('Usuário não autenticado')
 
     const defaultColumns: DatabaseColumn[] = [
-      { id: 'col_name', name: 'Nome', type: 'text' },
+      { id: 'col_name', name: 'Nome / Identificação', type: 'text' },
+      {
+        id: 'col_type',
+        name: 'Categoria',
+        type: 'select',
+        values: [
+          'NPC Aliado',
+          'Inimigo / Chefe',
+          'Monstro Bestial',
+          'Item Mágico',
+          'Artefato Lendário',
+        ],
+      },
+      {
+        id: 'col_cr',
+        name: 'Nível / ND',
+        type: 'text',
+      },
       {
         id: 'col_status',
-        name: 'Status',
+        name: 'Estado no Jogo',
         type: 'select',
-        values: ['Pendente', 'Em andamento', 'Concluído'],
+        values: ['Ativo / Vivo', 'Derrotado', 'Em Posse', 'Desaparecido'],
       },
-      {
-        id: 'col_priority',
-        name: 'Prioridade',
-        type: 'select',
-        values: ['Baixa', 'Média', 'Alta'],
-      },
-      { id: 'col_date', name: 'Prazo', type: 'date' },
     ]
 
     return await pb.collection('databases').create<DatabaseRecord>({
       user,
-      name: data.name || 'Nova Tabela de Dados',
-      description: data.description || '',
-      icon: data.icon || '📊',
+      name: data.name || 'Novo Códice Arcano',
+      description: data.description || 'Registro de monstros, NPCs e tesouros da mesa',
+      icon: data.icon || '🐉',
       columns: data.columns || defaultColumns,
       rows: data.rows || [],
     })

@@ -40,8 +40,8 @@ export const pagesService = {
 
     return await pb.collection('pages').create<PageRecord>({
       user,
-      title: data.title || 'Sem título',
-      icon: data.icon || '📄',
+      title: data.title || 'Nova Ficha / Crônica',
+      icon: data.icon || '⚔️',
       cover: data.cover || '',
       blocks: data.blocks || [{ id: 'b_' + Date.now(), type: 'text', content: '' }],
       is_favorite: data.is_favorite || false,

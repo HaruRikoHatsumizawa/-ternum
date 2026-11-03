@@ -1,111 +1,77 @@
 /* Global styles - Theme, font, utilities, animations and global components */
 
-/* CHANGE THE FONT BELOW TO WHATEVER YOU WANT */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=MedievalSharp&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Change the colors to match the design system */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+  :root,
+  .dark {
+    /* RPG Dark Fantasy Palette: Obsidian, Deep Leather, Aged Gold & Parchment */
+    --background: 225 24% 8%; /* #0c0f14 obsidian dark */
+    --foreground: 40 30% 92%; /* #f1ede3 ancient parchment white */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 225 22% 11%; /* #12161f dark stone tome */
+    --card-foreground: 40 30% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 225 24% 10%;
+    --popover-foreground: 40 30% 92%;
 
-    --primary: 222.2 84% 4.9%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 43 78% 54%; /* #e7ab2c runic forged gold */
+    --primary-foreground: 225 30% 8%;
 
-    --secondary: 210 40% 98%;
-    --secondary-foreground: 222.2 84% 4.9%;
+    --secondary: 225 18% 16%; /* #1d222e forged slate */
+    --secondary-foreground: 43 65% 85%;
 
-    --muted: 210 40% 98%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 225 18% 15%;
+    --muted-foreground: 38 18% 65%; /* #a89f91 weathered stone */
 
-    --accent: 210 40% 98%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --accent: 43 60% 20%;
+    --accent-foreground: 43 85% 75%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%; /* #dc2626 blood red */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 225 16% 20%; /* #242b38 dark wrought iron */
+    --input: 225 16% 20%;
+    --ring: 43 78% 54%; /* gold glow */
 
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 225 26% 7%; /* #090c10 deeper crypt */
+    --sidebar-foreground: 40 25% 88%;
+    --sidebar-primary: 43 78% 54%;
+    --sidebar-primary-foreground: 225 30% 8%;
+    --sidebar-accent: 225 20% 14%;
+    --sidebar-accent-foreground: 43 80% 80%;
+    --sidebar-border: 225 18% 16%;
+    --sidebar-ring: 43 78% 54%;
 
-    --sidebar-foreground: 222.2 84% 4.9%;
-
-    --sidebar-primary: 222.2 84% 4.9%;
-
-    --sidebar-primary-foreground: 0 0% 100%;
-
-    --sidebar-accent: 210 40% 98%;
-
-    --sidebar-accent-foreground: 222.2 84% 4.9%;
-
-    --sidebar-border: 214.3 31.8% 91.4%;
-
-    --sidebar-ring: 222.2 84% 4.9%;
-
-    --chart-1: 34 100% 44%;
-    --chart-2: 189 100% 38%;
-    --chart-3: 209 100% 32%;
-    --chart-4: 42 100% 50%;
-    --chart-5: 33 100% 50%;
+    --chart-1: 43 85% 54%; /* gold */
+    --chart-2: 152 70% 45%; /* emerald mana / life */
+    --chart-3: 198 80% 50%; /* astral arcane */
+    --chart-4: 0 75% 55%; /* crimson health */
+    --chart-5: 275 75% 65%; /* mystical purple */
   }
 
-  .dark {
-    /* Change the colors to match the design system consistent with the dark mode */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 160, 23, 0.08), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(139, 92, 246, 0.05), transparent 60%);
+    background-attachment: fixed;
+  }
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-
-    --secondary: 222.2 84% 4.9%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 222.2 84% 4.9%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 222.2 84% 4.9%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 222.2 84% 4.9%;
-    --input: 222.2 84% 4.9%;
-    --ring: 214.3 31.8% 91.4%;
-    --sidebar-background: 222.2 84% 4.9%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 222.2 84% 4.9%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222.2 84% 4.9%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222.2 84% 4.9%;
-    --sidebar-ring: 222.2 84% 4.9%;
-
-    --chart-1: 270 100% 44%;
-    --chart-2: 164 100% 38%;
-    --chart-3: 43 100% 32%;
-    --chart-4: 340 100% 50%;
-    --chart-5: 10 100% 50%;
+  h1,
+  h2,
+  h3,
+  .font-fantasy {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.02em;
   }
 
   /* NEVER REMOVE THIS */
@@ -286,5 +252,36 @@
 
   .animate-spotlight {
     animation: spotlight 2s ease forwards;
+  }
+
+  /* RPG Ornament Utilities */
+  .rpg-border {
+    border: 1px solid rgba(231, 171, 44, 0.22);
+    box-shadow:
+      0 0 15px -3px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  }
+
+  .rpg-border-gold {
+    border: 1px solid rgba(231, 171, 44, 0.45);
+    box-shadow:
+      0 0 20px -2px rgba(231, 171, 44, 0.15),
+      inset 0 0 0 1px rgba(231, 171, 44, 0.1);
+  }
+
+  .rpg-parchment-glow {
+    box-shadow:
+      0 4px 20px -2px rgba(0, 0, 0, 0.7),
+      0 0 12px -2px rgba(212, 160, 23, 0.12);
+  }
+
+  .rpg-tome-header {
+    background: linear-gradient(180deg, rgba(231, 171, 44, 0.08) 0%, rgba(18, 22, 31, 0) 100%);
+  }
+
+  .rpg-gold-text {
+    background: linear-gradient(135deg, #f5d378 0%, #d4a017 50%, #9e730c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

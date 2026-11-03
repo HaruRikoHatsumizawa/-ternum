@@ -204,38 +204,39 @@ export default function BoardView() {
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-6">
-      {/* Header do Quadro */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      {/* Header do Mural de Missões */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#262e40]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">{board?.icon || '📌'}</span>
+            <span className="text-2xl">{board?.icon || '🛡️'}</span>
             <input
               type="text"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              placeholder="Nome do Quadro"
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+              placeholder="Nome do Mural de Missões"
+              className="text-2xl sm:text-3xl font-fantasy font-bold tracking-tight text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
             />
           </div>
-          <p className="text-xs text-slate-500 pl-8">
-            Arraste os cartões entre as colunas para atualizar o status e acompanhar o progresso.
+          <p className="text-xs text-[#a39b8d] pl-8">
+            Mural de Contratos e Quests: arraste os pergaminhos entre as colunas para atualizar o
+            avanço do grupo.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Barra de Progresso */}
-          <div className="bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 flex items-center gap-3 min-w-[200px]">
+          {/* Barra de Progresso de Quests */}
+          <div className="bg-[#121620] border border-amber-500/25 rounded-lg p-2.5 flex items-center gap-3 min-w-[210px] shadow-sm">
             <div className="flex-1">
-              <div className="flex items-center justify-between text-[11px] font-medium text-slate-600 mb-1">
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                  Progresso
+              <div className="flex items-center justify-between text-[11px] font-fantasy font-bold text-amber-200 mb-1">
+                <span className="flex items-center gap-1 text-amber-300">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                  Vitórias / Conclusão
                 </span>
-                <span className="text-slate-900 font-bold">{progressPercent}%</span>
+                <span className="text-amber-100 font-mono">{progressPercent}%</span>
               </div>
-              <Progress value={progressPercent} className="h-1.5 bg-slate-200" />
+              <Progress value={progressPercent} className="h-2 bg-[#1c2230]" />
             </div>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-amber-300/70 font-mono">
               {doneCards}/{totalCards}
             </span>
           </div>
@@ -244,15 +245,15 @@ export default function BoardView() {
             variant="ghost"
             size="sm"
             onClick={handleDeleteBoard}
-            className="h-8 px-2 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-            title="Excluir quadro"
+            className="h-8 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
+            title="Excluir este mural de missões"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* Colunas do Kanban */}
+      {/* Colunas do Mural (Kanban de Missões) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
         {columns.map((col) => {
           const colCards = cards.filter((c) => c.columnId === col.id)
@@ -262,33 +263,33 @@ export default function BoardView() {
               key={col.id}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, col.id)}
-              className="flex flex-col bg-slate-50/70 border border-slate-200/80 rounded-xl p-3 min-h-[420px] transition-colors"
+              className="flex flex-col bg-[#0f131b]/90 border border-[#242b3b] rounded-xl p-3 min-h-[440px] shadow-lg transition-colors hover:border-[#323d54]"
             >
               {/* Header da Coluna */}
-              <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-200/60">
+              <div className="flex items-center justify-between pb-3 mb-2 border-b border-[#222938]">
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-xs font-semibold px-2 py-0.5 rounded-md ${
-                      col.color || 'bg-slate-200 text-slate-800'
+                    className={`text-xs font-fantasy font-bold px-2.5 py-0.5 rounded-md border ${
+                      col.color || 'bg-amber-950/40 text-amber-300 border-amber-500/30'
                     }`}
                   >
                     {col.title}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">({colCards.length})</span>
+                  <span className="text-xs text-amber-300/60 font-mono">({colCards.length})</span>
                 </div>
 
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6 text-slate-400 hover:text-slate-700"
+                  className="h-6 w-6 text-amber-400/70 hover:text-amber-200 hover:bg-amber-500/10"
                   onClick={() => openNewCardModal(col.id)}
-                  title="Adicionar cartão"
+                  title="Afixar nova missão"
                 >
                   <Plus className="h-3.5 w-3.5" />
                 </Button>
               </div>
 
-              {/* Lista de Cartões */}
+              {/* Lista de Cartões de Missão */}
               <div className="flex-1 space-y-2.5">
                 {colCards.map((card) => {
                   return (
@@ -297,30 +298,34 @@ export default function BoardView() {
                       draggable
                       onDragStart={(e) => handleDragStart(e, card.id)}
                       onClick={() => openEditCardModal(card)}
-                      className="cursor-grab active:cursor-grabbing border-slate-200/90 shadow-xs hover:shadow-sm transition-all hover:border-slate-300 bg-white group"
+                      className="cursor-grab active:cursor-grabbing border-[#2a3346] hover:border-amber-500/50 shadow-md transition-all bg-gradient-to-b from-[#151a26] to-[#11151f] text-amber-50 group hover:shadow-amber-950/20"
                     >
-                      <CardContent className="p-3 space-y-2">
+                      <CardContent className="p-3.5 space-y-2">
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-xs font-semibold text-slate-900 leading-snug">
+                          <h4 className="text-xs font-fantasy font-bold text-amber-100 leading-snug group-hover:text-amber-200">
                             {card.title}
                           </h4>
 
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                              <button className="opacity-0 group-hover:opacity-100 p-0.5 text-slate-400 hover:text-slate-700 rounded transition-opacity">
+                              <button className="opacity-0 group-hover:opacity-100 p-0.5 text-amber-400/60 hover:text-amber-200 rounded transition-opacity">
                                 <MoreVertical className="h-3.5 w-3.5" />
                               </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="text-xs w-40">
+                            <DropdownMenuContent
+                              align="end"
+                              className="text-xs w-44 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+                            >
                               <DropdownMenuItem
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   openEditCardModal(card)
                                 }}
+                                className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer"
                               >
-                                Editar cartão
+                                Editar missão
                               </DropdownMenuItem>
-                              <div className="border-t border-slate-100 my-1" />
+                              <div className="border-t border-[#262c3a] my-1" />
                               {columns.map((c) => {
                                 if (c.id === card.columnId) return null
                                 return (
@@ -330,49 +335,50 @@ export default function BoardView() {
                                       e.stopPropagation()
                                       handleMoveCardColumn(card.id, c.id)
                                     }}
+                                    className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer"
                                   >
                                     Mover para: {c.title}
                                   </DropdownMenuItem>
                                 )
                               })}
-                              <div className="border-t border-slate-100 my-1" />
+                              <div className="border-t border-[#262c3a] my-1" />
                               <DropdownMenuItem
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   handleDeleteCard(card.id)
                                 }}
-                                className="text-rose-600 focus:text-rose-600"
+                                className="text-rose-400 focus:text-rose-300 hover:bg-rose-950/30 cursor-pointer"
                               >
-                                Excluir
+                                Cancelar / Excluir
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </div>
 
                         {card.description && (
-                          <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                          <p className="text-[11px] text-[#a39b8d] line-clamp-2 leading-relaxed">
                             {card.description}
                           </p>
                         )}
 
-                        <div className="flex items-center justify-between pt-1 text-[10px] text-slate-400">
+                        <div className="flex items-center justify-between pt-1 text-[10px]">
                           {card.priority && (
                             <span
-                              className={`px-1.5 py-0.5 rounded font-medium capitalize ${
+                              className={`px-1.5 py-0.5 rounded font-fantasy font-semibold border ${
                                 card.priority === 'alta'
-                                  ? 'bg-rose-50 text-rose-700'
+                                  ? 'bg-rose-950/40 text-rose-300 border-rose-500/30'
                                   : card.priority === 'media'
-                                    ? 'bg-amber-50 text-amber-700'
-                                    : 'bg-slate-100 text-slate-600'
+                                    ? 'bg-amber-950/40 text-amber-300 border-amber-500/30'
+                                    : 'bg-[#1a2130] text-[#c2b9a7] border-[#2c3547]'
                               }`}
                             >
-                              {card.priority}
+                              Perigo: {card.priority}
                             </span>
                           )}
 
                           {card.dueDate && (
-                            <span className="flex items-center gap-1 font-mono text-slate-500">
-                              <Clock className="h-2.5 w-2.5" />
+                            <span className="flex items-center gap-1 font-mono text-amber-300/70">
+                              <Clock className="h-2.5 w-2.5 text-amber-400" />
                               {card.dueDate}
                             </span>
                           )}
@@ -383,13 +389,13 @@ export default function BoardView() {
                 })}
 
                 {colCards.length === 0 && (
-                  <div className="py-8 text-center text-slate-400 border border-dashed border-slate-200 rounded-lg">
-                    <p className="text-[11px]">Nenhum cartão nesta coluna</p>
+                  <div className="py-8 text-center text-[#7d7568] border border-dashed border-[#242b3b] rounded-lg">
+                    <p className="text-[11px] font-fantasy">Nenhum contrato afixado</p>
                     <button
                       onClick={() => openNewCardModal(col.id)}
-                      className="text-[11px] text-slate-700 hover:underline font-medium mt-1 inline-flex items-center gap-1"
+                      className="text-[11px] text-amber-400 hover:text-amber-300 hover:underline font-medium mt-1 inline-flex items-center gap-1"
                     >
-                      <Plus className="h-3 w-3" /> Criar cartão
+                      <Plus className="h-3 w-3" /> Afixar contrato
                     </button>
                   </div>
                 )}
@@ -400,54 +406,60 @@ export default function BoardView() {
                 variant="ghost"
                 size="sm"
                 onClick={() => openNewCardModal(col.id)}
-                className="w-full mt-2 text-xs text-slate-500 hover:text-slate-900 justify-start gap-1.5 h-7"
+                className="w-full mt-2 text-xs text-amber-300/70 hover:text-amber-200 hover:bg-amber-500/10 justify-start gap-1.5 h-7 font-fantasy"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>Novo cartão</span>
+                <span>Nova missão</span>
               </Button>
             </div>
           )
         })}
       </div>
 
-      {/* Modal Criar/Editar Cartão */}
+      {/* Modal Criar/Editar Cartão de Missão */}
       <Dialog open={cardModalOpen} onOpenChange={setCardModalOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-[#121620] border-[#2c3547] text-[#f1ede3]">
           <DialogHeader>
-            <DialogTitle className="text-base font-semibold text-slate-900">
-              {editingCard ? 'Editar Cartão' : 'Novo Cartão de Tarefa'}
+            <DialogTitle className="text-base font-fantasy font-bold text-amber-100">
+              {editingCard ? 'Editar Contrato de Missão' : 'Afixar Nova Missão no Mural'}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-700">Título da tarefa</label>
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                Título do Contrato / Missão
+              </label>
               <Input
                 value={cardTitle}
                 onChange={(e) => setCardTitle(e.target.value)}
-                placeholder="Ex: Concluir relatório mensal"
-                className="text-sm"
+                placeholder="Ex: Caçar a Manticora dos Picos Gelados"
+                className="text-sm bg-[#090c10] border-[#2a3346] text-amber-100 placeholder:text-amber-200/40"
                 autoFocus
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-700">Descrição / Detalhes</label>
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                Instruções & Recompensas
+              </label>
               <Textarea
                 value={cardDesc}
                 onChange={(e) => setCardDesc(e.target.value)}
-                placeholder="Adicione notas, links ou requisitos..."
-                className="text-xs min-h-[80px]"
+                placeholder="Descreva a recompensa em PO, local, fraquezas do monstro..."
+                className="text-xs min-h-[80px] bg-[#090c10] border-[#2a3346] text-amber-100 placeholder:text-amber-200/40"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">Coluna / Status</label>
+                <label className="text-xs font-fantasy font-bold text-amber-200">
+                  Coluna / Status
+                </label>
                 <select
                   value={targetColumnId}
                   onChange={(e) => setTargetColumnId(e.target.value)}
-                  className="w-full text-xs h-9 px-2 rounded-md border border-slate-200 bg-white text-slate-800"
+                  className="w-full text-xs h-9 px-2 rounded-md border border-[#2a3346] bg-[#090c10] text-amber-100"
                 >
                   {columns.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -458,31 +470,35 @@ export default function BoardView() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">Prioridade</label>
+                <label className="text-xs font-fantasy font-bold text-amber-200">
+                  Grau de Perigo
+                </label>
                 <select
                   value={cardPriority}
                   onChange={(e) => setCardPriority(e.target.value as any)}
-                  className="w-full text-xs h-9 px-2 rounded-md border border-slate-200 bg-white text-slate-800"
+                  className="w-full text-xs h-9 px-2 rounded-md border border-[#2a3346] bg-[#090c10] text-amber-100"
                 >
-                  <option value="baixa">Baixa</option>
-                  <option value="media">Média</option>
-                  <option value="alta">Alta</option>
+                  <option value="baixa">Baixo (Aventureiros iniciantes)</option>
+                  <option value="media">Médio (Grupo experiente)</option>
+                  <option value="alta">Alto / Mortal (Chefes & Dragões)</option>
                 </select>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-700">Prazo / Data de entrega</label>
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                Prazo da Campanha (Data limite)
+              </label>
               <Input
                 type="date"
                 value={cardDueDate}
                 onChange={(e) => setCardDueDate(e.target.value)}
-                className="text-xs h-9"
+                className="text-xs h-9 bg-[#090c10] border-[#2a3346] text-amber-100"
               />
             </div>
           </div>
 
-          <DialogFooter className="flex justify-between items-center sm:justify-between">
+          <DialogFooter className="flex justify-between items-center sm:justify-between pt-2 border-t border-[#222938]">
             {editingCard ? (
               <Button
                 variant="ghost"
@@ -491,9 +507,9 @@ export default function BoardView() {
                   handleDeleteCard(editingCard.id)
                   setCardModalOpen(false)
                 }}
-                className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
               >
-                Excluir
+                Excluir Missão
               </Button>
             ) : (
               <div />
@@ -504,16 +520,16 @@ export default function BoardView() {
                 variant="outline"
                 size="sm"
                 onClick={() => setCardModalOpen(false)}
-                className="text-xs"
+                className="text-xs border-[#2a3346] text-amber-200/70 hover:text-amber-100 hover:bg-[#18202e]"
               >
                 Cancelar
               </Button>
               <Button
                 size="sm"
                 onClick={handleSaveCard}
-                className="text-xs bg-slate-900 hover:bg-slate-800 text-white"
+                className="text-xs bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold border border-amber-300/40"
               >
-                {editingCard ? 'Salvar' : 'Criar'}
+                {editingCard ? 'Salvar Contrato' : 'Afixar Missão'}
               </Button>
             </div>
           </DialogFooter>

@@ -32,17 +32,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const BLOCK_TYPES = [
-  { id: 'text', label: 'Texto simples', icon: AlignLeft },
-  { id: 'heading_1', label: 'Título 1', icon: Heading1 },
-  { id: 'heading_2', label: 'Título 2', icon: Heading2 },
-  { id: 'heading_3', label: 'Título 3', icon: Heading3 },
-  { id: 'todo', label: 'Tarefa / Checklist', icon: CheckSquare },
-  { id: 'bullet', label: 'Lista com marcadores', icon: List },
-  { id: 'quote', label: 'Citação', icon: Quote },
-  { id: 'callout', label: 'Destaque / Aviso', icon: AlertCircle },
+  { id: 'text', label: 'Crônica / Texto', icon: AlignLeft },
+  { id: 'heading_1', label: 'Título Épico (Capítulo)', icon: Heading1 },
+  { id: 'heading_2', label: 'Seção de Atributos (H2)', icon: Heading2 },
+  { id: 'heading_3', label: 'Subseção de Perícias (H3)', icon: Heading3 },
+  { id: 'todo', label: 'Habilidade / Checklist', icon: CheckSquare },
+  { id: 'bullet', label: 'Item de Inventário', icon: List },
+  { id: 'quote', label: 'Citação / Fala de Personagem', icon: Quote },
+  { id: 'callout', label: 'Destaque de Regra / Alerta', icon: AlertCircle },
 ] as const
 
-const EMOJI_OPTIONS = ['📝', '💡', '🚀', '📌', '🎯', '📚', '⚡', '✨', '☕', '📂', '🌱', '⭐']
+const EMOJI_OPTIONS = ['⚔️', '🛡️', '📜', '🔮', '🐉', '🏰', '🏹', '💎', '🔥', '💀', '🧙', '🎲']
 
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
@@ -197,22 +197,25 @@ export default function PageEditor() {
       {/* Top Bar da Página */}
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          {/* Seletor de Emoji */}
+          {/* Seletor de Emoji / Insígnia Rúnica */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="text-2xl p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
-                title="Alterar ícone"
+                className="text-3xl p-2 rounded-xl bg-[#121620] border border-amber-500/30 hover:border-amber-500/60 shadow-md transition-all hover:scale-105"
+                title="Alterar insígnia da ficha"
               >
                 {icon}
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="p-2 grid grid-cols-4 gap-1 w-44">
+            <DropdownMenuContent
+              align="start"
+              className="p-2 grid grid-cols-4 gap-1.5 w-48 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+            >
               {EMOJI_OPTIONS.map((e) => (
                 <button
                   key={e}
                   onClick={() => handleIconSelect(e)}
-                  className="text-xl p-2 rounded hover:bg-slate-100 text-center transition-colors"
+                  className="text-2xl p-2 rounded hover:bg-amber-500/20 text-center transition-colors border border-transparent hover:border-amber-500/30"
                 >
                   {e}
                 </button>
@@ -220,8 +223,8 @@ export default function PageEditor() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <span className="text-xs text-slate-400">
-            {isSaving ? 'Salvando...' : 'Salvo na nuvem'}
+          <span className="text-xs font-fantasy text-amber-300/60">
+            {isSaving ? 'Gravando no tomo sagrado...' : 'Tomo preservado'}
           </span>
         </div>
 
@@ -230,51 +233,55 @@ export default function PageEditor() {
             variant="ghost"
             size="sm"
             onClick={handleToggleFavorite}
-            className={`h-8 px-2 text-xs ${
-              isFavorite ? 'text-amber-500 font-medium' : 'text-slate-500'
+            className={`h-8 px-2 text-xs font-fantasy ${
+              isFavorite
+                ? 'text-amber-300 font-bold bg-amber-500/10'
+                : 'text-amber-400/60 hover:text-amber-200'
             }`}
           >
-            <Star className={`h-3.5 w-3.5 mr-1 ${isFavorite ? 'fill-amber-500' : ''}`} />
-            {isFavorite ? 'Favorito' : 'Favoritar'}
+            <Star
+              className={`h-3.5 w-3.5 mr-1 ${isFavorite ? 'fill-amber-400 text-amber-400' : ''}`}
+            />
+            {isFavorite ? 'Consagrada' : 'Consagrar (Favoritar)'}
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={handleDeletePage}
-            className="h-8 px-2 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-            title="Excluir página"
+            className="h-8 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
+            title="Excluir crônica/ficha"
           >
             <Trash2 className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>
 
-      {/* Título Principal */}
+      {/* Título Principal Épico */}
       <div className="space-y-1">
         <input
           type="text"
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          placeholder="Sem título"
-          className="w-full text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-1"
+          placeholder="Nome do Herói ou Capítulo da Crônica..."
+          className="w-full text-3xl sm:text-4xl font-fantasy font-bold tracking-tight text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-1"
         />
       </div>
 
-      {/* Editor em Blocos */}
+      {/* Editor em Blocos Estilizados de RPG */}
       <div className="space-y-2 pt-2">
         {blocks.map((block, index) => {
           return (
             <div
               key={block.id}
-              className="group relative flex items-start gap-1.5 rounded-lg py-1 px-1 -ml-1 transition-colors hover:bg-slate-50/70"
+              className="group relative flex items-start gap-1.5 rounded-lg py-1.5 px-2 -ml-2 transition-colors hover:bg-[#121622]/80 border border-transparent hover:border-[#262f42]"
             >
               {/* Controles do Bloco (Drag / Reorder / Menu) */}
-              <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 shrink-0 pt-1 text-slate-400 transition-opacity">
+              <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 shrink-0 pt-1 text-amber-400/60 transition-opacity">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-5 w-5 text-slate-400 hover:text-slate-700 p-0"
+                  className="h-5 w-5 text-amber-400/60 hover:text-amber-200 hover:bg-amber-500/10 p-0"
                   onClick={() => handleMoveBlock(index, 'up')}
                   disabled={index === 0}
                   title="Mover para cima"
@@ -284,7 +291,7 @@ export default function PageEditor() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-5 w-5 text-slate-400 hover:text-slate-700 p-0"
+                  className="h-5 w-5 text-amber-400/60 hover:text-amber-200 hover:bg-amber-500/10 p-0"
                   onClick={() => handleMoveBlock(index, 'down')}
                   disabled={index === blocks.length - 1}
                   title="Mover para baixo"
@@ -298,47 +305,54 @@ export default function PageEditor() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-5 w-5 text-slate-400 hover:text-slate-700 p-0"
-                      title="Mudar tipo de bloco"
+                      className="h-5 w-5 text-amber-400/60 hover:text-amber-200 hover:bg-amber-500/10 p-0"
+                      title="Mudar encantamento de bloco"
                     >
                       <MoreVertical className="h-3 w-3" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="text-xs w-48">
+                  <DropdownMenuContent
+                    align="start"
+                    className="text-xs w-56 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+                  >
                     {BLOCK_TYPES.map((bt) => {
                       const Icon = bt.icon
                       return (
                         <DropdownMenuItem
                           key={bt.id}
                           onClick={() => handleChangeBlockType(block.id, bt.id as any)}
-                          className={block.type === bt.id ? 'bg-slate-100 font-medium' : ''}
+                          className={
+                            block.type === bt.id
+                              ? 'bg-amber-500/20 font-medium text-amber-200'
+                              : 'hover:bg-amber-500/10 cursor-pointer'
+                          }
                         >
-                          <Icon className="h-3.5 w-3.5 mr-2 text-slate-500" />
+                          <Icon className="h-3.5 w-3.5 mr-2 text-amber-400" />
                           <span>{bt.label}</span>
                         </DropdownMenuItem>
                       )
                     })}
-                    <div className="border-t border-slate-100 my-1" />
+                    <div className="border-t border-[#262c3a] my-1" />
                     <DropdownMenuItem
                       onClick={() => handleDeleteBlock(block.id)}
-                      className="text-rose-600 focus:text-rose-600"
+                      className="text-rose-400 focus:text-rose-300 hover:bg-rose-950/30 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5 mr-2" />
-                      <span>Excluir bloco</span>
+                      <span>Excluir anotação</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
 
-              {/* Conteúdo Renderizado do Bloco */}
+              {/* Conteúdo Renderizado do Bloco com visual Medieval */}
               <div className="flex-1 min-w-0">
                 {block.type === 'heading_1' && (
                   <input
                     type="text"
                     value={block.content}
                     onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Título 1"
-                    className="w-full text-2xl font-bold text-slate-900 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-1"
+                    placeholder="Título Épico (Capítulo)..."
+                    className="w-full text-2xl font-fantasy font-bold text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-1 tracking-wide"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -353,8 +367,8 @@ export default function PageEditor() {
                     type="text"
                     value={block.content}
                     onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Título 2"
-                    className="w-full text-xl font-semibold text-slate-800 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+                    placeholder="Seção de Atributos (H2)..."
+                    className="w-full text-xl font-fantasy font-semibold text-amber-200 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -369,8 +383,8 @@ export default function PageEditor() {
                     type="text"
                     value={block.content}
                     onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Título 3"
-                    className="w-full text-base font-semibold text-slate-800 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+                    placeholder="Subseção de Perícias (H3)..."
+                    className="w-full text-base font-fantasy font-semibold text-amber-300/90 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -385,21 +399,21 @@ export default function PageEditor() {
                     <button
                       type="button"
                       onClick={() => handleToggleTodo(block.id)}
-                      className="mt-1 text-slate-500 hover:text-slate-800 transition-colors"
+                      className="mt-1 text-amber-400 hover:text-amber-200 transition-colors"
                     >
                       {block.checked ? (
-                        <CheckSquare className="h-4 w-4 text-emerald-600 fill-emerald-100" />
+                        <CheckSquare className="h-4 w-4 text-emerald-400 fill-emerald-950/40" />
                       ) : (
-                        <Square className="h-4 w-4 text-slate-400" />
+                        <Square className="h-4 w-4 text-amber-400/40" />
                       )}
                     </button>
                     <input
                       type="text"
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Para fazer..."
-                      className={`w-full text-sm text-slate-800 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5 ${
-                        block.checked ? 'line-through text-slate-400' : ''
+                      placeholder="Habilidade / Magia / Manobra..."
+                      className={`w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5 ${
+                        block.checked ? 'line-through text-[#7d7568]' : ''
                       }`}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
@@ -413,15 +427,13 @@ export default function PageEditor() {
 
                 {block.type === 'bullet' && (
                   <div className="flex items-start gap-2 pt-0.5">
-                    <span className="text-slate-400 font-bold select-none mt-0.5 text-base leading-none">
-                      •
-                    </span>
+                    <span className="text-amber-400 select-none mt-0.5 text-xs">⚔️</span>
                     <input
                       type="text"
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Item de lista..."
-                      className="w-full text-sm text-slate-800 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+                      placeholder="Item de equipamento / estatística..."
+                      className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
@@ -433,13 +445,13 @@ export default function PageEditor() {
                 )}
 
                 {block.type === 'quote' && (
-                  <div className="border-l-2 border-slate-300 pl-3 py-1 my-0.5 italic text-slate-600">
+                  <div className="border-l-2 border-amber-500/80 pl-3.5 py-1 my-0.5 italic text-amber-200/90 bg-amber-500/5 rounded-r">
                     <input
                       type="text"
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Escreva uma citação ou pensamento..."
-                      className="w-full text-sm italic text-slate-700 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+                      placeholder="Palavras de oráculo, profecia ou fala de NPC..."
+                      className="w-full text-sm italic font-serif text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
@@ -451,14 +463,14 @@ export default function PageEditor() {
                 )}
 
                 {block.type === 'callout' && (
-                  <div className="flex items-start gap-2.5 bg-amber-50/70 border border-amber-200/80 rounded-lg p-2.5 my-1 text-amber-900">
-                    <Sparkles className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2.5 bg-amber-950/30 border border-amber-500/30 rounded-lg p-2.5 my-1 text-amber-200">
+                    <Sparkles className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
                     <input
                       type="text"
                       value={block.content}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Nota importante ou lembrete..."
-                      className="w-full text-sm text-amber-950 border-0 focus:outline-none placeholder:text-amber-400/80 bg-transparent py-0.5"
+                      placeholder="Raça, Classe, Nível ou Alerta de Campanha..."
+                      className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-400/40 bg-transparent py-0.5 font-medium"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
@@ -474,8 +486,8 @@ export default function PageEditor() {
                     type="text"
                     value={block.content}
                     onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Digite algo ou aperte Enter para criar nova linha..."
-                    className="w-full text-sm text-slate-800 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+                    placeholder="Escreva a crônica da sessão ou pressione Enter..."
+                    className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -489,8 +501,8 @@ export default function PageEditor() {
               {/* Botão rápido para adicionar bloco logo abaixo */}
               <button
                 onClick={() => handleAddBlockAfter(index, 'text')}
-                className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-slate-600 p-1 shrink-0 transition-opacity"
-                title="Adicionar bloco abaixo"
+                className="opacity-0 group-hover:opacity-100 text-amber-400/50 hover:text-amber-300 p-1 shrink-0 transition-opacity"
+                title="Adicionar anotação abaixo"
               >
                 <Plus className="h-3.5 w-3.5" />
               </button>
@@ -500,27 +512,31 @@ export default function PageEditor() {
       </div>
 
       {/* Botão para adicionar bloco no final */}
-      <div className="pt-4 border-t border-slate-100 flex items-center gap-2">
+      <div className="pt-4 border-t border-[#262e40] flex items-center gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
               size="sm"
-              className="text-xs text-slate-600 border-dashed hover:bg-slate-50 gap-1.5"
+              className="text-xs text-amber-300 border-dashed border-amber-500/30 bg-[#121620] hover:bg-[#18202d] gap-1.5 font-fantasy"
             >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Adicionar novo bloco</span>
+              <Plus className="h-3.5 w-3.5 text-amber-400" />
+              <span>Adicionar nova anotação</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="text-xs w-48">
+          <DropdownMenuContent
+            align="start"
+            className="text-xs w-56 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+          >
             {BLOCK_TYPES.map((bt) => {
               const Icon = bt.icon
               return (
                 <DropdownMenuItem
                   key={bt.id}
                   onClick={() => handleAddBlockAfter(blocks.length - 1, bt.id as any)}
+                  className="hover:bg-amber-500/10 cursor-pointer"
                 >
-                  <Icon className="h-3.5 w-3.5 mr-2 text-slate-500" />
+                  <Icon className="h-3.5 w-3.5 mr-2 text-amber-400" />
                   <span>{bt.label}</span>
                 </DropdownMenuItem>
               )
@@ -528,8 +544,8 @@ export default function PageEditor() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <span className="text-[11px] text-slate-400">
-          Dica: Pressione <strong>Enter</strong> no final de uma linha para criar o próximo bloco
+        <span className="text-[11px] text-[#7d7568]">
+          Dica: Pressione <strong>Enter</strong> no final de uma linha para criar a próxima anotação
           automaticamente.
         </span>
       </div>

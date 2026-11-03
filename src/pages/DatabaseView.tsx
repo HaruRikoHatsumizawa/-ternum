@@ -209,21 +209,22 @@ export default function DatabaseView() {
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-6">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      {/* Top Header do Códice */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#262e40]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">{database?.icon || '📊'}</span>
+            <span className="text-2xl">{database?.icon || '🐉'}</span>
             <input
               type="text"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              placeholder="Nome da Tabela"
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 border-0 focus:outline-none placeholder:text-slate-300 bg-transparent py-0.5"
+              placeholder="Nome do Códice Arcano"
+              className="text-2xl sm:text-3xl font-fantasy font-bold tracking-tight text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
             />
           </div>
-          <p className="text-xs text-slate-500 pl-8">
-            Adicione colunas e linhas personalizadas com edição em tempo real e filtros.
+          <p className="text-xs text-[#a39b8d] pl-8">
+            Arquivo de Bestiário, Tesouros e Personagens da Mesa: filtre e edite atributos em tempo
+            real.
           </p>
         </div>
 
@@ -232,18 +233,18 @@ export default function DatabaseView() {
             variant="outline"
             size="sm"
             onClick={() => setColModalOpen(true)}
-            className="text-xs gap-1.5 h-8 text-slate-700"
+            className="text-xs gap-1.5 h-8 bg-[#141923] border-[#2c3547] text-amber-200 hover:text-amber-100 hover:bg-[#1a2130] font-fantasy font-bold"
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Nova Coluna</span>
+            <Plus className="h-3.5 w-3.5 text-amber-400" />
+            <span>Novo Atributo (Coluna)</span>
           </Button>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={handleDeleteDatabase}
-            className="h-8 px-2 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-            title="Excluir tabela"
+            className="h-8 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
+            title="Excluir códice"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -251,20 +252,20 @@ export default function DatabaseView() {
       </div>
 
       {/* Barra de Filtro e Controles */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50/80 p-2.5 rounded-lg border border-slate-200/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#121620] p-2.5 rounded-lg border border-[#262e40] shadow-md">
         <div className="flex items-center gap-2 flex-1 min-w-[240px]">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-amber-400/70" />
             <Input
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              placeholder="Filtrar valores na tabela..."
-              className="pl-8 text-xs h-8 bg-white"
+              placeholder="Pesquisar criatura, item ou NPC..."
+              className="pl-8 text-xs h-8 bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
             />
             {filterQuery && (
               <button
                 onClick={() => setFilterQuery('')}
-                className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600"
+                className="absolute right-2.5 top-2 text-amber-400/60 hover:text-amber-300"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -274,9 +275,9 @@ export default function DatabaseView() {
           <select
             value={filterColumnId}
             onChange={(e) => setFilterColumnId(e.target.value)}
-            className="text-xs h-8 px-2.5 rounded-md border border-slate-200 bg-white text-slate-700"
+            className="text-xs h-8 px-2.5 rounded-md border border-[#262e40] bg-[#090c10] text-amber-200"
           >
-            <option value="all">Todas as colunas</option>
+            <option value="all">Todas as colunas arcanas</option>
             {columns.map((c) => (
               <option key={c.id} value={c.id}>
                 Coluna: {c.name}
@@ -285,64 +286,68 @@ export default function DatabaseView() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-slate-500">
+        <div className="flex items-center gap-2 text-xs text-amber-300/70">
           <span>
-            Exibindo <strong>{filteredRows.length}</strong> de {rows.length} registros
+            Exibindo <strong className="text-amber-200">{filteredRows.length}</strong> de{' '}
+            {rows.length} entradas no códice
           </span>
 
           <Button
             size="sm"
             onClick={handleAddRow}
-            className="h-8 text-xs bg-slate-900 hover:bg-slate-800 text-white gap-1"
+            className="h-8 text-xs bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold gap-1 border border-amber-300/40"
           >
             <Plus className="h-3.5 w-3.5" />
-            <span>Adicionar Linha</span>
+            <span>Adicionar Registro</span>
           </Button>
         </div>
       </div>
 
-      {/* Grid da Tabela */}
-      <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
+      {/* Grid da Tabela do Códice */}
+      <div className="border border-[#262e40] rounded-xl overflow-hidden bg-[#0e121a] shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold select-none">
-                <th className="w-10 px-3 py-2.5 text-center text-slate-400 border-r border-slate-200">
+              <tr className="bg-[#141924] border-b border-[#262e40] text-amber-200 font-fantasy font-bold select-none">
+                <th className="w-10 px-3 py-2.5 text-center text-amber-400/60 border-r border-[#262e40]">
                   #
                 </th>
                 {columns.map((col) => (
                   <th
                     key={col.id}
-                    className="px-3 py-2.5 border-r border-slate-200 min-w-[140px] group relative"
+                    className="px-3 py-2.5 border-r border-[#262e40] min-w-[140px] group relative"
                   >
                     <div className="flex items-center justify-between gap-1">
-                      <span className="truncate">{col.name}</span>
-                      <span className="text-[10px] text-slate-400 font-normal uppercase">
+                      <span className="truncate text-amber-100">{col.name}</span>
+                      <span className="text-[10px] text-amber-400/50 font-mono uppercase font-normal">
                         ({col.type})
                       </span>
 
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="opacity-0 group-hover:opacity-100 p-0.5 text-slate-400 hover:text-slate-700 rounded transition-opacity">
+                          <button className="opacity-0 group-hover:opacity-100 p-0.5 text-amber-400/60 hover:text-amber-200 rounded transition-opacity">
                             <MoreVertical className="h-3 w-3" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="text-xs w-36">
+                        <DropdownMenuContent
+                          align="end"
+                          className="text-xs w-40 bg-[#121620] border-[#2c3444] text-[#f1ede3]"
+                        >
                           <DropdownMenuItem
                             onClick={() => handleDeleteColumn(col.id)}
-                            className="text-rose-600 focus:text-rose-600"
+                            className="text-rose-400 focus:text-rose-300 hover:bg-rose-950/30 cursor-pointer"
                           >
-                            <Trash2 className="h-3 w-3 mr-1.5" /> Excluir Coluna
+                            <Trash2 className="h-3 w-3 mr-1.5" /> Excluir Atributo
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
                   </th>
                 ))}
-                <th className="w-10 px-2 py-2.5 text-center text-slate-400">
+                <th className="w-10 px-2 py-2.5 text-center text-amber-400/60">
                   <button
                     onClick={() => setColModalOpen(true)}
-                    className="p-1 hover:text-slate-800 rounded"
+                    className="p-1 hover:text-amber-200 rounded"
                     title="Adicionar coluna"
                   >
                     <Plus className="h-3.5 w-3.5" />
@@ -351,10 +356,10 @@ export default function DatabaseView() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100 text-slate-800">
+            <tbody className="divide-y divide-[#1e2535] text-amber-100">
               {filteredRows.map((row, rIndex) => (
-                <tr key={row.id} className="hover:bg-slate-50/60 transition-colors group">
-                  <td className="px-3 py-2 text-center text-slate-400 font-mono text-[11px] border-r border-slate-100">
+                <tr key={row.id} className="hover:bg-[#141a26]/80 transition-colors group">
+                  <td className="px-3 py-2 text-center text-amber-400/60 font-mono text-[11px] border-r border-[#1e2535]">
                     {rIndex + 1}
                   </td>
 
@@ -362,16 +367,18 @@ export default function DatabaseView() {
                     const value = row[col.id] ?? ''
 
                     return (
-                      <td key={col.id} className="p-1.5 border-r border-slate-100">
+                      <td key={col.id} className="p-1.5 border-r border-[#1e2535]">
                         {col.type === 'select' ? (
                           <select
                             value={value}
                             onChange={(e) => handleCellChange(row.id, col.id, e.target.value)}
-                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-slate-200 focus:border-slate-400 bg-transparent text-slate-800 focus:bg-white"
+                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-[#2a3346] focus:border-amber-500/50 bg-transparent text-amber-100 focus:bg-[#0c0f16]"
                           >
-                            <option value="">(Selecione)</option>
+                            <option value="" className="bg-[#121620]">
+                              (Selecione)
+                            </option>
                             {col.values?.map((opt) => (
-                              <option key={opt} value={opt}>
+                              <option key={opt} value={opt} className="bg-[#121620]">
                                 {opt}
                               </option>
                             ))}
@@ -382,7 +389,7 @@ export default function DatabaseView() {
                               type="checkbox"
                               checked={!!value}
                               onChange={(e) => handleCellChange(row.id, col.id, e.target.checked)}
-                              className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-0 cursor-pointer"
+                              className="h-4 w-4 rounded border-[#2c3547] text-amber-500 focus:ring-0 cursor-pointer bg-[#090c10]"
                             />
                           </div>
                         ) : col.type === 'date' ? (
@@ -390,7 +397,7 @@ export default function DatabaseView() {
                             type="date"
                             value={value}
                             onChange={(e) => handleCellChange(row.id, col.id, e.target.value)}
-                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-slate-200 focus:border-slate-400 bg-transparent text-slate-800 focus:bg-white"
+                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-[#2a3346] focus:border-amber-500/50 bg-transparent text-amber-100 focus:bg-[#0c0f16]"
                           />
                         ) : col.type === 'number' ? (
                           <input
@@ -400,7 +407,7 @@ export default function DatabaseView() {
                               handleCellChange(row.id, col.id, Number(e.target.value))
                             }
                             placeholder="0"
-                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-slate-200 focus:border-slate-400 bg-transparent text-slate-800 focus:bg-white"
+                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-[#2a3346] focus:border-amber-500/50 bg-transparent text-amber-100 focus:bg-[#0c0f16]"
                           />
                         ) : (
                           <input
@@ -408,7 +415,7 @@ export default function DatabaseView() {
                             value={value}
                             onChange={(e) => handleCellChange(row.id, col.id, e.target.value)}
                             placeholder="Vazio"
-                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-slate-200 focus:border-slate-400 bg-transparent text-slate-800 focus:bg-white"
+                            className="w-full text-xs h-7 px-1.5 rounded border border-transparent hover:border-[#2a3346] focus:border-amber-500/50 bg-transparent text-amber-100 focus:bg-[#0c0f16]"
                           />
                         )}
                       </td>
@@ -418,8 +425,8 @@ export default function DatabaseView() {
                   <td className="px-2 py-1.5 text-center">
                     <button
                       onClick={() => handleDeleteRow(row.id)}
-                      className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-600 rounded transition-opacity"
-                      title="Excluir linha"
+                      className="opacity-0 group-hover:opacity-100 p-1 text-rose-400/60 hover:text-rose-400 rounded transition-opacity"
+                      title="Excluir registro"
                     >
                       <Trash2 className="h-3 w-3" />
                     </button>
@@ -431,19 +438,19 @@ export default function DatabaseView() {
                 <tr>
                   <td
                     colSpan={columns.length + 2}
-                    className="py-10 text-center text-slate-400 text-xs"
+                    className="py-10 text-center text-[#7d7568] text-xs font-fantasy"
                   >
                     {filterQuery
-                      ? `Nenhum resultado corresponde a "${filterQuery}".`
-                      : 'Nenhum registro cadastrado na tabela ainda.'}
+                      ? `Nenhum encantamento ou criatura corresponde a "${filterQuery}".`
+                      : 'Nenhum registro anotado neste códice ainda.'}
                     <div className="mt-2">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={handleAddRow}
-                        className="text-xs h-7"
+                        className="text-xs h-7 border-[#2a3346] text-amber-300 hover:text-amber-200"
                       >
-                        <Plus className="h-3 w-3 mr-1" /> Criar primeira linha
+                        <Plus className="h-3 w-3 mr-1" /> Criar primeira entrada
                       </Button>
                     </div>
                   </td>
@@ -453,88 +460,90 @@ export default function DatabaseView() {
           </table>
         </div>
 
-        {/* Rodapé da Tabela */}
-        <div className="p-2.5 bg-slate-50/50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+        {/* Rodapé da Tabela do Códice */}
+        <div className="p-2.5 bg-[#121620] border-t border-[#262e40] flex items-center justify-between text-xs text-amber-300/70">
           <button
             onClick={handleAddRow}
-            className="flex items-center gap-1.5 font-medium text-slate-700 hover:text-slate-900 transition-colors"
+            className="flex items-center gap-1.5 font-fantasy font-bold text-amber-300 hover:text-amber-100 transition-colors"
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Nova linha</span>
+            <Plus className="h-3.5 w-3.5 text-amber-400" />
+            <span>Nova entrada no tomo</span>
           </button>
 
-          <span className="text-[11px] text-slate-400">
-            Dica: Edite qualquer célula diretamente clicando nela.
+          <span className="text-[11px] text-[#7d7568]">
+            Dica: Edite atributos e valores diretamente nas células do tomo.
           </span>
         </div>
       </div>
 
-      {/* Modal Adicionar Coluna */}
+      {/* Modal Adicionar Coluna / Atributo */}
       <Dialog open={colModalOpen} onOpenChange={setColModalOpen}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm bg-[#121620] border-[#2c3547] text-[#f1ede3]">
           <DialogHeader>
-            <DialogTitle className="text-base font-semibold text-slate-900">
-              Adicionar Nova Coluna
+            <DialogTitle className="text-base font-fantasy font-bold text-amber-100">
+              Adicionar Novo Atributo ao Códice
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-700">Nome da Coluna</label>
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                Nome do Atributo
+              </label>
               <Input
                 value={newColName}
                 onChange={(e) => setNewColName(e.target.value)}
-                placeholder="Ex: Categoria, Telefone..."
-                className="text-sm"
+                placeholder="Ex: Fraqueza, Custo em PO, ND..."
+                className="text-sm bg-[#090c10] border-[#2a3346] text-amber-100 placeholder:text-amber-200/40"
                 autoFocus
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-700">Tipo de Dado</label>
+              <label className="text-xs font-fantasy font-bold text-amber-200">Tipo de Dado</label>
               <select
                 value={newColType}
                 onChange={(e) => setNewColType(e.target.value as ColumnType)}
-                className="w-full text-xs h-9 px-2 rounded-md border border-slate-200 bg-white text-slate-800"
+                className="w-full text-xs h-9 px-2 rounded-md border border-[#2a3346] bg-[#090c10] text-amber-100"
               >
                 <option value="text">Texto simples</option>
-                <option value="number">Número</option>
-                <option value="select">Seleção / Status</option>
+                <option value="number">Número (HP, ND, PO)</option>
+                <option value="select">Seleção / Categoria</option>
                 <option value="checkbox">Checkbox (Sim/Não)</option>
-                <option value="date">Data</option>
+                <option value="date">Data da mesa</option>
               </select>
             </div>
 
             {newColType === 'select' && (
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
+                <label className="text-xs font-fantasy font-bold text-amber-200">
                   Opções de Seleção (separadas por vírgula)
                 </label>
                 <Input
                   value={newColValues}
                   onChange={(e) => setNewColValues(e.target.value)}
-                  placeholder="Ex: Baixa, Média, Alta"
-                  className="text-xs"
+                  placeholder="Ex: Comum, Raro, Lendário"
+                  className="text-xs bg-[#090c10] border-[#2a3346] text-amber-100 placeholder:text-amber-200/40"
                 />
               </div>
             )}
           </div>
 
-          <DialogFooter className="flex justify-end gap-2">
+          <DialogFooter className="flex justify-end gap-2 pt-2 border-t border-[#222938]">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setColModalOpen(false)}
-              className="text-xs"
+              className="text-xs border-[#2a3346] text-amber-200/70 hover:text-amber-100 hover:bg-[#18202e]"
             >
               Cancelar
             </Button>
             <Button
               size="sm"
               onClick={handleAddColumn}
-              className="text-xs bg-slate-900 hover:bg-slate-800 text-white"
+              className="text-xs bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold border border-amber-300/40"
             >
-              Criar Coluna
+              Forjar Atributo
             </Button>
           </DialogFooter>
         </DialogContent>

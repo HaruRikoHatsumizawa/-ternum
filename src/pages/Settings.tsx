@@ -87,25 +87,28 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 space-y-8">
+    <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 space-y-8 text-[#f1ede3]">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">
-          Configurações da Conta
+        <h1 className="text-2xl font-fantasy font-bold text-amber-100 tracking-tight flex items-center gap-2">
+          <span>Santuário do Mestre & Aventureiro</span>
+          <span className="text-lg">🛡️</span>
         </h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Gerencie seu perfil de usuário, foto de exibição e credenciais de segurança.
+        <p className="text-sm text-[#a39b8d] mt-1">
+          Gerencie o brasão de armas, título de jogador e selos de segurança da sua conta.
         </p>
       </div>
 
       {/* Perfil */}
-      <Card className="border-slate-200/80 shadow-sm bg-white">
+      <Card className="border-amber-500/30 shadow-xl bg-[#121620] text-[#f1ede3]">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <User className="h-4 w-4 text-slate-500" />
-            <CardTitle className="text-base font-medium text-slate-900">Perfil Pessoal</CardTitle>
+            <User className="h-4 w-4 text-amber-400" />
+            <CardTitle className="text-base font-fantasy font-bold text-amber-100">
+              Identidade do Jogador / Mestre
+            </CardTitle>
           </div>
-          <CardDescription className="text-xs text-slate-500">
-            Atualize seu nome de exibição e foto do avatar.
+          <CardDescription className="text-xs text-[#8e8678]">
+            Atualize seu nome de exibição e brasão do avatar.
           </CardDescription>
         </CardHeader>
 
@@ -128,23 +131,26 @@ export default function Settings() {
             )}
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <Avatar className="h-16 w-16 border border-slate-200 bg-slate-100">
+              <Avatar className="h-16 w-16 border-2 border-amber-500/40 bg-[#090c10] shadow-md">
                 {avatarUrl ? <AvatarImage src={avatarUrl} alt={user?.name || 'Avatar'} /> : null}
-                <AvatarFallback className="text-base font-medium bg-slate-800 text-white">
-                  {user?.name ? user.name.slice(0, 2).toUpperCase() : 'U'}
+                <AvatarFallback className="text-base font-fantasy font-bold bg-amber-500/20 text-amber-300">
+                  {user?.name ? user.name.slice(0, 2).toUpperCase() : 'GM'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="space-y-1.5 flex-1">
-                <Label htmlFor="avatar-upload" className="text-xs font-medium text-slate-700">
-                  Alterar foto de perfil
+                <Label
+                  htmlFor="avatar-upload"
+                  className="text-xs font-fantasy font-bold text-amber-200"
+                >
+                  Alterar brasão / insígnia
                 </Label>
                 <div className="flex items-center gap-2">
                   <Input
                     id="avatar-upload"
                     type="file"
                     accept="image/*"
-                    className="text-xs max-w-xs cursor-pointer"
+                    className="text-xs max-w-xs cursor-pointer bg-[#090c10] border-[#262e40] text-amber-100"
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
                         setAvatarFile(e.target.files[0])
@@ -152,64 +158,69 @@ export default function Settings() {
                     }}
                   />
                   {avatarFile && (
-                    <span className="text-xs text-emerald-600 font-medium">Foto selecionada</span>
+                    <span className="text-xs text-amber-400 font-medium">Brasão selecionado</span>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-400">Formatos aceitos: JPG, PNG até 5MB.</p>
+                <p className="text-[11px] text-[#7d7568]">Formatos aceitos: JPG, PNG até 5MB.</p>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="profile-name" className="text-xs font-medium text-slate-700">
-                Nome completo
+              <Label
+                htmlFor="profile-name"
+                className="text-xs font-fantasy font-bold text-amber-200"
+              >
+                Nome completo ou Título
               </Label>
               <Input
                 id="profile-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Seu nome"
-                className="max-w-md text-sm"
+                placeholder="Ex: Amanda Mestra da Campanha"
+                className="max-w-md text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                 required
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-slate-700">E-mail</Label>
+              <Label className="text-xs font-fantasy font-bold text-amber-200">
+                E-mail do Reino
+              </Label>
               <Input
                 value={user?.email || ''}
                 disabled
-                className="max-w-md text-sm bg-slate-50 text-slate-500 cursor-not-allowed"
+                className="max-w-md text-sm bg-[#090c10]/60 border-[#262e40] text-[#7d7568] cursor-not-allowed"
               />
-              <p className="text-[11px] text-slate-400">
-                O endereço de e-mail é fixo para sua conta.
+              <p className="text-[11px] text-[#7d7568]">
+                O endereço de e-mail é sagrado e fixado na criação da conta.
               </p>
             </div>
           </CardContent>
 
-          <CardFooter className="border-t border-slate-100 pt-4 flex justify-end">
+          <CardFooter className="border-t border-[#262e40] pt-4 flex justify-end">
             <Button
               type="submit"
               size="sm"
               disabled={profileLoading}
-              className="bg-slate-900 hover:bg-slate-800 text-white text-xs"
+              className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold text-xs border border-amber-300/40"
             >
-              {profileLoading ? 'Salvando...' : 'Salvar Alterações'}
+              {profileLoading ? 'Gravando...' : 'Salvar Alterações'}
             </Button>
           </CardFooter>
         </form>
       </Card>
 
       {/* Senha */}
-      <Card className="border-slate-200/80 shadow-sm bg-white">
+      <Card className="border-amber-500/30 shadow-xl bg-[#121620] text-[#f1ede3]">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Lock className="h-4 w-4 text-slate-500" />
-            <CardTitle className="text-base font-medium text-slate-900">
-              Segurança & Senha
+            <Lock className="h-4 w-4 text-amber-400" />
+            <CardTitle className="text-base font-fantasy font-bold text-amber-100">
+              Palavras Rúnicas & Segurança
             </CardTitle>
           </div>
-          <CardDescription className="text-xs text-slate-500">
-            Altere sua senha de acesso periodicamente para manter sua conta protegida.
+          <CardDescription className="text-xs text-[#8e8678]">
+            Altere sua senha de proteção periodicamente para manter suas anotações e fichas seguras.
           </CardDescription>
         </CardHeader>
 
@@ -232,7 +243,7 @@ export default function Settings() {
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="old-pass" className="text-xs font-medium text-slate-700">
+              <Label htmlFor="old-pass" className="text-xs font-fantasy font-bold text-amber-200">
                 Senha atual
               </Label>
               <Input
@@ -241,13 +252,13 @@ export default function Settings() {
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
                 placeholder="••••••••"
-                className="max-w-md text-sm"
+                className="max-w-md text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                 required
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="new-pass" className="text-xs font-medium text-slate-700">
+              <Label htmlFor="new-pass" className="text-xs font-fantasy font-bold text-amber-200">
                 Nova senha (mínimo 8 caracteres)
               </Label>
               <Input
@@ -256,13 +267,16 @@ export default function Settings() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
-                className="max-w-md text-sm"
+                className="max-w-md text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                 required
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="confirm-pass" className="text-xs font-medium text-slate-700">
+              <Label
+                htmlFor="confirm-pass"
+                className="text-xs font-fantasy font-bold text-amber-200"
+              >
                 Confirmar nova senha
               </Label>
               <Input
@@ -271,24 +285,24 @@ export default function Settings() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="max-w-md text-sm"
+                className="max-w-md text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                 required
               />
             </div>
           </CardContent>
 
-          <CardFooter className="border-t border-slate-100 pt-4 flex justify-between items-center">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" />
-              Criptografia padrão PocketBase
+          <CardFooter className="border-t border-[#262e40] pt-4 flex justify-between items-center">
+            <div className="flex items-center gap-1.5 text-xs text-amber-300/70 font-fantasy">
+              <ShieldCheck className="h-4 w-4 text-emerald-400" />
+              Criptografia & Selos PocketBase
             </div>
             <Button
               type="submit"
               size="sm"
               disabled={passwordLoading}
-              className="bg-slate-900 hover:bg-slate-800 text-white text-xs"
+              className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold text-xs border border-amber-300/40"
             >
-              {passwordLoading ? 'Alterando...' : 'Alterar Senha'}
+              {passwordLoading ? 'Alterando...' : 'Alterar Palavra-Chave'}
             </Button>
           </CardFooter>
         </form>
@@ -300,9 +314,9 @@ export default function Settings() {
           variant="outline"
           size="sm"
           onClick={logout}
-          className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+          className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border-rose-500/30 font-fantasy"
         >
-          Sair da Conta
+          Abandonar Mesa (Sair da Conta)
         </Button>
       </div>
     </div>
