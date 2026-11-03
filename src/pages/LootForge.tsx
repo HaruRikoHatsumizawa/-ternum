@@ -9,7 +9,7 @@ import {
   getRarityStyle,
 } from '@/services/lootGenerator'
 import { databasesService } from '@/services/databases'
-import { inventoryService, InventoryCategory } from '@/services/inventory'
+import { inventoryService, InventoryCategory, InventoryRarity } from '@/services/inventory'
 import { npcsService, NpcRecord } from '@/services/npcs'
 import {
   Sparkles,
@@ -93,6 +93,23 @@ export default function LootForge() {
     }
   }
 
+  const mapLootRarityToInventoryRarity = (rarity: LootRarity): InventoryRarity => {
+    switch (rarity) {
+      case 'Comum':
+        return 'Comum'
+      case 'Incomum':
+        return 'Incomum'
+      case 'Raro':
+        return 'Raro'
+      case 'Épico':
+        return 'Muito Raro'
+      case 'Lendário':
+        return 'Lendário'
+      default:
+        return 'Comum'
+    }
+  }
+
   const handleConfirmSaveToInventory = async () => {
     if (!selectedHeroId) return
     const hero = heroes.find((h) => h.id === selectedHeroId)
@@ -108,7 +125,7 @@ export default function LootForge() {
         category: mapLootTypeToCategory(currentItem.type),
         is_equipped: false,
         value_gold: currentItem.valueGold,
-        rarity: currentItem.rarity,
+        rarity: mapLootRarityToInventoryRarity(currentItem.rarity),
         weight: currentItem.type === 'Armadura' ? 6 : currentItem.type === 'Arma' ? 2 : 0.5,
         notes: `${currentItem.description} (${currentItem.effects.join('; ')})`,
       })
