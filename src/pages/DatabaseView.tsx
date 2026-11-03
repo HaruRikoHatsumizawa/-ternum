@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useAppMode } from '@/contexts/ModeContext'
 import {
   databasesService,
   DatabaseRecord,
@@ -37,6 +38,7 @@ import {
 
 export default function DatabaseView() {
   const { id } = useParams<{ id: string }>()
+  const { mode } = useAppMode()
   const navigate = useNavigate()
 
   const [database, setDatabase] = useState<DatabaseRecord | null>(null)

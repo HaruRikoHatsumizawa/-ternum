@@ -3,6 +3,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
+import { ModeProvider } from '@/contexts/ModeContext'
 import Index from './pages/Index'
 import PageEditor from './pages/PageEditor'
 import BoardView from './pages/BoardView'
@@ -37,31 +38,33 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 const App = () => (
   <BrowserRouter>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/" element={<Index />} />
-            <Route path="/pages/:id" element={<PageEditor />} />
-            <Route path="/boards/:id" element={<BoardView />} />
-            <Route path="/databases/:id" element={<DatabaseView />} />
-            <Route path="/sessions" element={<SessionsCalendar />} />
-            <Route path="/loot" element={<LootForge />} />
-            <Route path="/npcs" element={<NpcView />} />
-            <Route path="/oracle" element={<OracleChat />} />
-            <Route path="/settings" element={<Settings />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </TooltipProvider>
+      <ModeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/" element={<Index />} />
+              <Route path="/pages/:id" element={<PageEditor />} />
+              <Route path="/boards/:id" element={<BoardView />} />
+              <Route path="/databases/:id" element={<DatabaseView />} />
+              <Route path="/sessions" element={<SessionsCalendar />} />
+              <Route path="/loot" element={<LootForge />} />
+              <Route path="/npcs" element={<NpcView />} />
+              <Route path="/oracle" element={<OracleChat />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </ModeProvider>
     </AuthProvider>
   </BrowserRouter>
 )

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useAppMode } from '@/contexts/ModeContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import {
   Trash2,
@@ -46,6 +47,7 @@ const EMOJI_OPTIONS = ['⚔️', '🐺', '🦊', '🐆', '🐉', '🦅', '🛡�
 
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
+  const { mode } = useAppMode()
   const navigate = useNavigate()
 
   const [page, setPage] = useState<PageRecord | null>(null)
@@ -270,7 +272,7 @@ export default function PageEditor() {
           <span>Formato Livre:</span>
           <span className="text-[#a8a090]">
             Atende Fichas de RPG (atributos, perícias), Fichas de RP (espécie, bio, relações) e
-            Diários de Cenas.
+            Diários de Cenas. {mode === 'rp' ? '(Visual RP Ativo)' : '(Visual RPG Ativo)'}
           </span>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useAppMode } from '@/contexts/ModeContext'
 import { sessionsService, SessionRecord, SessionStatus } from '@/services/sessions'
 import {
   Calendar as CalendarIcon,
@@ -47,6 +48,7 @@ const STATUS_COLORS: Record<SessionStatus, { text: string; bg: string; border: s
 }
 
 export default function SessionsCalendar() {
+  const { mode } = useAppMode()
   const [sessions, setSessions] = useState<SessionRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [currentDate, setCurrentDate] = useState(() => new Date())

@@ -9,7 +9,12 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<RecordModel>
   signup: (email: string, pass: string, name: string) => Promise<RecordModel>
   logout: () => void
-  updateProfile: (data: { name?: string; avatar?: File | null }) => Promise<void>
+  updateProfile: (data: {
+    name?: string
+    avatar?: File | null
+    pfp_frame?: string
+    app_mode?: 'rpg' | 'rp'
+  }) => Promise<void>
   updatePassword: (oldPass: string, newPass: string) => Promise<void>
 }
 
@@ -78,7 +83,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null)
   }
 
-  const updateProfile = async (data: { name?: string; avatar?: File | null }) => {
+  const updateProfile = async (data: {
+    name?: string
+    avatar?: File | null
+    pfp_frame?: string
+    app_mode?: 'rpg' | 'rp'
+  }) => {
     if (!user) return
     const formData = new FormData()
     if (data.name !== undefined) {
@@ -86,6 +96,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     if (data.avatar) {
       formData.append('avatar', data.avatar)
+    }
+    if (data.pfp_frame !== undefined) {
+      formData.append('pfp_frame', data.pfp_frame)
+    }
+    if (data.app_mode !== undefined) {
+      formData.append('app_mode', data.app_mode)
     }
     const updated = await pb.collection('users').update(user.id, formData)
     setUser(updated)

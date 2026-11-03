@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useAppMode } from '@/contexts/ModeContext'
 import pb from '@/lib/pocketbase/client'
 import {
   Sparkles,
@@ -38,6 +39,7 @@ const ORACLE_SUGGESTIONS = [
 ]
 
 export default function OracleChat() {
+  const { mode } = useAppMode()
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',

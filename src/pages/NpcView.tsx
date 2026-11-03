@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useAppMode } from '@/contexts/ModeContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import {
   Users,
@@ -33,14 +34,17 @@ function getModifier(score?: number): string {
 }
 
 export default function NpcView() {
+  const { mode } = useAppMode()
   const [npcs, setNpcs] = useState<NpcRecord[]>([])
   const [selectedNpc, setSelectedNpc] = useState<NpcRecord | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  // Modo de visualização/edição da ficha: 'hibrido' | 'rp' | 'rpg'
-  const [sheetTab, setSheetTab] = useState<'hibrido' | 'rp' | 'rpg'>('hibrido')
+  // Modo de visualização/edição da ficha: inicializado coerentemente com o modo global (rp -> 'rp', rpg -> 'rpg' ou 'hibrido')
+  const [sheetTab, setSheetTab] = useState<'hibrido' | 'rp' | 'rpg'>(() =>
+    mode === 'rp' ? 'rp' : 'hibrido',
+  )
 
   // Edit form states
   const [formData, setFormData] = useState<Partial<NpcRecord>>({})
@@ -182,7 +186,11 @@ export default function NpcView() {
 
         <Button
           onClick={handleStartCreate}
-          className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold gap-1.5 border border-amber-300/40 shadow-sm"
+          className={`font-fantasy font-bold gap-1.5 border shadow-sm ${
+            mode === 'rp'
+              ? 'bg-gradient-to-r from-purple-700 to-purple-500 hover:from-purple-600 hover:to-purple-400 text-purple-50 border-purple-300/40'
+              : 'bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 border-amber-300/40'
+          }`}
         >
           <Plus className="h-4 w-4" />
           <span>Novo Personagem</span>
@@ -271,8 +279,8 @@ export default function NpcView() {
                       onClick={() => setSheetTab('hibrido')}
                       className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
                         sheetTab === 'hibrido'
-                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
-                          : 'text-[#9c9486] hover:text-amber-200'
+                          ? 'mode-accent-bg mode-accent-text border mode-accent-border'
+                          : 'text-[#9c9486] hover:text-amber-100'
                       }`}
                       title="Exibir seções narrativas de RP e dados de RPG lado a lado"
                     >
@@ -282,8 +290,8 @@ export default function NpcView() {
                       onClick={() => setSheetTab('rp')}
                       className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
                         sheetTab === 'rp'
-                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
-                          : 'text-[#9c9486] hover:text-amber-200'
+                          ? 'mode-accent-bg mode-accent-text border mode-accent-border'
+                          : 'text-[#9c9486] hover:text-amber-100'
                       }`}
                       title="Foco narrativo de RP: espécie, bio, personalidade, relações"
                     >
@@ -293,8 +301,8 @@ export default function NpcView() {
                       onClick={() => setSheetTab('rpg')}
                       className={`px-2.5 py-1 text-[11px] font-fantasy font-semibold rounded-md transition-colors ${
                         sheetTab === 'rpg'
-                          ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40'
-                          : 'text-[#9c9486] hover:text-amber-200'
+                          ? 'mode-accent-bg mode-accent-text border mode-accent-border'
+                          : 'text-[#9c9486] hover:text-amber-100'
                       }`}
                       title="Foco tático de RPG: CA, HP, atributos e ND"
                     >

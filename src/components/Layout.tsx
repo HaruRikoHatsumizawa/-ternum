@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useAppMode, AppMode } from '@/contexts/ModeContext'
+import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { pagesService, PageRecord } from '@/services/pages'
 import { boardsService, BoardRecord } from '@/services/boards'
 import { databasesService, DatabaseRecord } from '@/services/databases'
@@ -48,6 +50,7 @@ import pb from '@/lib/pocketbase/client'
 
 export default function Layout() {
   const { user, logout } = useAuth()
+  const { mode, setMode } = useAppMode()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -152,23 +155,25 @@ export default function Layout() {
             <div className="flex items-center justify-between px-3 py-3 border-b border-[#262c3a]/80 bg-gradient-to-r from-[#121620] to-[#090c10]">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-[#1a2130] transition-colors text-left max-w-[200px] border border-amber-500/20">
-                    <Avatar className="h-7 w-7 rounded-md border border-amber-500/40 shadow-sm shadow-amber-950">
-                      {userAvatarUrl ? <AvatarImage src={userAvatarUrl} /> : null}
-                      <AvatarFallback className="text-xs font-fantasy font-bold bg-amber-500/20 text-amber-300 rounded-md">
-                        {user?.name ? user.name.slice(0, 2).toUpperCase() : 'GM'}
-                      </AvatarFallback>
-                    </Avatar>
+                  <button className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-[#1a2130] transition-colors text-left max-w-[200px] border mode-accent-border">
+                    <AvatarFrame frameId={user?.pfp_frame || 'runic-gold'} size="sm">
+                      <Avatar className="h-full w-full rounded-full">
+                        {userAvatarUrl ? <AvatarImage src={userAvatarUrl} /> : null}
+                        <AvatarFallback className="text-xs font-fantasy font-bold mode-accent-bg mode-accent-text">
+                          {user?.name ? user.name.slice(0, 2).toUpperCase() : 'GM'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </AvatarFrame>
                     <div className="flex flex-col min-w-0">
                       <span className="text-xs font-semibold text-amber-100 truncate flex items-center gap-1">
                         {user?.name || 'Mestre da Mesa'}
-                        <RunicPawIcon className="w-3 h-3 text-amber-400/70 shrink-0 inline" />
+                        <RunicPawIcon className="w-3 h-3 mode-accent-text shrink-0 inline opacity-80" />
                       </span>
-                      <span className="text-[10px] text-amber-400/70 font-fantasy truncate">
-                        Éternum • RPG & RP
+                      <span className="text-[10px] mode-accent-text font-fantasy truncate opacity-90">
+                        {mode === 'rp' ? 'Éternum • Modo RP (Nobre)' : 'Éternum • Modo RPG (Ouro)'}
                       </span>
                     </div>
-                    <ChevronDown className="h-3.5 w-3.5 text-amber-400/60 ml-auto shrink-0" />
+                    <ChevronDown className="h-3.5 w-3.5 mode-accent-text ml-auto shrink-0 opacity-70" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -222,11 +227,11 @@ export default function Layout() {
                 to="/"
                 className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                   location.pathname === '/'
-                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Home className="h-3.5 w-3.5 text-amber-400" />
+                <Home className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Salão Principal</span>
               </Link>
 
@@ -234,11 +239,11 @@ export default function Layout() {
                 to="/sessions"
                 className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                   location.pathname === '/sessions'
-                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Calendar className="h-3.5 w-3.5 text-amber-400" />
+                <Calendar className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Calendário de Sessões</span>
               </Link>
 
@@ -246,11 +251,11 @@ export default function Layout() {
                 to="/loot"
                 className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                   location.pathname === '/loot'
-                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Flame className="h-3.5 w-3.5 text-amber-400" />
+                <Flame className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Forja do Tesouro (Loot)</span>
               </Link>
 
@@ -258,11 +263,11 @@ export default function Layout() {
                 to="/npcs"
                 className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                   location.pathname === '/npcs'
-                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
-                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                    ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                 }`}
               >
-                <Users className="h-3.5 w-3.5 text-amber-400" />
+                <Users className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Fichas de NPCs</span>
               </Link>
 
@@ -445,9 +450,9 @@ export default function Layout() {
             <div className="p-2 border-t border-[#262c3a] bg-[#090c10] flex items-center justify-between text-xs">
               <Link
                 to="/settings"
-                className="flex items-center gap-2 px-2 py-1.5 text-amber-200/70 hover:text-amber-200 hover:bg-[#18202d] rounded-md transition-colors"
+                className="flex items-center gap-2 px-2 py-1.5 text-amber-200/70 hover:text-amber-100 hover:bg-[#18202d] rounded-md transition-colors"
               >
-                <SettingsIcon className="h-3.5 w-3.5 text-amber-400" />
+                <SettingsIcon className="h-3.5 w-3.5 mode-accent-text" />
                 <span>Santuário</span>
               </Link>
 
@@ -467,33 +472,61 @@ export default function Layout() {
       {/* Conteúdo Principal */}
       <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden bg-[#0c0f14]">
         {/* Barra Superior Dark Fantasy */}
-        <header className="h-12 border-b border-[#262c3a] bg-[#0f131a]/90 backdrop-blur-md flex items-center justify-between px-3 sm:px-6 shrink-0">
+        <header className="h-12 border-b border-[#262c3a] bg-[#0f131a]/90 backdrop-blur-md flex items-center justify-between px-3 sm:px-6 shrink-0 mode-accent-header">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-amber-400 hover:text-amber-300 hover:bg-amber-500/10"
+              className="h-8 w-8 mode-accent-text hover:bg-amber-500/10"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <div className="hidden sm:flex items-center gap-2 text-xs font-fantasy text-amber-300/80">
-              <RunicCircle className="h-4 w-4 text-amber-400" />
+            <div className="hidden sm:flex items-center gap-2 text-xs font-fantasy mode-accent-text">
+              <RunicCircle className="h-4 w-4" />
               <span className="font-bold tracking-wide">Éternum — Grimório de RPG & RP</span>
-              <RunicPawIcon className="h-3.5 w-3.5 text-amber-400/60" />
+              <RunicPawIcon className="h-3.5 w-3.5 opacity-70" />
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
+            {/* Seletor Visível e Rápido de Modo RP / RPG no Top Header */}
+            <div className="flex items-center rounded-lg bg-[#141924] border border-[#2b3548] p-0.5 shadow-xs">
+              <button
+                onClick={() => setMode('rpg')}
+                className={`px-2 py-0.5 text-[11px] font-fantasy font-bold rounded-md transition-all flex items-center gap-1 ${
+                  mode === 'rpg'
+                    ? 'bg-amber-500/25 text-amber-200 border border-amber-400/50 shadow-xs'
+                    : 'text-[#8e8678] hover:text-amber-200'
+                }`}
+                title="Modo RPG: Paleta de ouro rúnico forjado sobre obsidiana"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#e7ab2c]" />
+                <span>RPG</span>
+              </button>
+              <button
+                onClick={() => setMode('rp')}
+                className={`px-2 py-0.5 text-[11px] font-fantasy font-bold rounded-md transition-all flex items-center gap-1 ${
+                  mode === 'rp'
+                    ? 'bg-purple-500/25 text-purple-200 border border-purple-400/50 shadow-xs'
+                    : 'text-[#8e8678] hover:text-purple-200'
+                }`}
+                title="Modo RP: Paleta de roxo ametista nobre e aristocrático"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#9d4edd]" />
+                <span>RP</span>
+              </button>
+            </div>
+
             <Button
               variant="outline"
               size="sm"
               onClick={() => setSearchOpen(true)}
               className="h-7 text-xs text-amber-200/80 hover:text-amber-100 bg-[#141923] border-[#2c3547] hover:border-amber-500/40 px-2.5 gap-1.5 hidden sm:flex"
             >
-              <Search className="h-3 w-3 text-amber-400" />
+              <Search className="h-3 w-3 mode-accent-text" />
               <span>Consultar Oráculo...</span>
-              <kbd className="text-[9px] font-mono text-amber-400/80 bg-[#0c0f14] border border-amber-500/30 px-1 py-0.2 rounded ml-1">
+              <kbd className="text-[9px] font-mono mode-accent-text bg-[#0c0f14] border mode-accent-border px-1 py-0.2 rounded ml-1">
                 ⌘K
               </kbd>
             </Button>
@@ -502,7 +535,11 @@ export default function Layout() {
               <DropdownMenuTrigger asChild>
                 <Button
                   size="sm"
-                  className="h-7 text-xs bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-bold gap-1 px-3 border border-amber-300/40 shadow-sm shadow-amber-950"
+                  className={`h-7 text-xs font-bold gap-1 px-3 border shadow-sm ${
+                    mode === 'rp'
+                      ? 'bg-gradient-to-r from-purple-700 to-purple-500 hover:from-purple-600 hover:to-purple-400 text-purple-50 border-purple-300/40 shadow-purple-950'
+                      : 'bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 border-amber-300/40 shadow-amber-950'
+                  }`}
                 >
                   <Plus className="h-3.5 w-3.5" />
                   <span>Forjar Item</span>
@@ -545,7 +582,7 @@ export default function Layout() {
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
         <DialogContent className="max-w-lg p-0 overflow-hidden gap-0 bg-[#121620] border-[#2c3547] text-[#f1ede3]">
           <div className="flex items-center px-3 border-b border-[#262c3a] bg-[#161b26]">
-            <Search className="h-4 w-4 text-amber-400 mr-2" />
+            <Search className="h-4 w-4 mode-accent-text mr-2" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useAppMode } from '@/contexts/ModeContext'
+import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { pagesService, PageRecord } from '@/services/pages'
 import { boardsService, BoardRecord } from '@/services/boards'
 import { databasesService, DatabaseRecord } from '@/services/databases'
@@ -80,6 +82,7 @@ const HIGHLIGHT_HEROES = [
 
 export default function Index() {
   const { user } = useAuth()
+  const { mode } = useAppMode()
   const navigate = useNavigate()
 
   const [pages, setPages] = useState<PageRecord[]>([])
@@ -161,14 +164,32 @@ export default function Index() {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-fantasy tracking-wider uppercase">
-              <Crown className="h-3.5 w-3.5 text-amber-400" />
-              <span>Éternum • As Crônicas de Val-Morath</span>
+            <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full mode-accent-bg border mode-accent-border mode-accent-text text-xs font-fantasy tracking-wider uppercase">
+              <Crown className="h-3.5 w-3.5 mode-accent-text" />
+              <span>
+                {mode === 'rp'
+                  ? 'Éternum • Crônicas & Cenas Narrativas (RP)'
+                  : 'Éternum • As Crônicas de Val-Morath (RPG)'}
+              </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-fantasy text-amber-100 flex items-center gap-3">
-              <span>Éternum — Mestre {user?.name || 'Amanda'}</span>
-              <span className="text-2xl">⚔️</span>
-            </h1>
+            <div className="flex items-center gap-4">
+              <AvatarFrame frameId={user?.pfp_frame || 'runic-gold'} size="lg">
+                <div className="w-full h-full flex items-center justify-center font-fantasy font-bold text-lg mode-accent-bg mode-accent-text">
+                  {user?.name ? user.name.slice(0, 2).toUpperCase() : 'GM'}
+                </div>
+              </AvatarFrame>
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-fantasy text-amber-100 flex items-center gap-3">
+                  <span>Éternum — {user?.name || 'Mestre da Mesa'}</span>
+                  <span className="text-2xl">{mode === 'rp' ? '🔮' : '⚔️'}</span>
+                </h1>
+                <p className="text-xs mode-accent-text font-fantasy">
+                  {mode === 'rp'
+                    ? 'Atmosfera de RP ativa (Roxo Aristocrático)'
+                    : 'Atmosfera de RPG ativa (Ouro Rúnico Forjado)'}
+                </p>
+              </div>
+            </div>
             <p className="text-sm text-[#b8b0a0] max-w-2xl leading-relaxed">
               Bem-vindo ao Éternum, seu grimório dark fantasy desenhado tanto para{' '}
               <strong>RPG de mesa</strong> quanto para <strong>RP narrativo</strong>. Gerencie
@@ -176,7 +197,6 @@ export default function Index() {
               espécies antropomórficas e o Oráculo arcano de IA.
             </p>
           </div>
-
           {/* Busca rápida temática */}
           <div className="relative w-full md:w-72 shrink-0">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-amber-400/70" />

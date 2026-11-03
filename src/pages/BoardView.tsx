@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useAppMode } from '@/contexts/ModeContext'
 import { boardsService, BoardRecord, BoardCard, BoardColumn } from '@/services/boards'
 import {
   Plus,
@@ -36,6 +37,7 @@ import { Progress } from '@/components/ui/progress'
 
 export default function BoardView() {
   const { id } = useParams<{ id: string }>()
+  const { mode } = useAppMode()
   const navigate = useNavigate()
 
   const [board, setBoard] = useState<BoardRecord | null>(null)

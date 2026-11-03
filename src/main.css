@@ -54,6 +54,40 @@
     --chart-3: 198 80% 50%; /* astral arcane */
     --chart-4: 0 75% 55%; /* crimson health */
     --chart-5: 275 75% 65%; /* mystical purple */
+
+    /* Mode Dynamic Tokens (RPG Default: Runic Gold) */
+    --mode-accent: 43 78% 54%; /* #e7ab2c */
+    --mode-accent-rgb: 231, 171, 44;
+    --mode-accent-light: 43 85% 85%;
+    --mode-accent-dark: 43 60% 18%;
+    --mode-badge-bg: rgba(231, 171, 44, 0.15);
+    --mode-badge-border: rgba(231, 171, 44, 0.35);
+    --mode-badge-text: #f5d378;
+  }
+
+  /* Modo RP: Roxo Profundo / Aristocrático & Nobre (Sem neon, discreto sobre obsidiana) */
+  .mode-rp,
+  html.mode-rp {
+    --primary: 270 58% 56%; /* #9333ea elegante e nobre */
+    --primary-foreground: 225 30% 8%;
+
+    --secondary-foreground: 270 50% 88%;
+    --accent: 270 45% 20%;
+    --accent-foreground: 270 70% 80%;
+    --ring: 270 58% 56%;
+
+    --sidebar-primary: 270 58% 56%;
+    --sidebar-accent: 225 20% 14%;
+    --sidebar-accent-foreground: 270 70% 82%;
+    --sidebar-ring: 270 58% 56%;
+
+    --mode-accent: 270 58% 56%; /* #9d4edd */
+    --mode-accent-rgb: 157, 78, 221;
+    --mode-accent-light: 270 65% 88%;
+    --mode-accent-dark: 270 45% 18%;
+    --mode-badge-bg: rgba(147, 51, 234, 0.16);
+    --mode-badge-border: rgba(168, 85, 247, 0.38);
+    --mode-badge-text: #e9d5ff;
   }
 
   body {
@@ -61,7 +95,11 @@
     color: hsl(var(--foreground));
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 160, 23, 0.08), transparent 70%),
+      radial-gradient(
+        ellipse 80% 50% at 50% -20%,
+        rgba(var(--mode-accent-rgb), 0.08),
+        transparent 70%
+      ),
       radial-gradient(ellipse 60% 40% at 90% 100%, rgba(139, 92, 246, 0.05), transparent 60%);
     background-attachment: fixed;
   }
@@ -256,32 +294,67 @@
 
   /* RPG Ornament Utilities */
   .rpg-border {
-    border: 1px solid rgba(231, 171, 44, 0.22);
+    border: 1px solid rgba(var(--mode-accent-rgb), 0.22);
     box-shadow:
       0 0 15px -3px rgba(0, 0, 0, 0.6),
       inset 0 0 0 1px rgba(255, 255, 255, 0.03);
   }
 
   .rpg-border-gold {
-    border: 1px solid rgba(231, 171, 44, 0.45);
+    border: 1px solid rgba(var(--mode-accent-rgb), 0.45);
     box-shadow:
-      0 0 20px -2px rgba(231, 171, 44, 0.15),
-      inset 0 0 0 1px rgba(231, 171, 44, 0.1);
+      0 0 20px -2px rgba(var(--mode-accent-rgb), 0.15),
+      inset 0 0 0 1px rgba(var(--mode-accent-rgb), 0.1);
   }
 
   .rpg-parchment-glow {
     box-shadow:
       0 4px 20px -2px rgba(0, 0, 0, 0.7),
-      0 0 12px -2px rgba(212, 160, 23, 0.12);
+      0 0 12px -2px rgba(var(--mode-accent-rgb), 0.12);
   }
 
   .rpg-tome-header {
-    background: linear-gradient(180deg, rgba(231, 171, 44, 0.08) 0%, rgba(18, 22, 31, 0) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(var(--mode-accent-rgb), 0.08) 0%,
+      rgba(18, 22, 31, 0) 100%
+    );
   }
 
   .rpg-gold-text {
     background: linear-gradient(135deg, #f5d378 0%, #d4a017 50%, #9e730c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .mode-rp .rpg-gold-text {
+    background: linear-gradient(135deg, #e9d5ff 0%, #a855f7 50%, #7e22ce 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Mode dynamic utility classes */
+  .mode-accent-text {
+    color: hsl(var(--mode-accent));
+  }
+
+  .mode-accent-border {
+    border-color: rgba(var(--mode-accent-rgb), 0.35);
+  }
+
+  .mode-accent-bg {
+    background-color: rgba(var(--mode-accent-rgb), 0.12);
+  }
+
+  .mode-accent-gradient-btn {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--mode-accent)) 0%,
+      rgba(var(--mode-accent-rgb), 0.8) 100%
+    );
+  }
+
+  .mode-accent-header {
+    border-bottom-color: rgba(var(--mode-accent-rgb), 0.2);
   }
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAppMode } from '@/contexts/ModeContext'
 import {
   generateLoot,
   LootItem,
@@ -24,6 +25,7 @@ import { RunicCircle, DragonSilhouette, TomeOrnament } from '@/components/rpg/Rp
 import { toast } from '@/hooks/use-toast'
 
 export default function LootForge() {
+  const { mode } = useAppMode()
   const [currentItem, setCurrentItem] = useState<LootItem>(() => generateLoot())
   const [history, setHistory] = useState<LootItem[]>([])
   const [selectedRarity, setSelectedRarity] = useState<LootRarity | 'Qualquer'>('Qualquer')
