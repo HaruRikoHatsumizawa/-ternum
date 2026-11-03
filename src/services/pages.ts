@@ -8,6 +8,8 @@ export interface PageBlock {
   checked?: boolean
 }
 
+export type TargetMode = 'geral' | 'rpg' | 'rp'
+
 export interface PageRecord extends RecordModel {
   user: string
   title: string
@@ -15,6 +17,7 @@ export interface PageRecord extends RecordModel {
   cover?: string
   blocks?: PageBlock[]
   is_favorite?: boolean
+  target_mode?: TargetMode
 }
 
 export const pagesService = {
@@ -34,6 +37,7 @@ export const pagesService = {
     cover?: string
     blocks?: PageBlock[]
     is_favorite?: boolean
+    target_mode?: TargetMode
   }): Promise<PageRecord> {
     const user = pb.authStore.record?.id
     if (!user) throw new Error('Usuário não autenticado')
@@ -45,6 +49,7 @@ export const pagesService = {
       cover: data.cover || '',
       blocks: data.blocks || [{ id: 'b_' + Date.now(), type: 'text', content: '' }],
       is_favorite: data.is_favorite || false,
+      target_mode: data.target_mode || 'geral',
     })
   },
 

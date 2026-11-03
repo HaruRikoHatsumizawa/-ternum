@@ -76,6 +76,7 @@ export function RpHomeView({ pages, onRefreshPages }: RpHomeViewProps) {
       const p = await pagesService.create({
         title: 'Cena Narrativa — O Encontro nas Brumas',
         icon: 'scroll',
+        target_mode: 'rp',
         blocks: [
           {
             id: 'b_' + Date.now(),
@@ -101,8 +102,13 @@ export function RpHomeView({ pages, onRefreshPages }: RpHomeViewProps) {
     }
   }
 
+  // No modo RP, apenas páginas de RP ou Geral
+  const rpModePages = pages.filter(
+    (p) => !p.target_mode || p.target_mode === 'rp' || p.target_mode === 'geral',
+  )
+
   // Filtrar páginas e crônicas pelo termo de busca
-  const filteredPages = pages.filter((p) =>
+  const filteredPages = rpModePages.filter((p) =>
     (p.title || '').toLowerCase().includes(search.toLowerCase()),
   )
   const favoritePages = pages.filter((p) => p.is_favorite)

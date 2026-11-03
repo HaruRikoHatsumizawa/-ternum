@@ -55,8 +55,58 @@
     --chart-4: 0 75% 55%; /* crimson health */
     --chart-5: 275 75% 65%; /* mystical purple */
 
-    /* Mode Dynamic Tokens (RPG Default: Runic Gold) */
-    --mode-accent: 43 78% 54%; /* #e7ab2c */
+    /* Mode Dynamic Tokens (Default Geral: Equilíbrio Obsidiana + Âmbar Antigo / Ouro Fosco) */
+    --mode-accent: 40 60% 50%; /* #c99c36 ouro antigo refinado e neutro */
+    --mode-accent-rgb: 201, 156, 54;
+    --mode-accent-light: 40 40% 85%;
+    --mode-accent-dark: 40 40% 16%;
+    --mode-badge-bg: rgba(201, 156, 54, 0.14);
+    --mode-badge-border: rgba(201, 156, 54, 0.3);
+    --mode-badge-text: #e8d5a8;
+  }
+
+  /* Modo Geral: Visual neutro, equilibrado, harmonia entre obsidiana e ouro nobre ancestral */
+  .mode-geral,
+  html.mode-geral {
+    --primary: 40 55% 50%;
+    --primary-foreground: 225 30% 8%;
+
+    --secondary-foreground: 40 45% 85%;
+    --accent: 40 30% 18%;
+    --accent-foreground: 40 60% 80%;
+    --ring: 40 55% 50%;
+
+    --sidebar-primary: 40 55% 50%;
+    --sidebar-accent: 225 20% 14%;
+    --sidebar-accent-foreground: 40 60% 80%;
+    --sidebar-ring: 40 55% 50%;
+
+    --mode-accent: 40 55% 50%;
+    --mode-accent-rgb: 198, 155, 59;
+    --mode-accent-light: 40 45% 86%;
+    --mode-accent-dark: 40 35% 17%;
+    --mode-badge-bg: rgba(198, 155, 59, 0.14);
+    --mode-badge-border: rgba(198, 155, 59, 0.3);
+    --mode-badge-text: #eddab1;
+  }
+
+  /* Modo RPG: Ouro Rúnico Forjado / Laranja-Dourado Tático */
+  .mode-rpg,
+  html.mode-rpg {
+    --primary: 43 78% 54%; /* #e7ab2c */
+    --primary-foreground: 225 30% 8%;
+
+    --secondary-foreground: 43 65% 85%;
+    --accent: 43 60% 20%;
+    --accent-foreground: 43 85% 75%;
+    --ring: 43 78% 54%;
+
+    --sidebar-primary: 43 78% 54%;
+    --sidebar-accent: 225 20% 14%;
+    --sidebar-accent-foreground: 43 80% 80%;
+    --sidebar-ring: 43 78% 54%;
+
+    --mode-accent: 43 78% 54%;
     --mode-accent-rgb: 231, 171, 44;
     --mode-accent-light: 43 85% 85%;
     --mode-accent-dark: 43 60% 18%;
@@ -334,6 +384,12 @@
   }
 
   .rpg-gold-text {
+    background: linear-gradient(135deg, #f0dfb8 0%, #c99c36 50%, #87651a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .mode-rpg .rpg-gold-text {
     background: linear-gradient(135deg, #f5d378 0%, #d4a017 50%, #9e730c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

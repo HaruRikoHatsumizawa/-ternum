@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T13:44:15.109Z",
+  "generatedAt": "2026-11-03T14:31:47.146Z",
   "collections": [
     {
       "name": "users",
@@ -117,6 +117,13 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
         }
       ],
       "indexes": [
@@ -185,6 +192,13 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
         }
       ],
       "indexes": [
@@ -253,6 +267,13 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
         }
       ],
       "indexes": [
@@ -328,6 +349,13 @@
           "required": false,
           "system": false,
           "autodateTriggers": ["onCreate", "onUpdate"]
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
         }
       ],
       "indexes": [
@@ -505,6 +533,13 @@
           "type": "text",
           "required": false,
           "system": false
+        },
+        {
+          "name": "target_mode",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["geral", "rpg", "rp"]
         }
       ],
       "indexes": [

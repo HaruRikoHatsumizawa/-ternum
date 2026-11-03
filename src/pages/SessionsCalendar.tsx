@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useAppMode } from '@/contexts/ModeContext'
-import { sessionsService, SessionRecord, SessionStatus } from '@/services/sessions'
+import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { sessionsService, SessionRecord, SessionStatus, TargetMode } from '@/services/sessions'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneAstrolabeIcon } from '@/components/rpg/EternumIcons'
 import {
@@ -65,6 +65,7 @@ export default function SessionsCalendar() {
   const [formCampaign, setFormCampaign] = useState('As Crônicas de Val-Morath')
   const [formLocation, setFormLocation] = useState('Taverna do Javali Dourado')
   const [formNotes, setFormNotes] = useState('')
+  const [formTargetMode, setFormTargetMode] = useState<TargetMode>('geral')
 
   const loadSessions = async () => {
     setLoading(true)
@@ -123,6 +124,7 @@ export default function SessionsCalendar() {
     setFormCampaign('As Crônicas de Val-Morath')
     setFormLocation('Taverna do Javali Dourado')
     setFormNotes('')
+    setFormTargetMode(mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral')
     setModalOpen(true)
   }
 
@@ -139,6 +141,7 @@ export default function SessionsCalendar() {
     setFormCampaign(s.campaign || 'As Crônicas de Val-Morath')
     setFormLocation(s.location || '')
     setFormNotes(s.notes || '')
+    setFormTargetMode(s.target_mode || 'geral')
     setModalOpen(true)
   }
 
@@ -157,6 +160,7 @@ export default function SessionsCalendar() {
           campaign: formCampaign,
           location: formLocation,
           notes: formNotes,
+          target_mode: formTargetMode,
         })
         toast({ title: 'Sessão atualizada', description: 'O cronograma foi retificado nos tomos.' })
       } else {
@@ -167,6 +171,7 @@ export default function SessionsCalendar() {
           campaign: formCampaign,
           location: formLocation,
           notes: formNotes,
+          target_mode: formTargetMode,
         })
         toast({ title: 'Sessão convocada!', description: 'Nova jornada agendada no calendário.' })
       }
@@ -210,9 +215,15 @@ export default function SessionsCalendar() {
     }
   }
 
+  // Filtrar sessões de acordo com o modo ativo:
+  // Se modo === 'geral': todas
+  // Se modo === 'rpg': target_mode 'rpg' ou 'geral'
+  // Se modo === 'rp': target_mode 'rp' ou 'geral'
+  const visibleSessions = sessions.filter((s) => isItemVisibleInMode(s.target_mode, mode))
+
   // Filtrar sessões do dia
   const getSessionsForDay = (day: number) => {
-    return sessions.filter((s) => {
+    return visibleSessions.filter((s) => {
       const d = new Date(s.date)
       return (
         !isNaN(d.getTime()) &&
@@ -416,7 +427,7 @@ export default function SessionsCalendar() {
           </div>
 
           <div className="space-y-3">
-            {sessions.map((s) => {
+            {visibleSessions.map((s) => {
               const d = new Date(s.date)
               const formattedDate = !isNaN(d.getTime())
                 ? d.toLocaleDateString('pt-BR', {
@@ -582,6 +593,19 @@ export default function SessionsCalendar() {
                 placeholder="Ex: As Crônicas de Val-Morath"
                 className="bg-[#090c10] border-[#262e40] text-amber-100"
               />
+            </div>
+
+            <div className="space-y-1">
+              <label className="font-fantasy font-bold text-amber-200">Classificação / Modo</label>
+              <select
+                value={formTargetMode}
+                onChange={(e) => setFormTargetMode(e.target.value as TargetMode)}
+                className="w-full h-9 rounded-md bg-[#090c10] border border-[#262e40] px-2.5 text-xs text-amber-100 focus:outline-hidden"
+              >
+                <option value="geral">Geral (Visível em RPG e RP)</option>
+                <option value="rpg">RPG (Apenas no modo RPG Tático)</option>
+                <option value="rp">RP (Apenas no modo RP Narrativo)</option>
+              </select>
             </div>
 
             <div className="space-y-1">

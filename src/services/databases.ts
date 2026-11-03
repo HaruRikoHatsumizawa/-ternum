@@ -15,6 +15,8 @@ export interface DatabaseRow {
   [columnId: string]: any
 }
 
+export type TargetMode = 'geral' | 'rpg' | 'rp'
+
 export interface DatabaseRecord extends RecordModel {
   user: string
   name: string
@@ -22,6 +24,7 @@ export interface DatabaseRecord extends RecordModel {
   icon?: string
   columns: DatabaseColumn[]
   rows: DatabaseRow[]
+  target_mode?: TargetMode
 }
 
 export const databasesService = {
@@ -41,6 +44,7 @@ export const databasesService = {
     icon?: string
     columns?: DatabaseColumn[]
     rows?: DatabaseRow[]
+    target_mode?: TargetMode
   }): Promise<DatabaseRecord> {
     const user = pb.authStore.record?.id
     if (!user) throw new Error('Usuário não autenticado')
@@ -79,6 +83,7 @@ export const databasesService = {
       icon: data.icon || 'tome',
       columns: data.columns || defaultColumns,
       rows: data.rows || [],
+      target_mode: data.target_mode || 'geral',
     })
   },
 

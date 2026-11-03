@@ -1,6 +1,7 @@
 import pb from '@/lib/pocketbase/client'
 
 export type NpcStatus = 'Vivo' | 'Desconhecido' | 'Morto'
+export type TargetMode = 'geral' | 'rpg' | 'rp'
 
 export interface NpcPersonality {
   traits?: string
@@ -35,6 +36,7 @@ export interface NpcRecord {
   secrets?: string
   notes?: string
   avatar?: string
+  target_mode?: TargetMode
   created: string
   updated: string
 }
@@ -63,6 +65,7 @@ export interface CreateNpcData {
   secrets?: string
   notes?: string
   avatar?: string
+  target_mode?: TargetMode
 }
 
 export const npcsService = {
@@ -83,6 +86,7 @@ export const npcsService = {
     return pb.collection('npcs').create<NpcRecord>({
       user: userId,
       status: data.status || 'Vivo',
+      target_mode: data.target_mode || 'geral',
       ...data,
     })
   },

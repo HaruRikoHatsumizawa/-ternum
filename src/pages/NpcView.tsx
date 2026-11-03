@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useAppMode } from '@/contexts/ModeContext'
+import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneNpcIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
@@ -111,6 +111,7 @@ export default function NpcView() {
       secrets: 'Segredo oculto deste personagem que os outros podem descobrir durante o jogo...',
       notes: 'Ganchos de cenas narrativas e missões...',
       avatar: 'wolf',
+      target_mode: mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral',
     })
   }
 
@@ -166,6 +167,12 @@ export default function NpcView() {
     }
   }
 
+  // Filtrar NPCs pelo modo ativo usando isItemVisibleInMode:
+  // Geral: todos
+  // RPG: apenas 'rpg' ou 'geral'
+  // RP: apenas 'rp' ou 'geral'
+  const visibleNpcs = npcs.filter((n) => isItemVisibleInMode(n.target_mode, mode))
+
   const active = isEditing ? (formData as NpcRecord) : selectedNpc
 
   if (loading) {
@@ -217,12 +224,12 @@ export default function NpcView() {
           <div className="flex items-center justify-between text-xs font-fantasy font-bold text-amber-300 uppercase tracking-wider px-1">
             <span className="flex items-center gap-1.5">
               <RunicPawIcon className="w-3.5 h-3.5 text-amber-400" />
-              Personagens no Tomo ({npcs.length})
+              Personagens no Tomo ({visibleNpcs.length})
             </span>
           </div>
 
           <div className="space-y-2">
-            {npcs.map((npc) => {
+            {visibleNpcs.map((npc) => {
               const isSelected = selectedNpc?.id === npc.id && !isCreating
               return (
                 <div
@@ -238,9 +245,16 @@ export default function NpcView() {
                     <RunicInsignia name={npc.avatar || 'npc'} className="w-5 h-5" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
-                      {npc.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
+                        {npc.name}
+                      </h3>
+                      {mode === 'geral' && npc.target_mode && (
+                        <span className="text-[9px] uppercase px-1 py-0.2 rounded font-mono text-amber-200/60 border border-white/10 shrink-0">
+                          {npc.target_mode}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-[11px] text-[#9e9688] truncate flex items-center gap-1">
                       {npc.species || npc.race} • {npc.occupation}
                     </p>
@@ -475,6 +489,22 @@ export default function NpcView() {
                         <option value="Vivo">Vivo</option>
                         <option value="Desconhecido">Desconhecido</option>
                         <option value="Morto">Morto</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1 sm:col-span-2">
+                      <label className="text-[11px] font-fantasy text-amber-200">
+                        Modo de Destino
+                      </label>
+                      <select
+                        value={formData.target_mode || 'geral'}
+                        onChange={(e) =>
+                          setFormData({ ...formData, target_mode: e.target.value as any })
+                        }
+                        className="w-full h-9 rounded-md bg-[#0c1017] border border-[#2c3548] px-2 text-xs text-amber-100"
+                      >
+                        <option value="geral">Geral (Visível no RPG e RP)</option>
+                        <option value="rpg">RPG (Apenas no modo RPG)</option>
+                        <option value="rp">RP (Apenas no modo RP)</option>
                       </select>
                     </div>
                   </div>

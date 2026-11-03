@@ -39,7 +39,7 @@ import { Progress } from '@/components/ui/progress'
 
 export default function BoardView() {
   const { id } = useParams<{ id: string }>()
-  const { mode } = useAppMode()
+  const { mode, setMode } = useAppMode()
   const navigate = useNavigate()
 
   const [board, setBoard] = useState<BoardRecord | null>(null)
@@ -47,6 +47,7 @@ export default function BoardView() {
   const [name, setName] = useState('')
   const [columns, setColumns] = useState<BoardColumn[]>([])
   const [cards, setCards] = useState<BoardCard[]>([])
+  const [boardTargetMode, setBoardTargetMode] = useState<string>('geral')
 
   // Modal para criar/editar cartão
   const [cardModalOpen, setCardModalOpen] = useState(false)
@@ -70,6 +71,7 @@ export default function BoardView() {
         setName(data.name || '')
         setColumns(data.columns || [])
         setCards(data.cards || [])
+        setBoardTargetMode(data.target_mode || 'geral')
       } catch (err) {
         console.error(err)
         navigate('/')
@@ -80,13 +82,19 @@ export default function BoardView() {
     load()
   }, [id, navigate])
 
-  const triggerSave = async (newName = name, newCols = columns, newCards = cards) => {
+  const triggerSave = async (
+    newName = name,
+    newCols = columns,
+    newCards = cards,
+    newMode = boardTargetMode,
+  ) => {
     if (!id) return
     try {
       await boardsService.update(id, {
         name: newName,
         columns: newCols,
         cards: newCards,
+        target_mode: newMode as any,
       })
     } catch (err) {
       console.error(err)
@@ -208,8 +216,30 @@ export default function BoardView() {
     )
   }
 
+  // Verificação de compatibilidade de modo quando navegado por URL direta:
+  const isModeMismatch =
+    mode !== 'geral' && boardTargetMode && boardTargetMode !== 'geral' && boardTargetMode !== mode
+
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-6">
+      {isModeMismatch && (
+        <div className="p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5">
+            <RuneSwordIcon className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="text-amber-200">
+              Este mural foi forjado para o modo <strong>{boardTargetMode.toUpperCase()}</strong>,
+              mas o modo ativo do app é <strong>{mode.toUpperCase()}</strong>.
+            </span>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => setMode('geral')}
+            className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold shrink-0"
+          >
+            Mudar para Modo Geral
+          </Button>
+        </div>
+      )}
       {/* Header do Mural de Missões */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#262e40]">
         <div className="space-y-1">
@@ -232,6 +262,30 @@ export default function BoardView() {
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Seletor de Classificação de Modo do Mural */}
+          <div className="flex items-center gap-1 bg-[#121620] border border-[#2c3548] rounded-md px-2.5 py-1 text-xs">
+            <span className="text-[10px] font-fantasy text-amber-300/80">Modo:</span>
+            <select
+              value={boardTargetMode}
+              onChange={(e) => {
+                const nextM = e.target.value
+                setBoardTargetMode(nextM)
+                triggerSave(name, columns, cards, nextM)
+              }}
+              className="bg-transparent text-amber-100 text-xs font-fantasy focus:outline-hidden cursor-pointer"
+            >
+              <option value="geral" className="bg-[#121620] text-amber-100">
+                Geral (Ambos)
+              </option>
+              <option value="rpg" className="bg-[#121620] text-amber-100">
+                RPG Tático
+              </option>
+              <option value="rp" className="bg-[#121620] text-amber-100">
+                RP Narrativo
+              </option>
+            </select>
+          </div>
+
           {/* Barra de Progresso de Quests */}
           <div className="bg-[#121620] border border-amber-500/25 rounded-lg p-2.5 flex items-center gap-3 min-w-[210px] shadow-sm">
             <div className="flex-1">

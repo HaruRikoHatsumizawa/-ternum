@@ -19,13 +19,14 @@ import {
   History,
   Check,
 } from 'lucide-react'
-import { RuneHammerIcon, RunicInsignia } from '@/components/rpg/EternumIcons'
+import { Link } from 'react-router-dom'
+import { RuneHammerIcon, RuneScrollIcon, RunicInsignia } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { RunicCircle, DragonSilhouette, TomeOrnament } from '@/components/rpg/RpgArtwork'
 import { toast } from '@/hooks/use-toast'
 
 export default function LootForge() {
-  const { mode } = useAppMode()
+  const { mode, setMode } = useAppMode()
   const [currentItem, setCurrentItem] = useState<LootItem>(() => generateLoot())
   const [history, setHistory] = useState<LootItem[]>([])
   const [selectedRarity, setSelectedRarity] = useState<LootRarity | 'Qualquer'>('Qualquer')
@@ -118,6 +119,55 @@ export default function LootForge() {
     } finally {
       setSavingToCodex(false)
     }
+  }
+
+  // Se o usuário tentar acessar a Forja do Tesouro no modo RP (exclusivo de RPG e Geral),
+  // exibe uma tela elegante convidando a mudar o modo para RPG/Geral ou retornar ao Salão de Narrativa.
+  if (mode === 'rp') {
+    return (
+      <div className="max-w-3xl mx-auto py-16 px-4 text-center space-y-6">
+        <div className="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mx-auto text-purple-400">
+          <RuneHammerIcon className="w-8 h-8 opacity-70" />
+        </div>
+        <div className="space-y-2">
+          <span className="px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-fantasy uppercase tracking-wider">
+            Módulo de RPG & Tática
+          </span>
+          <h1 className="text-2xl font-fantasy font-bold text-amber-100">
+            A Forja do Tesouro repousa no Salão Tático
+          </h1>
+          <p className="text-sm text-[#a8a090] max-w-lg mx-auto leading-relaxed">
+            Você está navegando no{' '}
+            <strong className="text-purple-300 font-fantasy">Modo RP (Narrativa)</strong>, que
+            oculta sistemas de loot, tabelas de dados táticos e rolagem de tesouro para manter o
+            foco na corte e na biografia.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <Link
+            to="/"
+            className="px-4 py-2 rounded-lg bg-[#141a24] hover:bg-[#1a2230] border border-[#2b3548] text-xs font-fantasy text-amber-200 transition-colors flex items-center gap-2"
+          >
+            <RuneScrollIcon className="w-4 h-4 text-purple-400" />
+            <span>Voltar ao Salão de Narrativa</span>
+          </Link>
+          <Button
+            onClick={() => setMode('rpg')}
+            className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold text-xs"
+          >
+            <RuneHammerIcon className="w-4 h-4 mr-1.5" />
+            Ativar Modo RPG & Abrir Forja
+          </Button>
+          <Button
+            onClick={() => setMode('geral')}
+            variant="outline"
+            className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-fantasy text-xs"
+          >
+            Ativar Modo Geral (Tudo)
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   const rarityStyle = getRarityStyle(currentItem.rarity)

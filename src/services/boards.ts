@@ -16,6 +16,8 @@ export interface BoardColumn {
   color?: string
 }
 
+export type TargetMode = 'geral' | 'rpg' | 'rp'
+
 export interface BoardRecord extends RecordModel {
   user: string
   name: string
@@ -23,6 +25,7 @@ export interface BoardRecord extends RecordModel {
   icon?: string
   columns: BoardColumn[]
   cards: BoardCard[]
+  target_mode?: TargetMode
 }
 
 export const boardsService = {
@@ -42,6 +45,7 @@ export const boardsService = {
     icon?: string
     columns?: BoardColumn[]
     cards?: BoardCard[]
+    target_mode?: TargetMode
   }): Promise<BoardRecord> {
     const user = pb.authStore.record?.id
     if (!user) throw new Error('Usuário não autenticado')
@@ -71,6 +75,7 @@ export const boardsService = {
       icon: data.icon || 'sword',
       columns: data.columns || defaultColumns,
       cards: data.cards || [],
+      target_mode: data.target_mode || 'geral',
     })
   },
 

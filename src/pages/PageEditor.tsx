@@ -3,7 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
-import { RuneSwordIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
+import {
+  RuneSwordIcon,
+  RuneScrollIcon,
+  RunicInsignia,
+  RUNIC_INSIGNIA_CATALOG,
+} from '@/components/rpg/EternumIcons'
 import {
   Trash2,
   Star,
@@ -47,7 +52,7 @@ const BLOCK_TYPES = [
 
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
-  const { mode } = useAppMode()
+  const { mode, setMode } = useAppMode()
   const navigate = useNavigate()
   const [page, setPage] = useState<PageRecord | null>(null)
   const [loading, setLoading] = useState(true)
@@ -57,6 +62,7 @@ export default function PageEditor() {
   const [blocks, setBlocks] = useState<PageBlock[]>([])
   const [isFavorite, setIsFavorite] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [pageTargetMode, setPageTargetMode] = useState<string>('geral')
 
   // Carregar dados da página
   useEffect(() => {
@@ -74,6 +80,7 @@ export default function PageEditor() {
             : [{ id: 'b_' + Date.now(), type: 'text', content: '' }],
         )
         setIsFavorite(!!data.is_favorite)
+        setPageTargetMode(data.target_mode || 'geral')
       } catch (err) {
         console.error(err)
         navigate('/')
@@ -90,6 +97,7 @@ export default function PageEditor() {
     newIcon = icon,
     newBlocks = blocks,
     newFav = isFavorite,
+    newMode = pageTargetMode,
   ) => {
     if (!id) return
     setIsSaving(true)
@@ -99,6 +107,7 @@ export default function PageEditor() {
         icon: newIcon,
         blocks: newBlocks,
         is_favorite: newFav,
+        target_mode: newMode as any,
       })
     } catch (err) {
       console.error(err)
@@ -196,8 +205,29 @@ export default function PageEditor() {
     )
   }
 
+  const isModeMismatch =
+    mode !== 'geral' && pageTargetMode && pageTargetMode !== 'geral' && pageTargetMode !== mode
+
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-10 space-y-6">
+      {isModeMismatch && (
+        <div className="p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5">
+            <RuneScrollIcon className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="text-amber-200">
+              Esta ficha foi criada para o modo <strong>{pageTargetMode.toUpperCase()}</strong>, mas
+              o modo ativo do app é <strong>{mode.toUpperCase()}</strong>.
+            </span>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => setMode('geral')}
+            className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold shrink-0"
+          >
+            Mudar para Modo Geral
+          </Button>
+        </div>
+      )}
       {/* Top Bar da Página */}
       <div className="flex items-center justify-between pb-2 border-b border-slate-100">
         <div className="flex items-center gap-2">
@@ -237,7 +267,31 @@ export default function PageEditor() {
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
+          {/* Seletor de Classificação de Modo da Ficha/Crônica */}
+          <div className="flex items-center gap-1 bg-[#121620] border border-[#2c3548] rounded-md px-2 py-0.5 text-xs">
+            <span className="text-[10px] font-fantasy text-amber-300/80">Modo:</span>
+            <select
+              value={pageTargetMode}
+              onChange={(e) => {
+                const nextM = e.target.value
+                setPageTargetMode(nextM)
+                triggerSave(title, icon, blocks, isFavorite, nextM)
+              }}
+              className="bg-transparent text-amber-100 text-xs font-fantasy focus:outline-hidden cursor-pointer"
+            >
+              <option value="geral" className="bg-[#121620] text-amber-100">
+                Geral (Ambos)
+              </option>
+              <option value="rpg" className="bg-[#121620] text-amber-100">
+                RPG Tático
+              </option>
+              <option value="rp" className="bg-[#121620] text-amber-100">
+                RP Narrativo
+              </option>
+            </select>
+          </div>
+
           <Button
             variant="ghost"
             size="sm"

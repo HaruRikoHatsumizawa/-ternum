@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
-import { RuneGearIcon, RuneSwordIcon, RuneScrollIcon } from '@/components/rpg/EternumIcons'
+import {
+  RuneGearIcon,
+  RuneSwordIcon,
+  RuneScrollIcon,
+  RuneCrestIcon,
+} from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -64,6 +69,7 @@ export default function Settings() {
         name: name.trim(),
         avatar: avatarFile,
         pfp_frame: selectedFrame,
+        app_mode: mode,
       })
       setProfileSuccess(true)
       setTimeout(() => setProfileSuccess(false), 3000)
@@ -127,17 +133,49 @@ export default function Settings() {
           <div className="flex items-center gap-2">
             <Palette className="h-4 w-4 mode-accent-text" />
             <CardTitle className="text-base font-fantasy font-bold mode-accent-text">
-              Modo Visual de Atmosfera: RP Narrativo & RPG Tático
+              Modo de Exibição do Reino: Geral, RPG Tático & RP Narrativo
             </CardTitle>
           </div>
           <CardDescription className="text-xs text-[#8e8678]">
-            Alterne entre o tom <strong>Roxo Aristocrático para RP</strong> e o clássico{' '}
-            <strong>Ouro Rúnico/Laranja para RPG</strong>. A paleta se estende com discrição e
-            nobreza a todas as salas e códices.
+            Escolha como navegar pelo Éternum. O modo selecionado é salvo na sua conta e filtra
+            automaticamente todo o site: sidebar, busca ⌘K, salas, oráculo e listagens.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Opção Geral */}
+            <div
+              onClick={() => handleModeToggle('geral')}
+              className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-between gap-3 ${
+                mode === 'geral'
+                  ? 'border-amber-300/70 bg-amber-500/15 shadow-md shadow-amber-950'
+                  : 'border-[#262c3a] bg-[#0d1017] hover:border-amber-400/40 opacity-75 hover:opacity-100'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-amber-100">
+                  <RuneCrestIcon className="w-4 h-4 text-amber-300" />
+                  Modo Geral — Reino Completo
+                </span>
+                {mode === 'geral' && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-200/20 text-amber-200 font-mono font-bold">
+                    ATIVO
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-[#b8b0a0]">
+                Exibe todas as seções e conteúdos juntos (RPG e RP combinados). A barra lateral
+                volta a ser completa e neutra.
+              </p>
+              <div className="flex items-center gap-2 pt-1">
+                <span className="w-4 h-4 rounded-full bg-[#c99c36] border border-amber-200 shadow-xs" />
+                <span className="w-4 h-4 rounded-full bg-[#121620] border border-[#2b3345]" />
+                <span className="text-[11px] font-fantasy text-amber-200/80">
+                  Obsidiana & Ouro Ancestral
+                </span>
+              </div>
+            </div>
+
             {/* Opção RPG */}
             <div
               onClick={() => handleModeToggle('rpg')}
@@ -159,8 +197,8 @@ export default function Settings() {
                 )}
               </div>
               <p className="text-xs text-[#b8b0a0]">
-                Identidade primordial de Éternum: ouro rúnico sobre obsidiana, runas forjadas e
-                clima épico de combate e loot.
+                Apenas conteúdos de RPG e tática: missões, forja de loot, combates e códices
+                bestiários.
               </p>
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-4 h-4 rounded-full bg-[#e7ab2c] border border-amber-300 shadow-xs" />
@@ -192,14 +230,14 @@ export default function Settings() {
                 )}
               </div>
               <p className="text-xs text-[#b8b0a0]">
-                Paleta nobre e profunda de ametista e névoa astral, ideal para imersão em diálogos,
-                espécies antropomórficas e crônicas.
+                Apenas crônicas, cenas, tramas e relações entre personagens, com Salão de Narrativa
+                e foco em interpretação.
               </p>
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-4 h-4 rounded-full bg-[#9d4edd] border border-purple-300 shadow-xs" />
                 <span className="w-4 h-4 rounded-full bg-[#121620] border border-[#2b3345]" />
                 <span className="text-[11px] font-fantasy text-purple-300/80">
-                  Roxo Ametista Profundo
+                  Roxo Ametista Nobre
                 </span>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import pb from '@/lib/pocketbase/client'
 
 export type SessionStatus = 'Agendada' | 'Realizada' | 'Cancelada'
+export type TargetMode = 'geral' | 'rpg' | 'rp'
 
 export interface SessionRecord {
   id: string
@@ -11,6 +12,7 @@ export interface SessionRecord {
   campaign?: string
   notes?: string
   location?: string
+  target_mode?: TargetMode
   created: string
   updated: string
 }
@@ -22,6 +24,7 @@ export interface CreateSessionData {
   campaign?: string
   notes?: string
   location?: string
+  target_mode?: TargetMode
 }
 
 export const sessionsService = {
@@ -43,6 +46,7 @@ export const sessionsService = {
       user: userId,
       status: data.status || 'Agendada',
       campaign: data.campaign || 'As Crônicas de Val-Morath',
+      target_mode: data.target_mode || 'geral',
       ...data,
     })
   },

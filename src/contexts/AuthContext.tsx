@@ -13,7 +13,7 @@ interface AuthContextType {
     name?: string
     avatar?: File | null
     pfp_frame?: string
-    app_mode?: 'rpg' | 'rp'
+    app_mode?: 'geral' | 'rpg' | 'rp'
   }) => Promise<void>
   updatePassword: (oldPass: string, newPass: string) => Promise<void>
 }
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     name?: string
     avatar?: File | null
     pfp_frame?: string
-    app_mode?: 'rpg' | 'rp'
+    app_mode?: 'geral' | 'rpg' | 'rp'
   }) => {
     if (!user) return
     const formData = new FormData()

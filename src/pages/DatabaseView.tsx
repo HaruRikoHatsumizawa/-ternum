@@ -40,7 +40,7 @@ import {
 
 export default function DatabaseView() {
   const { id } = useParams<{ id: string }>()
-  const { mode } = useAppMode()
+  const { mode, setMode } = useAppMode()
   const navigate = useNavigate()
 
   const [database, setDatabase] = useState<DatabaseRecord | null>(null)
@@ -48,6 +48,7 @@ export default function DatabaseView() {
   const [name, setName] = useState('')
   const [columns, setColumns] = useState<DatabaseColumn[]>([])
   const [rows, setRows] = useState<DatabaseRow[]>([])
+  const [dbTargetMode, setDbTargetMode] = useState<string>('geral')
 
   // Filtro
   const [filterQuery, setFilterQuery] = useState('')
@@ -69,6 +70,7 @@ export default function DatabaseView() {
         setName(data.name || '')
         setColumns(data.columns || [])
         setRows(data.rows || [])
+        setDbTargetMode(data.target_mode || 'geral')
       } catch (err) {
         console.error(err)
         navigate('/')
@@ -206,15 +208,36 @@ export default function DatabaseView() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Abrindo os registros do códice arcano..."
-        submessage="Compilando bestiário e itens"
+        message="Consultando as tabelas e códices arcanos..."
+        submessage="Catalogando bestiários e tesouros"
         fullScreen={false}
       />
     )
   }
 
+  const isModeMismatch =
+    mode !== 'geral' && dbTargetMode && dbTargetMode !== 'geral' && dbTargetMode !== mode
+
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-6">
+      {isModeMismatch && (
+        <div className="p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5">
+            <RuneTomeIcon className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="text-amber-200">
+              Este códice foi catalogado para o modo <strong>{dbTargetMode.toUpperCase()}</strong>,
+              mas o modo ativo do app é <strong>{mode.toUpperCase()}</strong>.
+            </span>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => setMode('geral')}
+            className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold shrink-0"
+          >
+            Mudar para Modo Geral
+          </Button>
+        </div>
+      )}{' '}
       {/* Top Header do Códice */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#262e40]">
         <div className="space-y-1">
@@ -258,7 +281,6 @@ export default function DatabaseView() {
           </Button>
         </div>
       </div>
-
       {/* Barra de Filtro e Controles */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-[#121620] p-2.5 rounded-lg border border-[#262e40] shadow-md">
         <div className="flex items-center gap-2 flex-1 min-w-[240px]">
@@ -310,7 +332,6 @@ export default function DatabaseView() {
           </Button>
         </div>
       </div>
-
       {/* Grid da Tabela do Códice */}
       <div className="border border-[#262e40] rounded-xl overflow-hidden bg-[#0e121a] shadow-xl">
         <div className="overflow-x-auto">
@@ -483,7 +504,6 @@ export default function DatabaseView() {
           </span>
         </div>
       </div>
-
       {/* Modal Adicionar Coluna / Atributo */}
       <Dialog open={colModalOpen} onOpenChange={setColModalOpen}>
         <DialogContent className="max-w-sm bg-[#121620] border-[#2c3547] text-[#f1ede3]">

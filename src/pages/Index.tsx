@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
-import { useAppMode } from '@/contexts/ModeContext'
+import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { pagesService, PageRecord } from '@/services/pages'
@@ -126,7 +126,12 @@ export default function Index() {
 
   const handleCreatePage = async () => {
     try {
-      const p = await pagesService.create({ title: 'Nova Ficha / Crônica', icon: 'scroll' })
+      const target = mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral'
+      const p = await pagesService.create({
+        title: mode === 'rp' ? 'Nova Crônica' : 'Nova Ficha',
+        icon: 'scroll',
+        target_mode: target,
+      })
       navigate(`/pages/${p.id}`)
     } catch (err) {
       console.error(err)
@@ -135,7 +140,12 @@ export default function Index() {
 
   const handleCreateBoard = async () => {
     try {
-      const b = await boardsService.create({ name: 'Novo Mural de Missões', icon: 'sword' })
+      const target = mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral'
+      const b = await boardsService.create({
+        name: mode === 'rp' ? 'Nova Trama' : 'Novo Mural de Missões',
+        icon: 'sword',
+        target_mode: target,
+      })
       navigate(`/boards/${b.id}`)
     } catch (err) {
       console.error(err)
@@ -144,20 +154,37 @@ export default function Index() {
 
   const handleCreateDatabase = async () => {
     try {
-      const d = await databasesService.create({ name: 'Novo Códice Arcano', icon: 'tome' })
+      const target = mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral'
+      const d = await databasesService.create({
+        name: mode === 'rp' ? 'Novo Registro Narrativo' : 'Novo Códice Arcano',
+        icon: 'tome',
+        target_mode: target,
+      })
       navigate(`/databases/${d.id}`)
     } catch (err) {
       console.error(err)
     }
   }
 
-  const filteredPages = pages.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
-  const filteredBoards = boards.filter((b) => b.name.toLowerCase().includes(search.toLowerCase()))
-  const filteredDatabases = databases.filter((d) =>
+  // Filtro de acordo com o modo ativo:
+  // Se modo === 'geral': tudo é visível
+  // Se modo === 'rpg': apenas itens com target_mode 'rpg' ou 'geral'
+  // Se modo === 'rp': apenas itens com target_mode 'rp' ou 'geral'
+  const modeFilteredPages = pages.filter((p) => isItemVisibleInMode(p.target_mode, mode))
+  const modeFilteredBoards = boards.filter((b) => isItemVisibleInMode(b.target_mode, mode))
+  const modeFilteredDatabases = databases.filter((d) => isItemVisibleInMode(d.target_mode, mode))
+
+  const filteredPages = modeFilteredPages.filter((p) =>
+    p.title.toLowerCase().includes(search.toLowerCase()),
+  )
+  const filteredBoards = modeFilteredBoards.filter((b) =>
+    b.name.toLowerCase().includes(search.toLowerCase()),
+  )
+  const filteredDatabases = modeFilteredDatabases.filter((d) =>
     d.name.toLowerCase().includes(search.toLowerCase()),
   )
 
-  const favoritePages = pages.filter((p) => p.is_favorite)
+  const favoritePages = modeFilteredPages.filter((p) => p.is_favorite)
 
   // Estatísticas de Missões
   const totalQuests = boards.reduce((acc, b) => acc + (b.cards?.length || 0), 0)
@@ -185,11 +212,13 @@ export default function Index() {
     )
   }
 
-  // Se o modo for RP, entrega a experiência do Salão de Narrativa autêntica
+  // Se o modo for RP, entrega a experiência autêntica do Salão de Narrativa (exclusiva de RP)
   if (mode === 'rp') {
+    // Filtrar apenas páginas de RP ou Geral para o Salão de Narrativa
+    const rpPages = pages.filter((p) => isItemVisibleInMode(p.target_mode, 'rp'))
     return (
       <RpHomeView
-        pages={pages}
+        pages={rpPages}
         onRefreshPages={async () => {
           const p = await pagesService.list().catch(() => [])
           setPages(p)
@@ -209,7 +238,11 @@ export default function Index() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full mode-accent-bg border mode-accent-border mode-accent-text text-xs font-fantasy tracking-wider uppercase">
               <Crown className="h-3.5 w-3.5 mode-accent-text" />
-              <span>Éternum • As Crônicas de Val-Morath (RPG)</span>
+              <span>
+                {mode === 'geral'
+                  ? 'Éternum • Reino Unificado (Modo Geral: Visão Completa)'
+                  : 'Éternum • As Crônicas de Val-Morath (Modo RPG Tático)'}
+              </span>
             </div>
             <div className="flex items-center gap-4">
               <AvatarFrame frameId={user?.pfp_frame || 'runic-gold'} size="lg">
@@ -225,15 +258,16 @@ export default function Index() {
                   </span>
                 </h1>
                 <p className="text-xs mode-accent-text font-fantasy">
-                  Atmosfera de RPG ativa (Ouro Rúnico Forjado)
+                  {mode === 'geral'
+                    ? 'Visão Geral Completa — RPG & RP integrados'
+                    : 'Atmosfera de RPG Tático (Ouro Rúnico Forjado)'}
                 </p>
               </div>
             </div>
             <p className="text-sm text-[#b8b0a0] max-w-2xl leading-relaxed">
-              Bem-vindo ao Éternum, seu grimório dark fantasy desenhado tanto para{' '}
-              <strong>RPG de mesa</strong> quanto para <strong>RP narrativo</strong>. Gerencie
-              sessões e cenas no calendário, mural de contratos, forja de loot, fichas ricas com
-              espécies antropomórficas e o Oráculo arcano de IA.
+              {mode === 'geral'
+                ? 'Bem-vindo à visão Geral do Éternum. Aqui você visualiza todos os murais de missões, códices, bestiários, crônicas e fichas juntos, com distinção visual de origem.'
+                : 'Bem-vindo ao Éternum no modo RPG. Gerencie sessões no calendário, murais de contratos táticos, forja de loot rúnico, fichas de heróis e monstros.'}
             </p>
           </div>
           {/* Busca rápida temática */}
@@ -344,10 +378,12 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Ações Rápidas de Forja */}
+      {/* Ações Rápidas de Módulos (com distinção de modo) */}
       <div className="space-y-3">
         <h2 className="text-xs font-fantasy font-bold uppercase tracking-wider text-amber-400/80">
-          Forjar Novo Registro de Aventura
+          {mode === 'geral'
+            ? 'Módulos Integrados do Reino (RPG & RP)'
+            : 'Forjar Novo Registro de Aventura (RPG)'}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
@@ -466,7 +502,13 @@ export default function Index() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-fantasy font-bold text-amber-200 uppercase tracking-wider">
             <Scroll className="h-4 w-4 text-amber-400" />
-            <span>Fichas de Personagem & Crônicas ({filteredPages.length})</span>
+            <span>
+              {mode === 'geral'
+                ? `Fichas & Crônicas do Reino (RPG e RP) (${filteredPages.length})`
+                : mode === 'rpg'
+                  ? `Fichas Táticas de RPG (${filteredPages.length})`
+                  : `Crônicas & Narrativas de RP (${filteredPages.length})`}
+            </span>
           </div>
           <Button
             variant="ghost"
@@ -490,9 +532,16 @@ export default function Index() {
                   <RunicInsignia name={p.icon || 'scroll'} className="w-4 h-4 mode-accent-text" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
-                    {p.title || 'Sem título'}
-                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
+                      {p.title || 'Sem título'}
+                    </p>
+                    {mode === 'geral' && p.target_mode && (
+                      <span className="text-[9px] uppercase px-1 py-0.2 rounded font-mono text-amber-200/60 border border-white/10 shrink-0">
+                        {p.target_mode}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[10px] text-[#8e8678]">
                     {p.blocks?.length || 0} anotações arcanas
                   </p>
@@ -515,7 +564,13 @@ export default function Index() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-fantasy font-bold text-amber-200 uppercase tracking-wider">
             <Kanban className="h-4 w-4 text-amber-400" />
-            <span>Murais de Missões & Quests ({filteredBoards.length})</span>
+            <span>
+              {mode === 'geral'
+                ? `Missões Táticas & Tramas Narrativas (${filteredBoards.length})`
+                : mode === 'rpg'
+                  ? `Murais de Missões & Quests (${filteredBoards.length})`
+                  : `Tramas da Corte & Arcos Narrativos (${filteredBoards.length})`}
+            </span>
           </div>
           <Button
             variant="ghost"
@@ -550,6 +605,11 @@ export default function Index() {
                     <span className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
                       {b.name}
                     </span>
+                    {mode === 'geral' && b.target_mode && (
+                      <span className="text-[9px] uppercase px-1 py-0.2 rounded font-mono text-amber-200/60 border border-white/10 shrink-0 ml-1">
+                        {b.target_mode}
+                      </span>
+                    )}
                   </div>
                   <span className="text-[10px] font-mono text-amber-300/70">
                     {bCards.length} missões
@@ -585,7 +645,13 @@ export default function Index() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-fantasy font-bold text-amber-200 uppercase tracking-wider">
             <Table className="h-4 w-4 text-amber-400" />
-            <span>Códices Arcanos & Bestiários ({filteredDatabases.length})</span>
+            <span>
+              {mode === 'geral'
+                ? `Códices, Bestiários & Registros Sociais (${filteredDatabases.length})`
+                : mode === 'rpg'
+                  ? `Códices Arcanos & Bestiários (${filteredDatabases.length})`
+                  : `Registros Sociais & Genealogias (${filteredDatabases.length})`}
+            </span>
           </div>
           <Button
             variant="ghost"
@@ -609,9 +675,16 @@ export default function Index() {
                   <RunicInsignia name={d.icon || 'tome'} className="w-4 h-4 mode-accent-text" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
-                    {d.name}
-                  </p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs font-fantasy font-bold text-amber-100 truncate group-hover:text-amber-200">
+                      {d.name}
+                    </p>
+                    {mode === 'geral' && d.target_mode && (
+                      <span className="text-[9px] uppercase px-1 py-0.2 rounded font-mono text-amber-200/60 border border-white/10 shrink-0">
+                        {d.target_mode}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[10px] text-[#8e8678]">
                     {d.rows?.length || 0} criaturas/itens • {d.columns?.length || 0} colunas
                   </p>
