@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneNpcIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
@@ -37,6 +38,7 @@ function getModifier(score?: number): string {
 
 export default function NpcView() {
   const { mode } = useAppMode()
+  const { t } = useLanguage()
   const [npcs, setNpcs] = useState<NpcRecord[]>([])
   const [selectedNpc, setSelectedNpc] = useState<NpcRecord | null>(null)
   const [isEditing, setIsEditing] = useState(false)
@@ -178,13 +180,12 @@ export default function NpcView() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Invocando as fichas de NPCs e aliados..."
-        submessage="Carregando biografias e traços"
+        message={t('loading.summoningNpcs')}
+        submessage={t('loading.loadingBestiaryFactions')}
         fullScreen={false}
       />
     )
   }
-
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-8">
       {/* Cabeçalho */}
@@ -195,13 +196,11 @@ export default function NpcView() {
               <RuneNpcIcon className="w-6 h-6 mode-accent-text" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              Fichas de Personagens & NPCs (RPG & RP)
+              {mode === 'rp' ? t('npcs.titleRp') : t('npcs.titleRpg')}
             </h1>
           </div>
           <p className="text-xs text-[#a8a090] max-w-2xl leading-relaxed">
-            Fichas híbridas projetadas tanto para <strong>RP narrativo</strong> (espécie
-            antropomórfica, biografia, aparência, personalidade e relações) quanto para{' '}
-            <strong>RPG clássico</strong> (CA, HP, ND e atributos), sem forçar um único formato.
+            {mode === 'rp' ? t('npcs.subtitleRp') : t('npcs.subtitleRpg')}
           </p>
         </div>
 
@@ -214,7 +213,7 @@ export default function NpcView() {
           }`}
         >
           <Plus className="h-4 w-4" />
-          <span>Novo Personagem</span>
+          <span>{t('npcs.createNpc')}</span>
         </Button>
       </div>
 

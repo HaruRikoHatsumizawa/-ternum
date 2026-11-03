@@ -14,6 +14,7 @@ interface AuthContextType {
     avatar?: File | null
     pfp_frame?: string
     app_mode?: 'geral' | 'rpg' | 'rp'
+    locale?: 'pt-BR' | 'en'
   }) => Promise<void>
   updatePassword: (oldPass: string, newPass: string) => Promise<void>
 }
@@ -88,6 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     avatar?: File | null
     pfp_frame?: string
     app_mode?: 'geral' | 'rpg' | 'rp'
+    locale?: 'pt-BR' | 'en'
   }) => {
     if (!user) return
     const formData = new FormData()
@@ -102,6 +104,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     if (data.app_mode !== undefined) {
       formData.append('app_mode', data.app_mode)
+    }
+    if (data.locale !== undefined) {
+      formData.append('locale', data.locale)
     }
     const updated = await pb.collection('users').update(user.id, formData)
     setUser(updated)

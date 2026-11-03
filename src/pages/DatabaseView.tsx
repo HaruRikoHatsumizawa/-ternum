@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import {
   databasesService,
   DatabaseRecord,
@@ -41,6 +42,7 @@ import {
 export default function DatabaseView() {
   const { id } = useParams<{ id: string }>()
   const { mode, setMode } = useAppMode()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [database, setDatabase] = useState<DatabaseRecord | null>(null)
@@ -208,13 +210,12 @@ export default function DatabaseView() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Consultando as tabelas e códices arcanos..."
-        submessage="Catalogando bestiários e tesouros"
+        message={t('loading.openingCodex')}
+        submessage={t('loading.readingAncientScrolls')}
         fullScreen={false}
       />
     )
   }
-
   const isModeMismatch =
     mode !== 'geral' && dbTargetMode && dbTargetMode !== 'geral' && dbTargetMode !== mode
 
@@ -225,8 +226,10 @@ export default function DatabaseView() {
           <div className="flex items-center gap-2.5">
             <RuneTomeIcon className="w-4 h-4 text-amber-400 shrink-0" />
             <span className="text-amber-200">
-              Este códice foi catalogado para o modo <strong>{dbTargetMode.toUpperCase()}</strong>,
-              mas o modo ativo do app é <strong>{mode.toUpperCase()}</strong>.
+              {t('common.modeMismatched', {
+                targetMode: dbTargetMode.toUpperCase(),
+                currentMode: mode.toUpperCase(),
+              })}
             </span>
           </div>
           <Button
@@ -234,8 +237,8 @@ export default function DatabaseView() {
             onClick={() => setMode('geral')}
             className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold shrink-0"
           >
-            Mudar para Modo Geral
-          </Button>
+            {t('common.switchToGeneral')}
+          </Button>{' '}
         </div>
       )}{' '}
       {/* Top Header do Códice */}
@@ -269,16 +272,15 @@ export default function DatabaseView() {
             <Plus className="h-3.5 w-3.5 text-amber-400" />
             <span>Novo Atributo (Coluna)</span>
           </Button>
-
           <Button
             variant="ghost"
             size="sm"
             onClick={handleDeleteDatabase}
             className="h-8 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
-            title="Excluir códice"
+            title={t('database.deleteDatabase')}
           >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+            <Trash2 className="h-3.5 w-3.5" />
+          </Button>{' '}
         </div>
       </div>
       {/* Barra de Filtro e Controles */}

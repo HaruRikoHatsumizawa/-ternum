@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import {
   encountersService,
   EncounterRecord,
@@ -103,6 +104,7 @@ function extractHeroStatsFromPage(page: PageRecord): { hp: number; ac: number; a
 
 export default function CombatTracker() {
   const { mode } = useAppMode()
+  const { t } = useLanguage()
   const [encounters, setEncounters] = useState<EncounterRecord[]>([])
   const [selectedEncounter, setSelectedEncounter] = useState<EncounterRecord | null>(null)
   const [loading, setLoading] = useState(true)
@@ -534,13 +536,12 @@ export default function CombatTracker() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Preparando o Salão de Combate Tático..."
-        submessage="Calculando ordem de iniciativa e tabelas de dano"
+        message={t('loading.forgingInitiative')}
+        submessage={t('loading.loadingCombatants')}
         fullScreen={false}
       />
     )
   }
-
   const currentCombatant = selectedEncounter?.combatants[selectedEncounter.current_turn_index]
 
   return (
@@ -554,11 +555,11 @@ export default function CombatTracker() {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-                Combate Tático & Rastreador de Iniciativa
+                {t('combat.title')}
               </h1>
               <span className="text-[11px] font-fantasy text-amber-400/80 uppercase tracking-wider flex items-center gap-1.5 mt-0.5">
                 <RunicPawIcon className="w-3.5 h-3.5" />
-                Módulo RPG Tático • Ordem de Batalha & Estado de Vida
+                {t('combat.subtitle')}
               </span>
             </div>
           </div>

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T15:08:31.865Z",
+  "generatedAt": "2026-11-03T15:34:56.169Z",
   "collections": [
     {
       "name": "users",
@@ -49,6 +49,13 @@
           "type": "text",
           "required": false,
           "system": false
+        },
+        {
+          "name": "locale",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["pt-BR", "en"]
         }
       ],
       "indexes": [

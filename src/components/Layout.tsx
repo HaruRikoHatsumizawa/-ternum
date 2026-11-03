@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
+import { LanguageSwitcher } from '@/components/rpg/LanguageSwitcher'
 import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { pagesService, PageRecord } from '@/services/pages'
 import { boardsService, BoardRecord } from '@/services/boards'
@@ -55,6 +57,7 @@ import pb from '@/lib/pocketbase/client'
 export default function Layout() {
   const { user, logout } = useAuth()
   const { mode, setMode } = useAppMode()
+  const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -235,14 +238,15 @@ export default function Layout() {
                     onClick={() => navigate('/settings')}
                     className="hover:bg-amber-500/10 focus:bg-amber-500/10 text-amber-100"
                   >
-                    <RuneGearIcon className="mr-2 h-3.5 w-3.5 text-amber-400" /> Santuário & Perfil
+                    <RuneGearIcon className="mr-2 h-3.5 w-3.5 text-amber-400" />{' '}
+                    {t('nav.sanctuary')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-[#262c3a]" />
                   <DropdownMenuItem
                     onClick={logout}
                     className="text-rose-400 focus:text-rose-300 hover:bg-rose-950/30"
                   >
-                    <LogOut className="mr-2 h-3.5 w-3.5" /> Deixar o Reino (Sair)
+                    <LogOut className="mr-2 h-3.5 w-3.5" /> {t('nav.logout')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -264,7 +268,7 @@ export default function Layout() {
                 className="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d] rounded-md transition-colors border border-transparent hover:border-amber-500/20 group"
               >
                 <RuneSearchIcon className="h-3.5 w-3.5 text-amber-400/80 group-hover:text-amber-300" />
-                <span className="flex-1 text-left font-medium">Consultar Oráculo</span>
+                <span className="flex-1 text-left font-medium">{t('nav.quickSearch')}</span>
                 <kbd className="text-[10px] font-mono text-amber-300/70 bg-[#121620] border border-amber-500/30 px-1 py-0.2 rounded">
                   ⌘K
                 </kbd>
@@ -282,7 +286,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneCrestIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Início Geral do Reino</span>
+                    <span>{t('nav.overview')}</span>
                   </Link>
 
                   {/* Bloco Tático RPG */}
@@ -301,7 +305,7 @@ export default function Layout() {
                         }`}
                       >
                         <RuneCombatIcon className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                        <span>Combate Tático</span>
+                        <span>{t('nav.tacticalCombat')}</span>
                       </Link>
                       <Link
                         to="/npcs"
@@ -312,7 +316,7 @@ export default function Layout() {
                         }`}
                       >
                         <RuneNpcIcon className="h-3 w-3 text-amber-400 shrink-0" />
-                        <span>Fichas Táticas de NPCs</span>
+                        <span>{t('nav.npcCompendium')}</span>
                       </Link>
                       <Link
                         to="/sessions"
@@ -323,7 +327,7 @@ export default function Layout() {
                         }`}
                       >
                         <RuneAstrolabeIcon className="h-3 w-3 text-amber-400 shrink-0" />
-                        <span>Calendário de Sessões</span>
+                        <span>{t('nav.sessionsCalendar')}</span>
                       </Link>
                       <Link
                         to="/loot"
@@ -334,7 +338,7 @@ export default function Layout() {
                         }`}
                       >
                         <RuneHammerIcon className="h-3 w-3 text-amber-400 shrink-0" />
-                        <span>Forja do Tesouro & Loot</span>
+                        <span>{t('nav.lootForge')}</span>
                       </Link>
                     </div>
                   </div>
@@ -351,14 +355,14 @@ export default function Layout() {
                         className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors text-[#c8c0b0] hover:text-purple-200 hover:bg-[#18202d]"
                       >
                         <RuneNpcIcon className="h-3 w-3 text-purple-400 shrink-0" />
-                        <span>Personagens & Relações</span>
+                        <span>{t('nav.rpCharacters')}</span>
                       </Link>
                       <Link
                         to="/sessions"
                         className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors text-[#c8c0b0] hover:text-purple-200 hover:bg-[#18202d]"
                       >
                         <RuneAstrolabeIcon className="h-3 w-3 text-purple-400 shrink-0" />
-                        <span>Cenas & Arcos Narrativos</span>
+                        <span>{t('nav.sessionsCalendar')}</span>
                       </Link>
                     </div>
                   </div>
@@ -372,7 +376,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">Oráculo de Éternum</span>
+                    <span className="flex-1">{t('nav.oracleAi')}</span>
                     <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-fantasy">
                       IA
                     </span>
@@ -392,7 +396,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneSwordIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Salão de Guerra & Quests (RPG)</span>
+                    <span>{t('nav.overview')}</span>
                   </Link>
 
                   <Link
@@ -404,7 +408,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneCombatIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Combate Tático</span>
+                    <span>{t('nav.tacticalCombat')}</span>
                   </Link>
 
                   <Link
@@ -416,7 +420,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneNpcIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Fichas Táticas de NPCs</span>
+                    <span>{t('nav.npcCompendium')}</span>
                   </Link>
 
                   <Link
@@ -428,7 +432,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Calendário de Sessões</span>
+                    <span>{t('nav.sessionsCalendar')}</span>
                   </Link>
 
                   <Link
@@ -440,7 +444,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneHammerIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Forja do Tesouro & Loot</span>
+                    <span>{t('nav.lootForge')}</span>
                   </Link>
 
                   <Link
@@ -452,7 +456,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">Oráculo de Éternum (Mestre)</span>
+                    <span className="flex-1">{t('nav.oracleAi')}</span>
                     <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-fantasy">
                       IA
                     </span>
@@ -472,7 +476,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneScrollIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Salão de Narrativa (RP)</span>
+                    <span>{t('nav.narrativeHall')}</span>
                   </Link>
 
                   <Link
@@ -484,7 +488,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneNpcIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Personagens & Relações da Corte</span>
+                    <span>{t('nav.rpCharacters')}</span>
                   </Link>
 
                   <Link
@@ -496,7 +500,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span>Cenas & Arcos Narrativos</span>
+                    <span>{t('nav.sessionsCalendar')}</span>
                   </Link>
 
                   <Link
@@ -508,7 +512,7 @@ export default function Layout() {
                     }`}
                   >
                     <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">Oráculo de Éternum (Narrador)</span>
+                    <span className="flex-1">{t('nav.oracleAi')}</span>
                     <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
                       IA
                     </span>
@@ -734,7 +738,7 @@ export default function Layout() {
                 }`}
               >
                 <RuneGearIcon className="h-3.5 w-3.5 mode-accent-text" />
-                <span>Santuário</span>
+                <span>{t('nav.sanctuary')}</span>
               </Link>
 
               <button
@@ -743,7 +747,7 @@ export default function Layout() {
                 className="p-1.5 text-amber-400 hover:text-amber-200 hover:bg-amber-500/10 rounded-md transition-colors flex items-center gap-1 text-[11px] font-semibold border border-amber-500/30"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>Forjar</span>
+                <span>{t('common.create')}</span>
               </button>
             </div>
           </div>
@@ -771,6 +775,9 @@ export default function Layout() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            {/* Seletor Rápido de Idioma Discreto no Top Header */}
+            <LanguageSwitcher variant="compact" />
+
             {/* Seletor de TRÊS Modos no Top Header: Geral / RPG / RP */}
             <div className="flex items-center rounded-lg bg-[#141924] border border-[#2b3548] p-0.5 shadow-xs">
               <button
@@ -818,7 +825,7 @@ export default function Layout() {
               className="h-7 text-xs text-amber-200/80 hover:text-amber-100 bg-[#141923] border-[#2c3547] hover:border-amber-500/40 px-2.5 gap-1.5 hidden sm:flex"
             >
               <RuneSearchIcon className="h-3 w-3 mode-accent-text" />
-              <span>Consultar Oráculo...</span>
+              <span>{t('common.searchPlaceholder')}</span>
               <kbd className="text-[9px] font-mono mode-accent-text bg-[#0c0f14] border mode-accent-border px-1 py-0.2 rounded ml-1">
                 ⌘K
               </kbd>
@@ -837,7 +844,7 @@ export default function Layout() {
                   }`}
                 >
                   <Plus className="h-3.5 w-3.5" />
-                  <span>Forjar Item</span>
+                  <span>{t('common.create')}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -848,26 +855,27 @@ export default function Layout() {
                   onClick={handleCreateNewPage}
                   className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer"
                 >
-                  <FileText className="mr-2 h-3.5 w-3.5 text-amber-400" /> Nova Ficha / Crônica
+                  <FileText className="mr-2 h-3.5 w-3.5 text-amber-400" /> {t('nav.createPage')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleCreateNewBoard}
                   className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer"
                 >
-                  <Kanban className="mr-2 h-3.5 w-3.5 text-amber-400" /> Novo Mural de Missões
+                  <Kanban className="mr-2 h-3.5 w-3.5 text-amber-400" /> {t('nav.createBoard')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleCreateNewDatabase}
                   className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer"
                 >
-                  <Table className="mr-2 h-3.5 w-3.5 text-amber-400" /> Novo Códice Arcano
+                  <Table className="mr-2 h-3.5 w-3.5 text-amber-400" /> {t('nav.createDatabase')}
                 </DropdownMenuItem>
                 {mode !== 'rp' && (
                   <DropdownMenuItem
                     onClick={() => navigate('/combat')}
                     className="hover:bg-amber-500/10 focus:bg-amber-500/10 cursor-pointer text-amber-200"
                   >
-                    <RuneCombatIcon className="mr-2 h-3.5 w-3.5 text-amber-400" /> Combate Tático
+                    <RuneCombatIcon className="mr-2 h-3.5 w-3.5 text-amber-400" />{' '}
+                    {t('nav.tacticalCombat')}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
@@ -889,7 +897,7 @@ export default function Layout() {
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar nas fichas, missões, monstros ou itens..."
+              placeholder={t('common.searchPlaceholder')}
               className="border-0 focus-visible:ring-0 text-sm py-3 px-0 shadow-none bg-transparent text-amber-100 placeholder:text-amber-200/40"
               autoFocus
             />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import { sessionsService, SessionRecord, SessionStatus, TargetMode } from '@/services/sessions'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneAstrolabeIcon } from '@/components/rpg/EternumIcons'
@@ -51,6 +52,7 @@ const STATUS_COLORS: Record<SessionStatus, { text: string; bg: string; border: s
 
 export default function SessionsCalendar() {
   const { mode } = useAppMode()
+  const { t } = useLanguage()
   const [sessions, setSessions] = useState<SessionRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [currentDate, setCurrentDate] = useState(() => new Date())
@@ -237,13 +239,12 @@ export default function SessionsCalendar() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Consultando os astros e o calendário de sessões..."
-        submessage="Carregando crônicas e datas da mesa"
+        message={t('loading.readingConstellations')}
+        submessage={t('loading.loadingChronicleDates')}
         fullScreen={false}
       />
     )
   }
-
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-8 space-y-8">
       {/* Cabeçalho */}
@@ -254,20 +255,17 @@ export default function SessionsCalendar() {
               <RuneAstrolabeIcon className="w-6 h-6 mode-accent-text" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              Calendário de Sessões & Cenas (RPG e RP)
+              {t('sessions.title')}
             </h1>
           </div>
-          <p className="text-xs text-[#a8a090] max-w-xl">
-            Programe as reuniões da mesa de RPG e sessões/cenas narrativas de RP, registre as
-            crônicas realizadas e mantenha seu grupo alinhado nos mesmos ciclos lunares.
-          </p>{' '}
+          <p className="text-xs text-[#a8a090] max-w-xl">{t('sessions.subtitle')}</p>{' '}
         </div>
         <Button
           onClick={() => openNewSessionModal()}
           className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold gap-1.5 border border-amber-300/40 shadow-sm"
         >
           <Plus className="h-4 w-4" />
-          <span>Agendar Sessão / Cena</span>
+          <span>{t('sessions.newSession')}</span>
         </Button>{' '}
       </div>
 

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/i18n/LanguageContext'
+import { LanguageSwitcher } from '@/components/rpg/LanguageSwitcher'
 import { RuneCrestIcon } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,6 +27,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
 
   const { login, signup } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,30 +68,34 @@ export default function Login() {
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-900/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md space-y-6 relative z-10">
+        {/* Seletor discreto de idioma no login */}
+        <div className="flex justify-end">
+          <LanguageSwitcher variant="compact" />
+        </div>
+
         {/* Logo / Header Rúnico */}
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 shadow-xl shadow-amber-950/40 mb-2">
             <RuneCrestIcon className="w-8 h-8 text-amber-400" />
           </div>
-          <h1 className="text-3xl font-fantasy font-bold tracking-tight text-amber-100">Éternum</h1>
+          <h1 className="text-3xl font-fantasy font-bold tracking-tight text-amber-100">
+            {t('common.appName')}
+          </h1>
           <p className="text-xs text-amber-300/80 font-fantasy uppercase tracking-wider">
-            O Grimório da Campanha
+            {t('common.appSubtitle')}
           </p>
           <p className="text-xs text-[#a39b8d] max-w-xs mx-auto leading-relaxed">
-            Gestão Dark Fantasy: Sessões, Fichas de Personagens, Forja de Loot, Missões e Oráculo
-            Arcano.
+            {t('common.tagline')}
           </p>
         </div>
 
         <Card className="border-amber-500/30 shadow-2xl bg-[#121620] text-[#f1ede3]">
           <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-lg font-fantasy font-bold text-amber-200">
-              {isSignUp ? 'Juramento do Aventureiro' : 'Portões da Campanha'}
+              {isSignUp ? t('login.oathTitle') : t('login.gatesTitle')}
             </CardTitle>
             <CardDescription className="text-xs text-[#8e8678]">
-              {isSignUp
-                ? 'Forje seu registro para liderar ou participar de mesas'
-                : 'Pronuncie suas credenciais para adentrar o salão'}
+              {isSignUp ? t('login.oathDesc') : t('login.gatesDesc')}
             </CardDescription>
           </CardHeader>
 
@@ -106,14 +113,14 @@ export default function Login() {
               {isSignUp && (
                 <div className="space-y-1.5">
                   <Label htmlFor="name" className="text-xs font-fantasy font-bold text-amber-200">
-                    Nome do Herói / Mestre
+                    {t('login.heroName')}
                   </Label>
                   <div className="relative">
                     <User className="absolute left-3 top-2.5 h-4 w-4 text-amber-400/60" />
                     <Input
                       id="name"
                       type="text"
-                      placeholder="Ex: Amanda Mestra da Campanha"
+                      placeholder={t('login.heroNamePlaceholder')}
                       className="pl-9 text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -125,7 +132,7 @@ export default function Login() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-xs font-fantasy font-bold text-amber-200">
-                  E-mail do Aventureiro
+                  {t('login.emailLabel')}
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-2.5 h-4 w-4 text-amber-400/60" />
@@ -143,7 +150,7 @@ export default function Login() {
 
               <div className="space-y-1.5">
                 <Label htmlFor="password" className="text-xs font-fantasy font-bold text-amber-200">
-                  Palavra Rúnica Secreta (Senha)
+                  {t('login.passwordLabel')}
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-2.5 h-4 w-4 text-amber-400/60" />
@@ -165,10 +172,10 @@ export default function Login() {
                 disabled={loading}
               >
                 {loading
-                  ? 'Decifrando selos...'
+                  ? t('login.submitting')
                   : isSignUp
-                    ? 'Consagrar Juramento'
-                    : 'Adentrar os Portões'}
+                    ? t('login.submitSignUp')
+                    : t('login.submitLogin')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </CardContent>
@@ -179,7 +186,7 @@ export default function Login() {
                   <span className="w-full border-t border-[#262e40]" />
                 </div>
                 <span className="relative bg-[#121620] px-2 text-[11px] text-amber-300/60 uppercase font-fantasy">
-                  Invocação Imediata
+                  {t('login.instantInvocation')}
                 </span>
               </div>
 
@@ -191,13 +198,13 @@ export default function Login() {
                 className="w-full text-xs border-amber-500/30 text-amber-300 hover:text-amber-100 hover:bg-amber-500/10 font-fantasy"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5 text-amber-400" />
-                Preencher com Mestre de Demonstração
+                {t('login.fillDemo')}
               </Button>
 
               <div className="text-center text-xs text-[#8e8678] pt-1">
                 {isSignUp ? (
                   <>
-                    Já possui um juramento?{' '}
+                    {t('login.hasOath')}{' '}
                     <button
                       type="button"
                       onClick={() => {
@@ -206,12 +213,12 @@ export default function Login() {
                       }}
                       className="font-medium text-amber-300 hover:underline"
                     >
-                      Adentrar mesa
+                      {t('login.enterTable')}
                     </button>
                   </>
                 ) : (
                   <>
-                    Primeira vez nas crônicas?{' '}
+                    {t('login.firstTime')}{' '}
                     <button
                       type="button"
                       onClick={() => {
@@ -220,7 +227,7 @@ export default function Login() {
                       }}
                       className="font-medium text-amber-300 hover:underline"
                     >
-                      Criar juramento
+                      {t('login.createOath')}
                     </button>
                   </>
                 )}
@@ -231,12 +238,12 @@ export default function Login() {
 
         <div className="flex items-center justify-center gap-4 text-xs text-amber-300/60 font-fantasy">
           <span className="flex items-center gap-1">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> Tomos Sincronizados
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" /> {t('login.footerSync')}
           </span>
           <span>•</span>
-          <span>Fichas & Bestiários</span>
+          <span>{t('login.footerBestiary')}</span>
           <span>•</span>
-          <span>Dark Fantasy</span>
+          <span>{t('login.footerGenre')}</span>
         </div>
       </div>
     </div>

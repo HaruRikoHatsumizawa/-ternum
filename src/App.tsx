@@ -5,6 +5,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { ModeProvider } from '@/contexts/ModeContext'
+import { LanguageProvider, useLanguage } from '@/i18n/LanguageContext'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import Index from './pages/Index'
 import PageEditor from './pages/PageEditor'
@@ -22,6 +23,7 @@ import Layout from './components/Layout'
 
 function AppBootstrapGate({ children }: { children: React.ReactNode }) {
   const { isLoading } = useAuth()
+  const { t } = useLanguage()
   const [showSplash, setShowSplash] = useState(true)
   const [isFadingOut, setIsFadingOut] = useState(false)
 
@@ -40,8 +42,8 @@ function AppBootstrapGate({ children }: { children: React.ReactNode }) {
     <>
       {showSplash && (
         <EternumLoadingScreen
-          message="Despertando os segredos de Éternum..."
-          submessage="Sincronizando crônicas, fichas e arcanos"
+          message={t('loading.awakeningSecrets')}
+          submessage={t('loading.syncingChronicles')}
           isExiting={isFadingOut}
         />
       )}
@@ -52,12 +54,13 @@ function AppBootstrapGate({ children }: { children: React.ReactNode }) {
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth()
+  const { t } = useLanguage()
 
   if (isLoading) {
     return (
       <EternumLoadingScreen
-        message="Acessando o santuário da mesa..."
-        submessage="Validando selo do aventureiro"
+        message={t('loading.accessingSanctuary')}
+        submessage={t('loading.validatingSeal')}
       />
     )
   }
@@ -72,36 +75,38 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 const App = () => (
   <BrowserRouter>
     <AuthProvider>
-      <AppBootstrapGate>
-        <ModeProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                element={
-                  <ProtectedRoute>
-                    <Layout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route path="/" element={<Index />} />
-                <Route path="/pages/:id" element={<PageEditor />} />
-                <Route path="/boards/:id" element={<BoardView />} />
-                <Route path="/databases/:id" element={<DatabaseView />} />
-                <Route path="/sessions" element={<SessionsCalendar />} />
-                <Route path="/loot" element={<LootForge />} />
-                <Route path="/combat" element={<CombatTracker />} />
-                <Route path="/npcs" element={<NpcView />} />
-                <Route path="/oracle" element={<OracleChat />} />
-                <Route path="/settings" element={<Settings />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </TooltipProvider>
-        </ModeProvider>
-      </AppBootstrapGate>
+      <LanguageProvider>
+        <AppBootstrapGate>
+          <ModeProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route
+                  element={
+                    <ProtectedRoute>
+                      <Layout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route path="/" element={<Index />} />
+                  <Route path="/pages/:id" element={<PageEditor />} />
+                  <Route path="/boards/:id" element={<BoardView />} />
+                  <Route path="/databases/:id" element={<DatabaseView />} />
+                  <Route path="/sessions" element={<SessionsCalendar />} />
+                  <Route path="/loot" element={<LootForge />} />
+                  <Route path="/combat" element={<CombatTracker />} />
+                  <Route path="/npcs" element={<NpcView />} />
+                  <Route path="/oracle" element={<OracleChat />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </TooltipProvider>
+          </ModeProvider>
+        </AppBootstrapGate>
+      </LanguageProvider>
     </AuthProvider>
   </BrowserRouter>
 )

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { PageRecord, pagesService } from '@/services/pages'
 import { SessionRecord, sessionsService } from '@/services/sessions'
@@ -40,6 +41,7 @@ interface RpHomeViewProps {
 
 export function RpHomeView({ pages, onRefreshPages }: RpHomeViewProps) {
   const { user } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [npcs, setNpcs] = React.useState<NpcRecord[]>([])
@@ -370,22 +372,19 @@ export function RpHomeView({ pages, onRefreshPages }: RpHomeViewProps) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
             to="/oracle"
-            className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/25 bg-[#140e1f] hover:bg-[#1a1229] hover:border-purple-400/40 transition-all text-left group shadow-xs"
+            className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/30 bg-[#121620] hover:bg-[#181d2a] hover:border-purple-400/50 transition-all group shadow-sm"
           >
-            <div className="w-10 h-10 rounded-lg bg-purple-950/60 text-purple-300 border border-purple-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <RuneOracleIcon className="h-5 w-5" />
+            <div className="w-10 h-10 rounded-lg bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <RuneOracleIcon className="h-5 w-5 text-purple-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-sm font-fantasy font-bold text-purple-100 block">
-                Oráculo (Narrador IA)
+              <span className="text-sm font-fantasy font-bold text-purple-200 block">
+                {t('nav.oracleAi')}
               </span>
-              <span className="text-xs text-purple-300/70 line-clamp-1">
-                Gere diálogos, cenas e segredos de corte
-              </span>
+              <span className="text-xs text-[#a39b8d] line-clamp-1">{t('oracle.subtitle')}</span>
             </div>
             <ArrowRight className="h-4 w-4 text-purple-400/60 group-hover:text-purple-300 transition-colors" />
           </Link>
-
           <Link
             to="/loot"
             className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/25 bg-[#140e1f] hover:bg-[#1a1229] hover:border-purple-400/40 transition-all text-left group shadow-xs"

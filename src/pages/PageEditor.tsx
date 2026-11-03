@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
@@ -53,6 +54,7 @@ const BLOCK_TYPES = [
 export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
   const { mode, setMode } = useAppMode()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [page, setPage] = useState<PageRecord | null>(null)
   const [loading, setLoading] = useState(true)
@@ -198,8 +200,8 @@ export default function PageEditor() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message="Decifrando o tomo e suas crônicas..."
-        submessage="Carregando anotações arcanas"
+        message={t('loading.decipheringTome')}
+        submessage={t('loading.loadingArcaneNotes')}
         fullScreen={false}
       />
     )
@@ -215,8 +217,10 @@ export default function PageEditor() {
           <div className="flex items-center gap-2.5">
             <RuneScrollIcon className="w-4 h-4 text-amber-400 shrink-0" />
             <span className="text-amber-200">
-              Esta ficha foi criada para o modo <strong>{pageTargetMode.toUpperCase()}</strong>, mas
-              o modo ativo do app é <strong>{mode.toUpperCase()}</strong>.
+              {t('common.modeMismatched', {
+                targetMode: pageTargetMode.toUpperCase(),
+                currentMode: mode.toUpperCase(),
+              })}
             </span>
           </div>
           <Button
@@ -224,7 +228,7 @@ export default function PageEditor() {
             onClick={() => setMode('geral')}
             className="h-7 text-xs bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold shrink-0"
           >
-            Mudar para Modo Geral
+            {t('common.switchToGeneral')}
           </Button>
         </div>
       )}
@@ -263,7 +267,7 @@ export default function PageEditor() {
           </DropdownMenu>
 
           <span className="text-xs font-fantasy text-amber-300/60">
-            {isSaving ? 'Gravando no tomo sagrado...' : 'Tomo preservado'}
+            {isSaving ? t('editor.pageSaving') : t('editor.pageSaved')}
           </span>
         </div>
 
@@ -305,7 +309,7 @@ export default function PageEditor() {
             <Star
               className={`h-3.5 w-3.5 mr-1 ${isFavorite ? 'fill-amber-400 text-amber-400' : ''}`}
             />
-            {isFavorite ? 'Consagrada' : 'Consagrar (Favoritar)'}
+            {isFavorite ? t('editor.consecrated') : t('editor.consecrate')}
           </Button>
 
           <Button
@@ -313,7 +317,7 @@ export default function PageEditor() {
             size="sm"
             onClick={handleDeletePage}
             className="h-8 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/30"
-            title="Excluir crônica/ficha"
+            title={t('editor.deletePage')}
           >
             <Trash2 className="h-3.5 w-3.5" />
           </Button>

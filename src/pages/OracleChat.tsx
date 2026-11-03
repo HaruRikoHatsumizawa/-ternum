@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import pb from '@/lib/pocketbase/client'
 import {
   Sparkles,
@@ -41,6 +42,7 @@ const ORACLE_SUGGESTIONS = [
 
 export default function OracleChat() {
   const { mode } = useAppMode()
+  const { t } = useLanguage()
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
@@ -219,12 +221,9 @@ export default function OracleChat() {
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              O Oráculo de Éternum
+              {t('oracle.title')}
             </h1>
-            <p className="text-xs text-amber-300/70">
-              Assistente de IA Arcana nativo para mestres e jogadores de RPG & RP • Fichas, Cenas,
-              NPCs & Enigmas
-            </p>
+            <p className="text-xs text-amber-300/70">{t('oracle.subtitle')}</p>
           </div>
         </div>
 
@@ -235,7 +234,7 @@ export default function OracleChat() {
             onClick={handleStartNewChat}
             className="text-xs border-[#2c3547] text-amber-300 hover:text-amber-100 hover:bg-amber-500/10 font-fantasy"
           >
-            <Plus className="h-3.5 w-3.5 mr-1" /> Nova Consulta
+            <Plus className="h-3.5 w-3.5 mr-1" /> {t('oracle.newConsult')}
           </Button>
         </div>
       </div>
@@ -307,7 +306,7 @@ export default function OracleChat() {
                   <RunicCircle className="w-4 h-4 animate-spin text-amber-400" />
                 </div>
                 <div className="p-3.5 rounded-2xl bg-[#161c28] border border-amber-500/20 text-xs text-amber-300/80 italic flex items-center gap-2">
-                  <span>O Oráculo perscruta as linhas do éter...</span>
+                  <span>{t('oracle.thinking')}</span>
                 </div>
               </div>
             )}
@@ -336,7 +335,7 @@ export default function OracleChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Pergunte ao Oráculo (ex: Crie um personagem híbrido raposa mercenária, cena de RP, gancho de sessão...)"
+              placeholder={t('oracle.inputPlaceholder')}
               rows={1}
               className="resize-none min-h-[42px] max-h-24 bg-[#141a24] border-[#2c374b] text-xs sm:text-sm text-amber-100 placeholder:text-amber-200/40 focus-visible:ring-amber-500/40"
             />

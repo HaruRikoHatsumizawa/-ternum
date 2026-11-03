@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import { AvatarFrame } from '@/components/rpg/AvatarFrame'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { pagesService, PageRecord } from '@/services/pages'
@@ -96,6 +97,7 @@ const HIGHLIGHT_HEROES = [
 export default function Index() {
   const { user } = useAuth()
   const { mode } = useAppMode()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const [pages, setPages] = useState<PageRecord[]>([])
@@ -198,16 +200,8 @@ export default function Index() {
   if (loading) {
     return (
       <EternumLoadingScreen
-        message={
-          mode === 'rp'
-            ? 'Abrindo o Salão de Narrativa de Éternum...'
-            : 'Abrindo o Salão Principal de Éternum...'
-        }
-        submessage={
-          mode === 'rp'
-            ? 'Preparando crônicas, cenas e a corte aristocrática'
-            : 'Invocando pergaminhos, murais e personagens'
-        }
+        message={t('loading.preparingSanctuary')}
+        submessage={t('loading.loadingChronicles')}
         fullScreen={false}
       />
     )

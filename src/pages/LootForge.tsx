@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
 import {
   generateLoot,
   LootItem,
@@ -27,6 +28,7 @@ import { toast } from '@/hooks/use-toast'
 
 export default function LootForge() {
   const { mode, setMode } = useAppMode()
+  const { t } = useLanguage()
   const [currentItem, setCurrentItem] = useState<LootItem>(() => generateLoot())
   const [history, setHistory] = useState<LootItem[]>([])
   const [selectedRarity, setSelectedRarity] = useState<LootRarity | 'Qualquer'>('Qualquer')
@@ -131,16 +133,13 @@ export default function LootForge() {
         </div>
         <div className="space-y-2">
           <span className="px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-fantasy uppercase tracking-wider">
-            Módulo de RPG & Tática
+            {t('loot.rpNotice.badge')}
           </span>
           <h1 className="text-2xl font-fantasy font-bold text-amber-100">
-            A Forja do Tesouro repousa no Salão Tático
+            {t('loot.rpNotice.heading')}
           </h1>
           <p className="text-sm text-[#a8a090] max-w-lg mx-auto leading-relaxed">
-            Você está navegando no{' '}
-            <strong className="text-purple-300 font-fantasy">Modo RP (Narrativa)</strong>, que
-            oculta sistemas de loot, tabelas de dados táticos e rolagem de tesouro para manter o
-            foco na corte e na biografia.
+            {t('loot.rpNotice.description')}
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
@@ -149,21 +148,21 @@ export default function LootForge() {
             className="px-4 py-2 rounded-lg bg-[#141a24] hover:bg-[#1a2230] border border-[#2b3548] text-xs font-fantasy text-amber-200 transition-colors flex items-center gap-2"
           >
             <RuneScrollIcon className="w-4 h-4 text-purple-400" />
-            <span>Voltar ao Salão de Narrativa</span>
+            <span>{t('loot.rpNotice.backToRp')}</span>
           </Link>
           <Button
             onClick={() => setMode('rpg')}
             className="bg-amber-600 hover:bg-amber-500 text-slate-950 font-fantasy font-bold text-xs"
           >
             <RuneHammerIcon className="w-4 h-4 mr-1.5" />
-            Ativar Modo RPG & Abrir Forja
+            {t('loot.rpNotice.enableRpg')}
           </Button>
           <Button
             onClick={() => setMode('geral')}
             variant="outline"
             className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-fantasy text-xs"
           >
-            Ativar Modo Geral (Tudo)
+            {t('loot.rpNotice.enableGeneral')}
           </Button>
         </div>
       </div>
@@ -182,13 +181,10 @@ export default function LootForge() {
               <RuneHammerIcon className="w-6 h-6 mode-accent-text" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-fantasy font-bold text-amber-100 flex items-center gap-2">
-              Forja do Tesouro & Gerador de Loot
+              {t('loot.title')}
             </h1>
           </div>
-          <p className="text-xs text-[#a8a090] max-w-xl">
-            Sorteie armas, armaduras, elixires e relíquias rúnicas 100% locais com descrições de
-            sabor, valores em peças de ouro e efeitos mágicos.
-          </p>
+          <p className="text-xs text-[#a8a090] max-w-xl">{t('loot.subtitle')}</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -198,7 +194,7 @@ export default function LootForge() {
             className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold gap-2 border border-amber-300/40 shadow-md shadow-amber-950/40"
           >
             <Dices className={`h-4 w-4 ${isRolling ? 'animate-spin' : ''}`} />
-            <span>{isRolling ? 'Forjando nas Chamas...' : 'Sortear Novo Item'}</span>
+            <span>{isRolling ? t('loot.rollingButton') : t('loot.rollButton')}</span>
           </Button>
         </div>
       </div>
@@ -207,41 +203,39 @@ export default function LootForge() {
       <div className="p-4 rounded-xl border border-amber-500/20 bg-[#121620] flex flex-wrap items-center justify-between gap-4 text-xs">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-fantasy font-bold text-amber-300">Raridade Alvo:</span>
+            <span className="font-fantasy font-bold text-amber-300">{t('loot.targetRarity')}</span>
             <select
               value={selectedRarity}
               onChange={(e) => setSelectedRarity(e.target.value as any)}
               className="h-8 rounded-md bg-[#090c10] border border-[#262e40] px-2.5 text-xs text-amber-100 focus:outline-hidden"
             >
-              <option value="Qualquer">Qualquer Raridade</option>
-              <option value="Comum">Comum</option>
-              <option value="Incomum">Incomum</option>
-              <option value="Raro">Raro</option>
-              <option value="Épico">Épico</option>
-              <option value="Lendário">Lendário</option>
+              <option value="Qualquer">{t('loot.anyRarity')}</option>
+              <option value="Comum">{t('loot.rarities.common')}</option>
+              <option value="Incomum">{t('loot.rarities.uncommon')}</option>
+              <option value="Raro">{t('loot.rarities.rare')}</option>
+              <option value="Épico">{t('loot.rarities.epic')}</option>
+              <option value="Lendário">{t('loot.rarities.legendary')}</option>
             </select>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-fantasy font-bold text-amber-300">Tipo de Equipamento:</span>
+            <span className="font-fantasy font-bold text-amber-300">{t('loot.gearType')}</span>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value as any)}
               className="h-8 rounded-md bg-[#090c10] border border-[#262e40] px-2.5 text-xs text-amber-100 focus:outline-hidden"
             >
-              <option value="Qualquer">Qualquer Tipo</option>
-              <option value="Arma">Arma</option>
-              <option value="Armadura">Armadura</option>
-              <option value="Consumível">Consumível</option>
-              <option value="Relíquia">Relíquia</option>
-              <option value="Curiosidade">Curiosidade</option>
+              <option value="Qualquer">{t('loot.anyType')}</option>
+              <option value="Arma">{t('loot.types.weapon')}</option>
+              <option value="Armadura">{t('loot.types.armor')}</option>
+              <option value="Consumível">{t('loot.types.consumable')}</option>
+              <option value="Relíquia">{t('loot.types.relic')}</option>
+              <option value="Curiosidade">{t('loot.types.curiosity')}</option>
             </select>
           </div>
         </div>
 
-        <span className="text-[11px] text-[#8e8678] italic">
-          * Combinação estocástica por prefixos e afixos rúnicos
-        </span>
+        <span className="text-[11px] text-[#8e8678] italic">{t('loot.stochasticNote')}</span>
       </div>
 
       {/* Cartão de Exibição Principal do Item */}
@@ -281,11 +275,11 @@ export default function LootForge() {
 
             <div className="flex sm:flex-col items-end justify-between sm:justify-start gap-1 bg-[#151a24] p-3 rounded-xl border border-[#2b3345]">
               <span className="text-[10px] uppercase font-fantasy text-amber-300/70">
-                Valor Estimado
+                {t('loot.estimatedValue')}
               </span>
               <span className="text-xl font-mono font-bold text-amber-300 flex items-center gap-1.5">
                 <Coins className="h-5 w-5 text-amber-400" />
-                {currentItem.valueGold.toLocaleString('pt-BR')} PO
+                {currentItem.valueGold.toLocaleString('pt-BR')} {t('common.gold')}
               </span>
             </div>
           </div>
@@ -301,7 +295,7 @@ export default function LootForge() {
           <div className="space-y-2">
             <h3 className="text-xs font-fantasy font-bold uppercase tracking-wider text-amber-300/80 flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-              Efeitos & Encantamentos
+              {t('loot.effectsHeader')}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {currentItem.effects.map((eff, i) => (
@@ -325,7 +319,7 @@ export default function LootForge() {
               className="text-xs border-[#2b3447] text-amber-300 hover:text-amber-100 hover:bg-amber-500/10"
             >
               <Dices className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
-              Rolar Novamente
+              {t('loot.rollAgain')}
             </Button>
 
             <Button
@@ -341,12 +335,12 @@ export default function LootForge() {
               {savedSuccess ? (
                 <>
                   <Check className="h-3.5 w-3.5 mr-1.5 text-emerald-400" />
-                  Guardado no Códice!
+                  {t('loot.savedToCodex')}
                 </>
               ) : (
                 <>
                   <BookPlus className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
-                  {savingToCodex ? 'Inscrevendo no Tomo...' : 'Guardar no Códice'}
+                  {savingToCodex ? t('loot.savingToCodex') : t('loot.saveToCodex')}
                 </>
               )}
             </Button>
@@ -359,7 +353,7 @@ export default function LootForge() {
         <div className="space-y-4 pt-4 border-t border-[#262c3a]">
           <div className="flex items-center gap-2 text-sm font-fantasy font-bold text-amber-200">
             <History className="h-4 w-4 text-amber-400" />
-            <span>Itens Forjados Anteriormente nesta Sessão ({history.length})</span>
+            <span>{t('loot.sessionHistory', { count: history.length })}</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
+import { useLanguage } from '@/i18n/LanguageContext'
+import { LanguageSwitcher } from '@/components/rpg/LanguageSwitcher'
 import {
   RuneGearIcon,
   RuneSwordIcon,
@@ -38,6 +40,7 @@ import { AvatarFrame, PFP_FRAMES } from '@/components/rpg/AvatarFrame'
 export default function Settings() {
   const { user, updateProfile, updatePassword, logout } = useAuth()
   const { mode, setMode } = useAppMode()
+  const { t } = useLanguage()
 
   const [name, setName] = useState(user?.name || '')
   const [selectedFrame, setSelectedFrame] = useState<string>(user?.pfp_frame || 'runic-gold')
@@ -118,14 +121,29 @@ export default function Settings() {
     <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 space-y-8 text-[#f1ede3]">
       <div>
         <h1 className="text-2xl font-fantasy font-bold mode-accent-text tracking-tight flex items-center gap-2">
-          <span>Santuário do Mestre & Aventureiro</span>
+          <span>{t('settings.title')}</span>
           <RuneGearIcon className="w-5 h-5 mode-accent-text shrink-0" />
         </h1>
-        <p className="text-sm text-[#a39b8d] mt-1">
-          Gerencie as molduras da foto de perfil, a paleta visual (RP Roxo / RPG Ouro), título de
-          jogador e segurança.
-        </p>
+        <p className="text-sm text-[#a39b8d] mt-1">{t('settings.subtitle')}</p>
       </div>
+
+      {/* Seletor de Idioma da Interface */}
+      <Card className="border-2 mode-accent-border shadow-xl bg-[#121620] text-[#f1ede3]">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <span className="text-base mode-accent-text">🌐</span>
+            <CardTitle className="text-base font-fantasy font-bold mode-accent-text">
+              {t('settings.languageSectionTitle')}
+            </CardTitle>
+          </div>
+          <CardDescription className="text-xs text-[#8e8678]">
+            {t('settings.languageSectionDesc')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <LanguageSwitcher variant="full" />
+        </CardContent>
+      </Card>
 
       {/* Seletor Visual dos Dois Modos: RP Roxo vs RPG Laranja/Dourado */}
       <Card className="border-2 mode-accent-border shadow-xl bg-[#121620] text-[#f1ede3]">
@@ -133,12 +151,11 @@ export default function Settings() {
           <div className="flex items-center gap-2">
             <Palette className="h-4 w-4 mode-accent-text" />
             <CardTitle className="text-base font-fantasy font-bold mode-accent-text">
-              Modo de Exibição do Reino: Geral, RPG Tático & RP Narrativo
+              {t('settings.modeSectionTitle')}
             </CardTitle>
           </div>
           <CardDescription className="text-xs text-[#8e8678]">
-            Escolha como navegar pelo Éternum. O modo selecionado é salvo na sua conta e filtra
-            automaticamente todo o site: sidebar, busca ⌘K, salas, oráculo e listagens.
+            {t('settings.modeSectionDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -155,23 +172,20 @@ export default function Settings() {
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-amber-100">
                   <RuneCrestIcon className="w-4 h-4 text-amber-300" />
-                  Modo Geral — Reino Completo
+                  {t('settings.generalModeLabel')}
                 </span>
                 {mode === 'geral' && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-200/20 text-amber-200 font-mono font-bold">
-                    ATIVO
+                    {t('common.active')}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-[#b8b0a0]">
-                Exibe todas as seções e conteúdos juntos (RPG e RP combinados). A barra lateral
-                volta a ser completa e neutra.
-              </p>
+              <p className="text-xs text-[#b8b0a0]">{t('settings.generalModeText')}</p>
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-4 h-4 rounded-full bg-[#c99c36] border border-amber-200 shadow-xs" />
                 <span className="w-4 h-4 rounded-full bg-[#121620] border border-[#2b3345]" />
                 <span className="text-[11px] font-fantasy text-amber-200/80">
-                  Obsidiana & Ouro Ancestral
+                  {t('settings.generalModeTheme')}
                 </span>
               </div>
             </div>
@@ -188,23 +202,20 @@ export default function Settings() {
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-amber-300">
                   <RuneSwordIcon className="w-4 h-4 text-amber-400" />
-                  Modo RPG — Ouro Forjado
+                  {t('settings.rpgModeLabel')}
                 </span>
                 {mode === 'rpg' && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200 font-mono font-bold">
-                    ATIVO
+                    {t('common.active')}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-[#b8b0a0]">
-                Apenas conteúdos de RPG e tática: missões, forja de loot, combates e códices
-                bestiários.
-              </p>
+              <p className="text-xs text-[#b8b0a0]">{t('settings.rpgModeText')}</p>
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-4 h-4 rounded-full bg-[#e7ab2c] border border-amber-300 shadow-xs" />
                 <span className="w-4 h-4 rounded-full bg-[#171b26] border border-[#2b3345]" />
                 <span className="text-[11px] font-fantasy text-amber-300/80">
-                  Laranja & Ouro Rúnico
+                  {t('settings.rpgModeTheme')}
                 </span>
               </div>
             </div>
@@ -221,23 +232,20 @@ export default function Settings() {
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-1.5 text-xs font-fantasy font-bold text-purple-300">
                   <RuneScrollIcon className="w-4 h-4 text-purple-400" />
-                  Modo RP — Roxo Aristocrático
+                  {t('settings.rpModeLabel')}
                 </span>
                 {mode === 'rp' && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200 font-mono font-bold">
-                    ATIVO
+                    {t('common.active')}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-[#b8b0a0]">
-                Apenas crônicas, cenas, tramas e relações entre personagens, com Salão de Narrativa
-                e foco em interpretação.
-              </p>
+              <p className="text-xs text-[#b8b0a0]">{t('settings.rpModeText')}</p>
               <div className="flex items-center gap-2 pt-1">
                 <span className="w-4 h-4 rounded-full bg-[#9d4edd] border border-purple-300 shadow-xs" />
                 <span className="w-4 h-4 rounded-full bg-[#121620] border border-[#2b3345]" />
                 <span className="text-[11px] font-fantasy text-purple-300/80">
-                  Roxo Ametista Nobre
+                  {t('settings.rpModeTheme')}
                 </span>
               </div>
             </div>
@@ -251,11 +259,11 @@ export default function Settings() {
           <div className="flex items-center gap-2">
             <User className="h-4 w-4 text-amber-400" />
             <CardTitle className="text-base font-fantasy font-bold text-amber-100">
-              Identidade do Jogador / Mestre
+              {t('settings.profileSectionTitle')}
             </CardTitle>
           </div>
           <CardDescription className="text-xs text-[#8e8678]">
-            Atualize seu nome de exibição e brasão do avatar.
+            {t('settings.profileSectionDesc')}
           </CardDescription>
         </CardHeader>
 
@@ -265,7 +273,7 @@ export default function Settings() {
               <Alert className="py-2.5 bg-emerald-50 text-emerald-800 border-emerald-200 text-xs">
                 <Check className="h-4 w-4 text-emerald-600 inline mr-2" />
                 <AlertDescription className="inline">
-                  Perfil atualizado com sucesso!
+                  {t('settings.profileSuccess')}
                 </AlertDescription>
               </Alert>
             )}
@@ -293,7 +301,7 @@ export default function Settings() {
                   </Avatar>
                 </AvatarFrame>
                 <span className="text-[10px] text-amber-300/70 font-fantasy">
-                  Prévia da Moldura
+                  {t('settings.avatarPreview')}
                 </span>
               </div>
 
@@ -302,7 +310,7 @@ export default function Settings() {
                   htmlFor="avatar-upload"
                   className="text-xs font-fantasy font-bold text-amber-200"
                 >
-                  Substituir Foto / Brasão de Perfil
+                  {t('settings.uploadAvatar')}
                 </Label>
                 <div className="flex flex-wrap items-center gap-2">
                   <Input
@@ -320,13 +328,12 @@ export default function Settings() {
                   />
                   {avatarFile && (
                     <span className="text-xs text-amber-400 font-medium flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5 text-emerald-400" /> Imagem carregada
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />{' '}
+                      {t('settings.uploadSuccess')}
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-[#7d7568]">
-                  Selecione sua arte ou foto pessoal (JPG, PNG, GIF, WebP até 5MB).
-                </p>
+                <p className="text-[11px] text-[#7d7568]">{t('settings.uploadHelp')}</p>
               </div>
             </div>
 
@@ -335,11 +342,9 @@ export default function Settings() {
               <div className="flex items-center justify-between">
                 <Label className="text-xs font-fantasy font-bold text-amber-200 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  Escolha sua Moldura Temática (PFP Frame)
+                  {t('settings.framesTitle')}
                 </Label>
-                <span className="text-[11px] text-[#8e8678]">
-                  A moldura adorna seu avatar na barra lateral, santuário e códices
-                </span>
+                <span className="text-[11px] text-[#8e8678]">{t('settings.framesHelp')}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -394,13 +399,13 @@ export default function Settings() {
                 htmlFor="profile-name"
                 className="text-xs font-fantasy font-bold text-amber-200"
               >
-                Nome completo ou Título
+                {t('settings.nameLabel')}
               </Label>
               <Input
                 id="profile-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: Amanda Mestra da Campanha"
+                placeholder={t('settings.namePlaceholder')}
                 className="max-w-md text-sm bg-[#090c10] border-[#262e40] text-amber-100 placeholder:text-amber-200/40"
                 required
               />
@@ -408,16 +413,14 @@ export default function Settings() {
 
             <div className="space-y-1.5">
               <Label className="text-xs font-fantasy font-bold text-amber-200">
-                E-mail do Reino
+                {t('settings.emailLabel')}
               </Label>
               <Input
                 value={user?.email || ''}
                 disabled
                 className="max-w-md text-sm bg-[#090c10]/60 border-[#262e40] text-[#7d7568] cursor-not-allowed"
               />
-              <p className="text-[11px] text-[#7d7568]">
-                O endereço de e-mail é sagrado e fixado na criação da conta.
-              </p>
+              <p className="text-[11px] text-[#7d7568]">{t('settings.emailHelp')}</p>
             </div>
           </CardContent>
 
@@ -428,7 +431,7 @@ export default function Settings() {
               disabled={profileLoading}
               className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold text-xs border border-amber-300/40"
             >
-              {profileLoading ? 'Gravando...' : 'Salvar Alterações'}
+              {profileLoading ? t('settings.savingProfile') : t('settings.saveProfile')}
             </Button>
           </CardFooter>
         </form>
@@ -440,11 +443,11 @@ export default function Settings() {
           <div className="flex items-center gap-2">
             <Lock className="h-4 w-4 text-amber-400" />
             <CardTitle className="text-base font-fantasy font-bold text-amber-100">
-              Palavras Rúnicas & Segurança
+              {t('settings.securitySectionTitle')}
             </CardTitle>
           </div>
           <CardDescription className="text-xs text-[#8e8678]">
-            Altere sua senha de proteção periodicamente para manter suas anotações e fichas seguras.
+            {t('settings.securitySectionDesc')}
           </CardDescription>
         </CardHeader>
 
@@ -454,7 +457,7 @@ export default function Settings() {
               <Alert className="py-2.5 bg-emerald-50 text-emerald-800 border-emerald-200 text-xs">
                 <Check className="h-4 w-4 text-emerald-600 inline mr-2" />
                 <AlertDescription className="inline">
-                  Senha atualizada com sucesso!
+                  {t('settings.passwordSuccess')}
                 </AlertDescription>
               </Alert>
             )}
@@ -468,7 +471,7 @@ export default function Settings() {
 
             <div className="space-y-1.5">
               <Label htmlFor="old-pass" className="text-xs font-fantasy font-bold text-amber-200">
-                Senha atual
+                {t('settings.currentPassword')}
               </Label>
               <Input
                 id="old-pass"
@@ -483,7 +486,7 @@ export default function Settings() {
 
             <div className="space-y-1.5">
               <Label htmlFor="new-pass" className="text-xs font-fantasy font-bold text-amber-200">
-                Nova senha (mínimo 8 caracteres)
+                {t('settings.newPassword')}
               </Label>
               <Input
                 id="new-pass"
@@ -501,7 +504,7 @@ export default function Settings() {
                 htmlFor="confirm-pass"
                 className="text-xs font-fantasy font-bold text-amber-200"
               >
-                Confirmar nova senha
+                {t('settings.confirmPassword')}
               </Label>
               <Input
                 id="confirm-pass"
@@ -518,7 +521,7 @@ export default function Settings() {
           <CardFooter className="border-t border-[#262e40] pt-4 flex justify-between items-center">
             <div className="flex items-center gap-1.5 text-xs text-amber-300/70 font-fantasy">
               <ShieldCheck className="h-4 w-4 text-emerald-400" />
-              Criptografia & Selos PocketBase
+              {t('settings.securityBadge')}
             </div>
             <Button
               type="submit"
@@ -526,7 +529,7 @@ export default function Settings() {
               disabled={passwordLoading}
               className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-fantasy font-bold text-xs border border-amber-300/40"
             >
-              {passwordLoading ? 'Alterando...' : 'Alterar Palavra-Chave'}
+              {passwordLoading ? t('settings.updatingPassword') : t('settings.updatePassword')}
             </Button>
           </CardFooter>
         </form>
@@ -540,7 +543,7 @@ export default function Settings() {
           onClick={logout}
           className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border-rose-500/30 font-fantasy"
         >
-          Abandonar Mesa (Sair da Conta)
+          {t('settings.leaveTable')}
         </Button>
       </div>
     </div>
