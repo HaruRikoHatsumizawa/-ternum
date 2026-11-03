@@ -38,6 +38,7 @@ import {
   RuneOracleIcon,
   RuneGearIcon,
   RuneSearchIcon,
+  RuneLexiconIcon,
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
@@ -381,6 +382,18 @@ export default function Layout() {
                       IA
                     </span>
                   </Link>
+
+                  <Link
+                    to="/glossary"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/glossary'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneLexiconIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span className="flex-1">{t('nav.glossary')}</span>
+                  </Link>
                 </>
               )}
 
@@ -460,6 +473,18 @@ export default function Layout() {
                     <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-fantasy">
                       IA
                     </span>
+                  </Link>
+
+                  <Link
+                    to="/glossary"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/glossary'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneLexiconIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span className="flex-1">{t('nav.glossary')}</span>
                   </Link>
                 </>
               )}

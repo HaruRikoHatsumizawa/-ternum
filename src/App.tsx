@@ -16,6 +16,7 @@ import LootForge from './pages/LootForge'
 import NpcView from './pages/NpcView'
 import OracleChat from './pages/OracleChat'
 import CombatTracker from './pages/CombatTracker'
+import GlossaryView from './pages/GlossaryView'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -99,6 +100,7 @@ const App = () => (
                   <Route path="/combat" element={<CombatTracker />} />
                   <Route path="/npcs" element={<NpcView />} />
                   <Route path="/oracle" element={<OracleChat />} />
+                  <Route path="/glossary" element={<GlossaryView />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
