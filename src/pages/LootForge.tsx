@@ -9,6 +9,8 @@ import {
   getRarityStyle,
 } from '@/services/lootGenerator'
 import { databasesService } from '@/services/databases'
+import { inventoryService, InventoryCategory } from '@/services/inventory'
+import { npcsService, NpcRecord } from '@/services/npcs'
 import {
   Sparkles,
   Dices,
@@ -19,9 +21,23 @@ import {
   Scroll,
   History,
   Check,
+  PackagePlus,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { RuneHammerIcon, RuneScrollIcon, RunicInsignia } from '@/components/rpg/EternumIcons'
+import {
+  RuneHammerIcon,
+  RuneScrollIcon,
+  RunicInsignia,
+  RuneBackpackIcon,
+} from '@/components/rpg/EternumIcons'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { RunicCircle, DragonSilhouette, TomeOrnament } from '@/components/rpg/RpgArtwork'
 import { toast } from '@/hooks/use-toast'
@@ -37,9 +53,88 @@ export default function LootForge() {
   const [savingToCodex, setSavingToCodex] = useState(false)
   const [savedSuccess, setSavedSuccess] = useState(false)
 
+  // Estado para guardar no inventário de herói
+  const [heroes, setHeroes] = useState<NpcRecord[]>([])
+  const [heroDialogOpen, setHeroDialogOpen] = useState(false)
+  const [selectedHeroId, setSelectedHeroId] = useState<string>('')
+  const [savingToInventory, setSavingToInventory] = useState(false)
+  const [savedInventorySuccess, setSavedInventorySuccess] = useState(false)
+
+  const handleOpenHeroInventoryDialog = async () => {
+    try {
+      const records = await npcsService.list()
+      setHeroes(records)
+      if (records.length > 0) {
+        setSelectedHeroId(records[0].id)
+      }
+      setHeroDialogOpen(true)
+    } catch (err) {
+      console.error('Falha ao listar heróis:', err)
+      toast({
+        title: 'Falha ao carregar heróis',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const mapLootTypeToCategory = (type: LootType): InventoryCategory => {
+    switch (type) {
+      case 'Arma':
+        return 'weapon'
+      case 'Armadura':
+        return 'armor'
+      case 'Consumível':
+        return 'consumable'
+      case 'Relíquia':
+        return 'treasure'
+      case 'Curiosidade':
+      default:
+        return 'adventure'
+    }
+  }
+
+  const handleConfirmSaveToInventory = async () => {
+    if (!selectedHeroId) return
+    const hero = heroes.find((h) => h.id === selectedHeroId)
+    if (!hero) return
+
+    setSavingToInventory(true)
+    try {
+      await inventoryService.create({
+        character_id: hero.id,
+        character_name: hero.name,
+        name: currentItem.name,
+        quantity: 1,
+        category: mapLootTypeToCategory(currentItem.type),
+        is_equipped: false,
+        value_gold: currentItem.valueGold,
+        rarity: currentItem.rarity,
+        weight: currentItem.type === 'Armadura' ? 6 : currentItem.type === 'Arma' ? 2 : 0.5,
+        notes: `${currentItem.description} (${currentItem.effects.join('; ')})`,
+      })
+
+      setSavedInventorySuccess(true)
+      setHeroDialogOpen(false)
+      toast({
+        title: 'Item Guardado no Inventário!',
+        description: `"${currentItem.name}" foi guardado na mochila de ${hero.name}.`,
+      })
+    } catch (err: any) {
+      console.error('Erro ao guardar item no inventário:', err)
+      toast({
+        title: 'Falha ao guardar no Inventário',
+        description: err?.message || 'Tente novamente.',
+        variant: 'destructive',
+      })
+    } finally {
+      setSavingToInventory(false)
+    }
+  }
+
   const handleRoll = () => {
     setIsRolling(true)
     setSavedSuccess(false)
+    setSavedInventorySuccess(false)
     setTimeout(() => {
       const rarity = selectedRarity === 'Qualquer' ? undefined : selectedRarity
       const type = selectedType === 'Qualquer' ? undefined : selectedType
@@ -322,31 +417,119 @@ export default function LootForge() {
               {t('loot.rollAgain')}
             </Button>
 
-            <Button
-              size="sm"
-              onClick={handleSaveToCodex}
-              disabled={savingToCodex || savedSuccess}
-              className={`text-xs font-fantasy font-bold border ${
-                savedSuccess
-                  ? 'bg-emerald-950 border-emerald-500 text-emerald-300'
-                  : 'bg-amber-500/20 hover:bg-amber-500/30 border-amber-500/40 text-amber-200'
-              }`}
-            >
-              {savedSuccess ? (
-                <>
-                  <Check className="h-3.5 w-3.5 mr-1.5 text-emerald-400" />
-                  {t('loot.savedToCodex')}
-                </>
-              ) : (
-                <>
-                  <BookPlus className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
-                  {savingToCodex ? t('loot.savingToCodex') : t('loot.saveToCodex')}
-                </>
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                onClick={handleOpenHeroInventoryDialog}
+                disabled={savingToInventory || savedInventorySuccess}
+                variant="outline"
+                className={`text-xs font-fantasy font-bold border ${
+                  savedInventorySuccess
+                    ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
+                    : 'bg-stone-900 border-amber-500/30 text-amber-200 hover:bg-amber-500/10'
+                }`}
+              >
+                {savedInventorySuccess ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 mr-1.5 text-emerald-400" />
+                    <span>Guardado no Inventário</span>
+                  </>
+                ) : (
+                  <>
+                    <RuneBackpackIcon className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
+                    <span>Guardar no Inventário</span>
+                  </>
+                )}
+              </Button>
+
+              <Button
+                size="sm"
+                onClick={handleSaveToCodex}
+                disabled={savingToCodex || savedSuccess}
+                className={`text-xs font-fantasy font-bold border ${
+                  savedSuccess
+                    ? 'bg-emerald-950 border-emerald-500 text-emerald-300'
+                    : 'bg-amber-500/20 hover:bg-amber-500/30 border-amber-500/40 text-amber-200'
+                }`}
+              >
+                {savedSuccess ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 mr-1.5 text-emerald-400" />
+                    {t('loot.savedToCodex')}
+                  </>
+                ) : (
+                  <>
+                    <BookPlus className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
+                    {savingToCodex ? t('loot.savingToCodex') : t('loot.saveToCodex')}
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Diálogo para Escolher o Herói que Receberá o Item no Inventário */}
+      <Dialog open={heroDialogOpen} onOpenChange={setHeroDialogOpen}>
+        <DialogContent className="bg-stone-950 border-amber-500/30 text-amber-100 max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-cinzel text-base text-amber-100 flex items-center gap-2">
+              <RuneBackpackIcon className="w-4 h-4 text-amber-400" />
+              <span>Guardar no Inventário do Herói</span>
+            </DialogTitle>
+            <DialogDescription className="text-xs text-stone-400">
+              Escolha qual herói receberá &ldquo;{currentItem.name}&rdquo; em sua mochila.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 py-2">
+            {heroes.length === 0 ? (
+              <p className="text-xs text-stone-400 italic">
+                Nenhum herói ou personagem cadastrado ainda. Crie uma ficha de personagem primeiro
+                na aba Personagens.
+              </p>
+            ) : (
+              <div>
+                <label className="text-xs font-cinzel text-amber-300 block mb-1">
+                  Selecione o Herói / Personagem:
+                </label>
+                <select
+                  value={selectedHeroId}
+                  onChange={(e) => setSelectedHeroId(e.target.value)}
+                  className="w-full bg-stone-900 border border-amber-500/30 text-amber-100 rounded-md px-2 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-amber-500/40"
+                >
+                  {heroes.map((h) => (
+                    <option key={h.id} value={h.id}>
+                      {h.name} {h.cr ? `(${h.cr})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setHeroDialogOpen(false)}
+              className="border-stone-700 text-stone-300 hover:bg-stone-800 text-xs"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              disabled={heroes.length === 0 || savingToInventory || !selectedHeroId}
+              onClick={handleConfirmSaveToInventory}
+              className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-stone-950 font-medium text-xs font-cinzel"
+            >
+              {savingToInventory ? 'Guardando...' : 'Confirmar Envio'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Histórico da Sessão */}
       {history.length > 0 && (

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T16:50:56.128Z",
+  "generatedAt": "2026-11-03T16:58:13.990Z",
   "collections": [
     {
       "name": "users",
@@ -665,7 +665,7 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["combate", "personagem", "regras", "dados", "mesa"]
+          "selectValues": ["combate", "personagem", "regras", "dados", "mesa", "nerd"]
         },
         {
           "name": "definition",
@@ -691,6 +691,177 @@
       "indexes": [
         "CREATE INDEX idx_glossary_user ON glossary_terms (user)",
         "CREATE UNIQUE INDEX idx_glossary_user_term ON glossary_terms (user, term)"
+      ]
+    },
+    {
+      "name": "compendium_entries",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "universe",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["dnd", "bleach", "dragonball", "anime", "games", "outro"]
+        },
+        {
+          "name": "entry_type",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["race", "power"]
+        },
+        {
+          "name": "short_description",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "traits",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_compendium_user ON compendium_entries (user)",
+        "CREATE INDEX idx_compendium_user_universe ON compendium_entries (user, universe)",
+        "CREATE INDEX idx_compendium_user_type ON compendium_entries (user, entry_type)"
+      ]
+    },
+    {
+      "name": "inventory_items",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "character_id",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "character_name",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "quantity",
+          "type": "number",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "category",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["weapon", "armor", "consumable", "treasure", "adventure"]
+        },
+        {
+          "name": "is_equipped",
+          "type": "bool",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "value_gold",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "rarity",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["Comum", "Incomum", "Raro", "Muito Raro", "Lendário", "Artefato"]
+        },
+        {
+          "name": "weight",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_inventory_user ON inventory_items (user)",
+        "CREATE INDEX idx_inventory_user_char ON inventory_items (user, character_id)"
       ]
     }
   ]

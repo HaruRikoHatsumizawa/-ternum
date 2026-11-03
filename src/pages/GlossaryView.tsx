@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import {
@@ -12,11 +13,12 @@ import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import {
   RuneLexiconIcon,
   RuneSwordIcon,
-  RuneUserIcon,
-  RuneTomeIcon,
-  RuneCombatIcon,
-  RuneSearchIcon,
   RuneScrollIcon,
+  RuneTomeIcon,
+  RuneSearchIcon,
+  RuneCombatIcon,
+  RuneUserIcon,
+  RuneNerdIcon,
 } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -58,10 +60,39 @@ export default function GlossaryView() {
   const [loading, setLoading] = useState(true)
   const [customTerms, setCustomTerms] = useState<GlossaryTermRecord[]>([])
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
   // Filtros, busca e ordenação
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<GlossaryCategoryId | 'all'>('all')
+  const [selectedCategory, setSelectedCategory] = useState<GlossaryCategoryId | 'all'>(() => {
+    const cat = searchParams.get('categoria')
+    if (
+      cat === 'nerd' ||
+      cat === 'combate' ||
+      cat === 'personagem' ||
+      cat === 'regras' ||
+      cat === 'dados' ||
+      cat === 'mesa'
+    ) {
+      return cat
+    }
+    return 'all'
+  })
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+
+  useEffect(() => {
+    const cat = searchParams.get('categoria')
+    if (
+      cat === 'nerd' ||
+      cat === 'combate' ||
+      cat === 'personagem' ||
+      cat === 'regras' ||
+      cat === 'dados' ||
+      cat === 'mesa'
+    ) {
+      setSelectedCategory(cat)
+    }
+  }, [searchParams])
 
   // Modais de Criação/Edição e Exclusão
   const [modalOpen, setModalOpen] = useState(false)
@@ -110,6 +141,8 @@ export default function GlossaryView() {
         return t('glossary.categoryDice')
       case 'mesa':
         return t('glossary.categoryTable')
+      case 'nerd':
+        return t('glossary.categoryNerd')
       default:
         return cat
     }
@@ -128,6 +161,8 @@ export default function GlossaryView() {
         return <RuneSwordIcon className="w-3.5 h-3.5 text-amber-300 shrink-0" />
       case 'mesa':
         return <RuneScrollIcon className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+      case 'nerd':
+        return <RuneNerdIcon className="w-3.5 h-3.5 text-pink-400 shrink-0" />
     }
   }
 
@@ -144,6 +179,8 @@ export default function GlossaryView() {
         return 'border-amber-400/40 text-amber-200 bg-amber-900/30'
       case 'mesa':
         return 'border-purple-500/40 text-purple-300 bg-purple-950/40'
+      case 'nerd':
+        return 'border-pink-500/40 text-pink-300 bg-pink-950/40'
     }
   }
 

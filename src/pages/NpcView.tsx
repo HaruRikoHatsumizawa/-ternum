@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
+import { RpgInventoryTab } from '@/components/rpg/RpgInventoryTab'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneNpcIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
 import {
@@ -570,6 +571,16 @@ export default function NpcView() {
                   </div>
                 </div>
               )}
+
+              {/* SEÇÃO DE INVENTÁRIO DE RPG (Aparece nos modos Geral e RPG, oculta no RP estrito e no foco narrativo puro) */}
+              {mode !== 'rp' &&
+                (sheetTab === 'hibrido' || sheetTab === 'rpg') &&
+                active &&
+                !isEditing && (
+                  <div className="pt-2">
+                    <RpgInventoryTab characterId={active.id} characterName={active.name} />
+                  </div>
+                )}
 
               {/* SEÇÃO RPG CLÁSSICO: CA, HP, ND e Atributos (Exibida em 'hibrido' e 'rpg') */}
               {(sheetTab === 'hibrido' || sheetTab === 'rpg') && (

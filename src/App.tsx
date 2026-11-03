@@ -17,6 +17,7 @@ import NpcView from './pages/NpcView'
 import OracleChat from './pages/OracleChat'
 import CombatTracker from './pages/CombatTracker'
 import GlossaryView from './pages/GlossaryView'
+import CompendiumView from './pages/CompendiumView'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -101,6 +102,7 @@ const App = () => (
                   <Route path="/npcs" element={<NpcView />} />
                   <Route path="/oracle" element={<OracleChat />} />
                   <Route path="/glossary" element={<GlossaryView />} />
+                  <Route path="/compendium" element={<CompendiumView />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

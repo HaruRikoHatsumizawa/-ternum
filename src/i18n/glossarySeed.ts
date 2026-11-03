@@ -363,4 +363,246 @@ export const GLOSSARY_SEED_TERMS: Record<GlossaryCategoryId, GlossarySeedTerm[]>
       },
     },
   ],
+  nerd: [
+    {
+      term: { 'pt-BR': 'OC (Original Character)', en: 'OC (Original Character)' },
+      definition: {
+        'pt-BR':
+          'Personagem original criado pelo jogador ou autor, não pertencente ao elenco canônico da obra ou cenário.',
+        en: 'An original character conceived by the player or author, not part of the canon franchise or setting.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'OOC (Out of Character)', en: 'OOC (Out of Character)' },
+      definition: {
+        'pt-BR':
+          'Fora do personagem: falas, comentários ou atitudes do jogador como pessoa real, e não como o herói interpretado.',
+        en: 'Out of character: comments, questions or chatter coming from the real-life player rather than the persona being roleplayed.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'IC (In Character)', en: 'IC (In Character)' },
+      definition: {
+        'pt-BR':
+          'No personagem: atuação, diálogos e reações estritamente dentro da voz, pensamentos e visão de mundo do personagem.',
+        en: 'In character: speech, thoughts, dialogue and actions strictly aligned with the persona and worldview being portrayed.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Canon', en: 'Canon' },
+      definition: {
+        'pt-BR':
+          'O material, histórico e acontecimentos oficiais estabelecidos pelo criador da obra ou pelo mestre da mesa.',
+        en: 'The official lore, timeline and events officially recognized by the creator or the game master.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Headcanon', en: 'Headcanon' },
+      definition: {
+        'pt-BR':
+          'Interpretação, detalhe ou teoria pessoal que um fã ou jogador tem sobre um personagem, mesmo sem confirmação explícita no material canônico.',
+        en: 'Personal beliefs, backstories or interpretations held by a fan or player about a character, even without explicit confirmation.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'AU (Alternative Universe)', en: 'AU (Alternative Universe)' },
+      definition: {
+        'pt-BR':
+          'Universo alternativo: narrativa que coloca personagens conhecidos em um cenário diferente do original (ex.: fantasia medieval, moderno, cyberpunk).',
+        en: 'Alternate universe: a scenario setting established characters in a world different from canon (e.g., modern, medieval fantasy, sci-fi).',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Ship / Shipping', en: 'Ship / Shipping' },
+      definition: {
+        'pt-BR':
+          'O desejo e torcida para que dois personagens formem um casal ou relação romântica/afetiva em uma história ou mesa de RP.',
+        en: 'The wish or active support for two characters to enter into a romantic or close relational dynamic.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'OTP (One True Pairing)', en: 'OTP (One True Pairing)' },
+      definition: {
+        'pt-BR':
+          'O par romântico supremo e favorito de um jogador ou fã, considerado a combinação perfeita de almas.',
+        en: "A fan or player's all-time favorite romantic pairing, viewed as the ultimate match of souls.",
+      },
+    },
+    {
+      term: { 'pt-BR': 'Muse (Musa)', en: 'Muse' },
+      definition: {
+        'pt-BR':
+          'O personagem específico que um participante de RP está interpretando ou escrevendo no momento.',
+        en: 'The specific character that a roleplayer is writing, portraying or embodying in an active thread.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Mun (O Escritor)', en: 'Mun' },
+      definition: {
+        'pt-BR':
+          'A pessoa real por trás da tela que escreve e controla a musa (abreviação comum em fóruns de RP e escrita criativa).',
+        en: 'The real-world author/person sitting behind the screen writing the muse (common in text roleplay and forum communities).',
+      },
+    },
+    {
+      term: { 'pt-BR': 'RP Literário / Para-RP', en: 'Literary RP / Para-RP' },
+      definition: {
+        'pt-BR':
+          'Estilo de interpretação textual em formato de prosa literária e parágrafos elaborados, valorizando descrições sensoriais e riqueza narrativa.',
+        en: 'Textual roleplay written in descriptive multi-paragraph literary prose, prioritizing depth, sensory detail and narrative polish.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Semiliterato (Semi-Lit)', en: 'Semi-Lit RP' },
+      definition: {
+        'pt-BR':
+          'Formato de RP com postagens de tamanho moderado (1 a 3 parágrafos curtos), equilibrando ritmo ágil e boa pontuação.',
+        en: 'A roleplay pacing format featuring moderate posts (1 to 3 short paragraphs), balancing quick turns with descriptive grammar.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Godmoding', en: 'Godmoding' },
+      definition: {
+        'pt-BR':
+          'A conduta proibida de controlar as ações de outro personagem sem consentimento, ou declarar que seu herói é imune a todo e qualquer golpe.',
+        en: 'The taboo practice of controlling another player’s character without consent, or declaring one’s avatar immune to all harm.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Powerplay', en: 'Powerplay' },
+      definition: {
+        'pt-BR':
+          'Forçar um golpe ou efeito irreversível em outro jogador sem permitir que o parceiro de cena reaja ou tente esquivar.',
+        en: 'Forcing an automatic hit or irreversible outcome onto another character without granting the scene partner a chance to respond.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Retcon', en: 'Retcon (Retroactive Continuity)' },
+      definition: {
+        'pt-BR':
+          'Continuidade retroativa: alterar, reescrever ou anular fatos previamente narrados para corrigir incoerências ou ajustar o rumo da trama.',
+        en: 'Retroactive continuity: amending, rewriting or nullifying previously narrated facts to fix plot holes or steer the narrative.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Crossover', en: 'Crossover' },
+      definition: {
+        'pt-BR':
+          'Encontro narrativo entre personagens ou cenários de franquias distintas (ex.: personagens de animes com cenários medievais de D&D).',
+        en: 'A narrative meeting blending characters, factions or lore from two separate franchises or unrelated fictional universes.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Fandom', en: 'Fandom' },
+      definition: {
+        'pt-BR':
+          'A comunidade coletiva de fãs apaixonados por um livro, anime, jogo ou franquia fictícia.',
+        en: 'The collective community of enthusiastic fans sharing love for a specific franchise, book, anime or game.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Lore', en: 'Lore' },
+      definition: {
+        'pt-BR':
+          'O conjunto de mitos, história antiga, geografia, deuses e tradições que compõem a fundação do mundo fictício.',
+        en: 'The tapestry of history, ancient myths, traditions, gods and geography that forms the background foundation of a fictional realm.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'PC (Player Character)', en: 'PC (Player Character)' },
+      definition: {
+        'pt-BR':
+          'Personagem do jogador: o protagonista individual controlado por um participante da mesa de RPG.',
+        en: 'Player character: the protagonist avatar controlled directly by an individual tabletop participant.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'TPK (Total Party Kill)', en: 'TPK (Total Party Kill)' },
+      definition: {
+        'pt-BR':
+          'A aniquilação completa de todos os heróis do grupo em combate ou catástrofe, encerrando a campanha ou exigindo um milagre narrativo.',
+        en: 'The total annihilation of every hero in the adventuring party in a single fight or trap, often closing the chronicle.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'PVP (Player vs Player)', en: 'PvP (Player vs Player)' },
+      definition: {
+        'pt-BR':
+          'Confronto direto ou duelo entre personagens de jogadores na mesma mesa. Requer maturidade e consentimento prévio dos participantes.',
+        en: 'Direct conflict or duel between player characters at the same table. Requires maturity and clear mutual consent.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'PVE (Player vs Environment)', en: 'PvE (Player vs Environment)' },
+      definition: {
+        'pt-BR':
+          'O jogo colaborativo tradicional: os heróis unidos contra os perigos do mundo, monstros e desafios criados pelo mestre.',
+        en: 'Traditional cooperative tabletop play: heroes united facing the hazards, monsters and puzzles orchestrated by the game master.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Bleed (Sangramento Emocional)', en: 'Bleed' },
+      definition: {
+        'pt-BR':
+          'O fenômeno em que as emoções sentidas pelo personagem transbordam para o jogador real, ou vice-versa, durante cenas intensas.',
+        en: 'The psychological crossover where a character’s emotional state spills into the real player, or vice versa, during intense scenes.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Slow Burn', en: 'Slow Burn' },
+      definition: {
+        'pt-BR':
+          'Narrativa ou romance de desenvolvimento lento e paciente, com tensão gradual construída ao longo de muitas sessões ou capítulos.',
+        en: 'A pacing trope where romance or intense plot bonds unfold gradually across dozens of sessions and patient interactions.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Enemies to Lovers', en: 'Enemies to Lovers' },
+      definition: {
+        'pt-BR':
+          'Clássica dinâmica em que dois personagens começam como rivais ou adversários mortais e, aos poucos, desenvolvem confiança e amor.',
+        en: 'A beloved trope where two characters begin as fierce adversaries or rivals, gradually earning mutual trust and romantic bond.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Angst', en: 'Angst' },
+      definition: {
+        'pt-BR':
+          'Gênero ou tom de cena focado em angústia, conflito interior, dor moral, culpa ou tristeza profunda de um personagem.',
+        en: 'A narrative mood centered on deep emotional torment, grief, guilt, moral friction and existential yearning.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Fluff', en: 'Fluff' },
+      definition: {
+        'pt-BR':
+          'Cenas leves, aconchegantes e doces, focadas em carinho e descanso cômico ou afetivo entre os personagens, sem ameaças iminentes.',
+        en: 'Warm, cozy and heartwarming narrative moments centered on comfort, humor and tenderness free of impending danger.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Plot Armor', en: 'Plot Armor' },
+      definition: {
+        'pt-BR':
+          'A blindagem de enredo: quando um personagem sobrevive a situações estatisticamente fatais apenas porque a história precisa dele vivo.',
+        en: 'The phenomenon where a character survives statistically lethal circumstances purely because the narrative demands their survival.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Nat 20 / 20 Natural', en: 'Nat 20 (Natural 20)' },
+      definition: {
+        'pt-BR':
+          'Tirar o número 20 puro na face de um dado d20: o ápice da sorte, gerando acertos críticos e momentos lendários na mesa.',
+        en: 'Rolling an unaltered 20 on a d20 die face: the pinnacle of fortune, yielding critical triumphs and legendary cheers.',
+      },
+    },
+    {
+      term: { 'pt-BR': 'Nat 1 / 1 Natural', en: 'Nat 1 (Natural 1)' },
+      definition: {
+        'pt-BR':
+          'Tirar o número 1 puro na face de um dado d20: falha crítica automática, frequentemente resultando em tragédias cômicas ou desastres heróicos.',
+        en: 'Rolling an unaltered 1 on a d20 die face: an automatic critical fumble, often sparking comedic mishaps or dramatic peril.',
+      },
+    },
+  ],
 }

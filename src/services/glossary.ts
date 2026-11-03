@@ -1,7 +1,7 @@
 import pb from '@/lib/pocketbase/client'
 import { RecordModel } from 'pocketbase'
 
-export type GlossaryCategoryId = 'combate' | 'personagem' | 'regras' | 'dados' | 'mesa'
+export type GlossaryCategoryId = 'combate' | 'personagem' | 'regras' | 'dados' | 'mesa' | 'nerd'
 
 export const GLOSSARY_CATEGORY_IDS: GlossaryCategoryId[] = [
   'combate',
@@ -9,6 +9,7 @@ export const GLOSSARY_CATEGORY_IDS: GlossaryCategoryId[] = [
   'regras',
   'dados',
   'mesa',
+  'nerd',
 ]
 
 export interface GlossaryTermRecord extends RecordModel {

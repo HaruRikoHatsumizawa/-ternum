@@ -925,6 +925,147 @@ export function RuneSparkleIcon({ className = 'w-4 h-4', size, ...props }: Etern
  * Escudo heráldico facetado com duas lâminas rúnicas cruzadas e orbe de precisão.
  * Silhueta: Lâminas cruzadas em X com escudo e gema rúnica central.
  */
+/**
+ * 10b. Compêndio de Raças & Poderes:
+ * Tomo aberto irradiando feixes elementares e runa estelar de linhagem.
+ * Silhueta: Tomo aberto em V com estrela central e faíscas arcanas.
+ */
+export function RuneCompendiumIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Páginas abertas do compêndio arcano */}
+      <path
+        d="M12 6.5 C9.5 4.8 5.5 5 2.5 5.8 V18.2 C5.8 17.5 9.5 17.3 12 19 C14.5 17.3 18.2 17.5 21.5 18.2 V5.8 C18.5 5 14.5 4.8 12 6.5 Z"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      {/* Lombada central */}
+      <line x1="12" y1="6.5" x2="12" y2="19" strokeWidth="1.4" />
+      {/* Estrela / Runa de linhagem e poder emergindo do centro */}
+      <path
+        d="M12 2.2 L12.8 4.2 L14.8 5 L12.8 5.8 L12 7.8 L11.2 5.8 L9.2 5 L11.2 4.2 Z"
+        strokeWidth="1"
+        fill="currentColor"
+        fillOpacity="0.4"
+        strokeLinejoin="round"
+      />
+      {/* Linhas de runas nas páginas */}
+      <path
+        d="M5.5 9.5 H9 M5.5 12.5 H9.5 M5.5 15 H8.5"
+        strokeWidth="1"
+        opacity="0.65"
+        strokeLinecap="round"
+      />
+      <path
+        d="M14.5 9.5 H18.5 M14.5 12.5 H18.5 M15.5 15 H18.5"
+        strokeWidth="1"
+        opacity="0.65"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+/**
+ * 10c. Mochila / Algibeira do Aventureiro (Inventário de RPG):
+ * Mochila de couro reforçada com fivelas, bolsos laterais e cordão rúnico.
+ * Silhueta: Bolsa de viagem com aba superior e fivelas verticais.
+ */
+export function RuneBackpackIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Alça superior da mochila */}
+      <path d="M9 4.5 C9 3.1 10.3 2 12 2 C13.7 2 15 3.1 15 4.5 V5.5 H9 Z" strokeWidth="1.3" />
+      {/* Corpo principal da mochila */}
+      <rect x="5.5" y="5.5" width="13" height="15.5" rx="2.5" strokeWidth="1.4" />
+      {/* Aba superior fechando a boca */}
+      <path d="M5.5 10.5 C7.5 12 10 12.8 12 12.8 C14 12.8 16.5 12 18.5 10.5" strokeWidth="1.3" />
+      {/* Bolso frontal */}
+      <rect
+        x="8"
+        y="14"
+        width="8"
+        height="5"
+        rx="1.2"
+        strokeWidth="1.2"
+        fill="currentColor"
+        fillOpacity="0.15"
+      />
+      {/* Tiras de fivela verticais */}
+      <line x1="8.5" y1="5.5" x2="8.5" y2="12" strokeWidth="1.1" opacity="0.75" />
+      <line x1="15.5" y1="5.5" x2="15.5" y2="12" strokeWidth="1.1" opacity="0.75" />
+      {/* Fivelas centrais */}
+      <rect x="7.8" y="8" width="1.4" height="2" rx="0.3" fill="currentColor" />
+      <rect x="14.8" y="8" width="1.4" height="2" rx="0.3" fill="currentColor" />
+    </svg>
+  )
+}
+
+/**
+ * 10d. Máscara / Dado de Cultura Nerd (Dicionário Nerd):
+ * Par de máscaras teatrais ou orbe multifacetado rúnico.
+ * Silhueta: Máscara rúnica estilizada de interpretação (persona/alter-ego).
+ */
+export function RuneNerdIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Contorno da máscara dramática de RP / Fandom */}
+      <path
+        d="M4.5 6 C4.5 4.5 6.2 3.5 12 3.5 C17.8 3.5 19.5 4.5 19.5 6 V13 C19.5 17.5 16 20.5 12 21 C8 20.5 4.5 17.5 4.5 13 Z"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      {/* Fendas dos olhos */}
+      <path
+        d="M7.8 9.5 C8.8 8.8 10.2 9.5 10.2 10.5 C10.2 11.2 9.2 11.8 7.8 11.2 Z"
+        strokeWidth="1.1"
+        fill="currentColor"
+        fillOpacity="0.35"
+      />
+      <path
+        d="M16.2 9.5 C15.2 8.8 13.8 9.5 13.8 10.5 C13.8 11.2 14.8 11.8 16.2 11.2 Z"
+        strokeWidth="1.1"
+        fill="currentColor"
+        fillOpacity="0.35"
+      />
+      {/* Runa na testa da máscara (fandom/lore) */}
+      <circle cx="12" cy="6.8" r="1.1" fill="currentColor" />
+      {/* Sorriso enigmático de dramatização */}
+      <path d="M8.5 15.2 C10.2 16.8 13.8 16.8 15.5 15.2" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export function RuneCombatIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
     <svg
@@ -1022,8 +1163,14 @@ export type RunicInsigniaKey =
   | 'crest'
   | 'user'
   | 'combat'
+  | 'compendium'
+  | 'backpack'
+  | 'nerd'
 
 export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] = [
+  { id: 'compendium', label: 'Compêndio de Poderes' },
+  { id: 'backpack', label: 'Mochila de Aventureiro' },
+  { id: 'nerd', label: 'Máscara Dramática' },
   { id: 'combat', label: 'Combate Tático' },
   { id: 'sword', label: 'Espada de Honra' },
   { id: 'wolf', label: 'Lobo Nobre' },
@@ -1094,6 +1241,12 @@ export function RunicInsignia({
     return <RuneCrestIcon className={className} size={size} {...props} />
   if (norm === 'combat' || norm === 'combate' || norm === 'iniciativa' || norm === 'battle')
     return <RuneCombatIcon className={className} size={size} {...props} />
+  if (norm === 'compendium' || norm === 'compendio' || norm === 'racas' || norm === 'poderes')
+    return <RuneCompendiumIcon className={className} size={size} {...props} />
+  if (norm === 'backpack' || norm === 'inventario' || norm === 'mochila' || norm === 'bag')
+    return <RuneBackpackIcon className={className} size={size} {...props} />
+  if (norm === 'nerd' || norm === 'fandom' || norm === 'mascara' || norm === 'dicionario')
+    return <RuneNerdIcon className={className} size={size} {...props} />
 
   // Fallback padrão seguro (Pergaminho rúnico suave)
   return <RuneScrollIcon className={className} size={size} {...props} />
@@ -1111,6 +1264,8 @@ export type EternumIconKey =
   | 'settings'
   | 'search'
   | 'combat'
+  | 'compendium'
+  | 'nerd'
 
 export function EternumIcon({
   name,
@@ -1139,6 +1294,10 @@ export function EternumIcon({
       return <RuneGearIcon className={className} size={size} {...props} />
     case 'combat':
       return <RuneCombatIcon className={className} size={size} {...props} />
+    case 'compendium':
+      return <RuneCompendiumIcon className={className} size={size} {...props} />
+    case 'nerd':
+      return <RuneNerdIcon className={className} size={size} {...props} />
     case 'search':
       return <RuneSearchIcon className={className} size={size} {...props} />
     default:

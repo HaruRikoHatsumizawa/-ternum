@@ -39,6 +39,8 @@ import {
   RuneGearIcon,
   RuneSearchIcon,
   RuneLexiconIcon,
+  RuneCompendiumIcon,
+  RuneNerdIcon,
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
@@ -384,15 +386,41 @@ export default function Layout() {
                   </Link>
 
                   <Link
+                    to="/compendium"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/compendium'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneCompendiumIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span className="flex-1">{t('nav.compendium')}</span>
+                  </Link>
+
+                  <Link
                     to="/glossary"
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
-                      location.pathname === '/glossary'
+                      location.pathname === '/glossary' &&
+                      !location.search.includes('categoria=nerd')
                         ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
                         : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                     }`}
                   >
                     <RuneLexiconIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                     <span className="flex-1">{t('nav.glossary')}</span>
+                  </Link>
+
+                  <Link
+                    to="/glossary?categoria=nerd"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/glossary' &&
+                      location.search.includes('categoria=nerd')
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneNerdIcon className="h-3.5 w-3.5 text-pink-400 shrink-0" />
+                    <span className="flex-1">{t('nav.nerdDictionary')}</span>
                   </Link>
                 </>
               )}
@@ -476,15 +504,41 @@ export default function Layout() {
                   </Link>
 
                   <Link
+                    to="/compendium"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/compendium'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneCompendiumIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span className="flex-1">{t('nav.compendium')}</span>
+                  </Link>
+
+                  <Link
                     to="/glossary"
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
-                      location.pathname === '/glossary'
+                      location.pathname === '/glossary' &&
+                      !location.search.includes('categoria=nerd')
                         ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
                         : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
                     }`}
                   >
                     <RuneLexiconIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                     <span className="flex-1">{t('nav.glossary')}</span>
+                  </Link>
+
+                  <Link
+                    to="/glossary?categoria=nerd"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/glossary' &&
+                      location.search.includes('categoria=nerd')
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneNerdIcon className="h-3.5 w-3.5 text-pink-400 shrink-0" />
+                    <span className="flex-1">{t('nav.nerdDictionary')}</span>
                   </Link>
                 </>
               )}
@@ -541,6 +595,31 @@ export default function Layout() {
                     <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
                       IA
                     </span>
+                  </Link>
+
+                  <Link
+                    to="/compendium"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/compendium'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneCompendiumIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span className="flex-1">{t('nav.compendium')}</span>
+                  </Link>
+
+                  <Link
+                    to="/glossary?categoria=nerd"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/glossary' &&
+                      location.search.includes('categoria=nerd')
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneNerdIcon className="h-3.5 w-3.5 text-pink-400 shrink-0" />
+                    <span className="flex-1">{t('nav.nerdDictionary')}</span>
                   </Link>
                 </>
               )}
