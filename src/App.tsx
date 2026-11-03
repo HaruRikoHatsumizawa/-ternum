@@ -7,6 +7,10 @@ import Index from './pages/Index'
 import PageEditor from './pages/PageEditor'
 import BoardView from './pages/BoardView'
 import DatabaseView from './pages/DatabaseView'
+import SessionsCalendar from './pages/SessionsCalendar'
+import LootForge from './pages/LootForge'
+import NpcView from './pages/NpcView'
+import OracleChat from './pages/OracleChat'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
@@ -49,6 +53,10 @@ const App = () => (
             <Route path="/pages/:id" element={<PageEditor />} />
             <Route path="/boards/:id" element={<BoardView />} />
             <Route path="/databases/:id" element={<DatabaseView />} />
+            <Route path="/sessions" element={<SessionsCalendar />} />
+            <Route path="/loot" element={<LootForge />} />
+            <Route path="/npcs" element={<NpcView />} />
+            <Route path="/oracle" element={<OracleChat />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />

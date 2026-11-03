@@ -69,11 +69,13 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 shadow-xl shadow-amber-950/40 mb-2">
             <span className="text-3xl">⚔️</span>
           </div>
-          <h1 className="text-3xl font-fantasy font-bold tracking-tight text-amber-100">
-            Grimório RPG
-          </h1>
+          <h1 className="text-3xl font-fantasy font-bold tracking-tight text-amber-100">Éternum</h1>
+          <p className="text-xs text-amber-300/80 font-fantasy uppercase tracking-wider">
+            O Grimório da Campanha
+          </p>
           <p className="text-xs text-[#a39b8d] max-w-xs mx-auto leading-relaxed">
-            Gestão de Aventuras: Crônicas de Mesa, Fichas de Personagens, Missões e Códices Arcanos.
+            Gestão Dark Fantasy: Sessões, Fichas de Personagens, Forja de Loot, Missões e Oráculo
+            Arcano.
           </p>
         </div>
 

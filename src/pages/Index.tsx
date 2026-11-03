@@ -20,10 +20,19 @@ import {
   Crown,
   Flame,
   Award,
+  Calendar,
+  Users,
+  Bot,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
+import {
+  RunicCircle,
+  DragonSilhouette,
+  CrestShield,
+  TomeOrnament,
+} from '@/components/rpg/RpgArtwork'
 
 // Amostras de Heróis em Destaque da Campanha (Fichas prontas)
 const HIGHLIGHT_HEROES = [
@@ -147,15 +156,16 @@ export default function Index() {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-fantasy tracking-wider uppercase">
               <Crown className="h-3.5 w-3.5 text-amber-400" />
-              <span>Campanha Ativa • As Crônicas de Val-Morath</span>
+              <span>Éternum • As Crônicas de Val-Morath</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-fantasy text-amber-100 flex items-center gap-3">
-              <span>Saudações, Mestre {user?.name || 'Amanda'}</span>
+              <span>Éternum — Mestre {user?.name || 'Amanda'}</span>
               <span className="text-2xl">⚔️</span>
             </h1>
             <p className="text-sm text-[#b8b0a0] max-w-2xl leading-relaxed">
-              Bem-vindo ao seu grimório de mesa. Gerencie fichas de aventureiros, murais de
-              contratos e códices com precisão arcana.
+              Bem-vindo ao Éternum, seu grimório dark fantasy de mesa. Gerencie sessões no
+              calendário, forje loots com probabilidades mágicas, consulte o Oráculo de IA e arquive
+              fichas de heróis e NPCs.
             </p>
           </div>
 
@@ -264,59 +274,59 @@ export default function Index() {
           Forjar Novo Registro de Aventura
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button
-            onClick={handleCreatePage}
+          <Link
+            to="/sessions"
             className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"
           >
             <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Scroll className="h-5 w-5" />
+              <Calendar className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-sm font-fantasy font-bold text-amber-100 block">
-                Nova Ficha / Crônica
+                Calendário de Sessões
               </span>
               <span className="text-xs text-[#a39b8d] line-clamp-1">
-                Fichas de heróis e diários de sessão
+                Agendamento mensal e crônicas da mesa
               </span>
             </div>
-            <Plus className="h-4 w-4 text-amber-400/60 group-hover:text-amber-300 transition-colors" />
-          </button>
+            <ArrowRight className="h-4 w-4 text-amber-400/60 group-hover:text-amber-300 transition-colors" />
+          </Link>
 
-          <button
-            onClick={handleCreateBoard}
-            className="flex items-start gap-3 p-4 rounded-xl border border-blue-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-blue-500/40 transition-all text-left group shadow-xs"
+          <Link
+            to="/loot"
+            className="flex items-start gap-3 p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-amber-500/40 transition-all text-left group shadow-xs"
           >
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <Shield className="h-5 w-5" />
+            <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Flame className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-sm font-fantasy font-bold text-blue-100 block">
-                Mural de Missões
+              <span className="text-sm font-fantasy font-bold text-amber-100 block">
+                Forja do Tesouro
               </span>
               <span className="text-xs text-[#a39b8d] line-clamp-1">
-                Contratos, recompensas e objetivos
+                Sorteie loot mágico e salve no códice
               </span>
             </div>
-            <Plus className="h-4 w-4 text-blue-400/60 group-hover:text-blue-300 transition-colors" />
-          </button>
+            <ArrowRight className="h-4 w-4 text-amber-400/60 group-hover:text-amber-300 transition-colors" />
+          </Link>
 
-          <button
-            onClick={handleCreateDatabase}
-            className="flex items-start gap-3 p-4 rounded-xl border border-emerald-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-emerald-500/40 transition-all text-left group shadow-xs"
+          <Link
+            to="/oracle"
+            className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-purple-500/40 transition-all text-left group shadow-xs"
           >
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <BookOpen className="h-5 w-5" />
+            <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Bot className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-sm font-fantasy font-bold text-emerald-100 block">
-                Códice Arcano
+              <span className="text-sm font-fantasy font-bold text-purple-100 block">
+                Oráculo de Éternum
               </span>
               <span className="text-xs text-[#a39b8d] line-clamp-1">
-                NPCs, itens mágicos e monstros
+                IA nativa: ganchos, enigmas e ideias
               </span>
             </div>
-            <Plus className="h-4 w-4 text-emerald-400/60 group-hover:text-emerald-300 transition-colors" />
-          </button>
+            <ArrowRight className="h-4 w-4 text-purple-400/60 group-hover:text-purple-300 transition-colors" />
+          </Link>
         </div>
       </div>
 

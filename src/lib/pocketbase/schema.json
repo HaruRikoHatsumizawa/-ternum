@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T12:18:18.299Z",
+  "generatedAt": "2026-11-03T12:37:04.470Z",
   "collections": [
     {
       "name": "users",
@@ -246,6 +246,240 @@
       "indexes": [
         "CREATE INDEX idx_databases_user ON databases (user)",
         "CREATE INDEX idx_databases_user_updated ON databases (user, updated DESC)"
+      ]
+    },
+    {
+      "name": "sessions",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["Agendada", "Realizada", "Cancelada"]
+        },
+        {
+          "name": "campaign",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_sessions_user ON sessions (user)",
+        "CREATE INDEX idx_sessions_user_date ON sessions (user, date ASC)"
+      ]
+    },
+    {
+      "name": "npcs",
+      "type": "base",
+      "apiRules": {
+        "list": "@request.auth.id != '' && user = @request.auth.id",
+        "view": "@request.auth.id != '' && user = @request.auth.id",
+        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
+        "update": "@request.auth.id != '' && user = @request.auth.id",
+        "delete": "@request.auth.id != '' && user = @request.auth.id"
+      },
+      "fields": [
+        {
+          "name": "user",
+          "type": "relation",
+          "required": true,
+          "system": false,
+          "collectionRef": "users"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "race",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "occupation",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "alignment",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "status",
+          "type": "select",
+          "required": true,
+          "system": false,
+          "selectValues": ["Vivo", "Desconhecido", "Morto"]
+        },
+        {
+          "name": "appearance",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "hp",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ac",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cr",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "str",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "dex",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "con",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "int",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "wis",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cha",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "personality",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "secrets",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "avatar",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX idx_npcs_user ON npcs (user)",
+        "CREATE INDEX idx_npcs_user_name ON npcs (user, name)"
       ]
     }
   ]

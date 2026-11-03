@@ -21,7 +21,12 @@ import {
   Home,
   CheckCircle2,
   Sparkles,
+  Calendar,
+  Flame,
+  Users,
+  Bot,
 } from 'lucide-react'
+import { RunicCircle, DragonSilhouette, CrestShield } from '@/components/rpg/RpgArtwork'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -154,7 +159,7 @@ export default function Layout() {
                         {user?.name || 'Mestre da Mesa'}
                       </span>
                       <span className="text-[10px] text-amber-400/70 font-fantasy truncate">
-                        Grimório de RPG
+                        Éternum • Grimório
                       </span>
                     </div>
                     <ChevronDown className="h-3.5 w-3.5 text-amber-400/60 ml-auto shrink-0" />
@@ -216,7 +221,58 @@ export default function Layout() {
                 }`}
               >
                 <Home className="h-3.5 w-3.5 text-amber-400" />
-                <span>Salão Principal (Início)</span>
+                <span>Salão Principal</span>
+              </Link>
+
+              <Link
+                to="/sessions"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/sessions'
+                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                }`}
+              >
+                <Calendar className="h-3.5 w-3.5 text-amber-400" />
+                <span>Calendário de Sessões</span>
+              </Link>
+
+              <Link
+                to="/loot"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/loot'
+                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                }`}
+              >
+                <Flame className="h-3.5 w-3.5 text-amber-400" />
+                <span>Forja do Tesouro (Loot)</span>
+              </Link>
+
+              <Link
+                to="/npcs"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/npcs'
+                    ? 'bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30 shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d]'
+                }`}
+              >
+                <Users className="h-3.5 w-3.5 text-amber-400" />
+                <span>Fichas de NPCs</span>
+              </Link>
+
+              <Link
+                to="/oracle"
+                className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                  location.pathname === '/oracle'
+                    ? 'bg-purple-950/40 text-purple-200 font-semibold border border-purple-500/40 shadow-xs'
+                    : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
+                }`}
+              >
+                <Bot className="h-3.5 w-3.5 text-purple-400" />
+                <span className="flex-1">Oráculo de Éternum</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
+                  IA
+                </span>
               </Link>
             </div>
 
@@ -416,8 +472,8 @@ export default function Layout() {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="hidden sm:flex items-center gap-2 text-xs font-fantasy text-amber-300/80">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-              <span>Grimório de RPG & Aventuras</span>
+              <RunicCircle className="h-4 w-4 text-amber-400" />
+              <span className="font-bold tracking-wide">Éternum — O Grimório da Campanha</span>
             </div>
           </div>
 
