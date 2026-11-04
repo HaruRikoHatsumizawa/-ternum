@@ -855,7 +855,6 @@ export const ptBR = {
     btnGenerateRpgSummary: 'Gerar Resumo RPG',
     sheetOptRp: 'Ficha Narrativa (RP)',
     sheetOptRpg: 'Ficha Tática (RPG)',
-    generatingSheet: 'Forjando Ficha...',
     btnGenerateCustomSheet: 'Forjar Ficha via IA',
     tabProfile: 'Perfil & Origem',
     tabPowers: 'Poderes & Talentos',
@@ -898,6 +897,21 @@ export const ptBR = {
     removeBond: 'Remover Vínculo',
     saveBond: 'Salvar Vínculo',
     cancelBond: 'Cancelar',
+    // Chaves complementares para poderes, habilidades e ficha do Dossiê
+    btnAddPower: 'Adicionar Poder',
+    removePowerTooltip: 'Remover poder',
+    noPowersYet: 'Nenhum poder registrado ainda.',
+    abilitiesSectionTitle: 'Habilidades & Perícias',
+    addAbilityTitle: 'Adicionar Nova Habilidade',
+    btnAddAbility: 'Adicionar Habilidade',
+    removeAbilityTooltip: 'Remover habilidade',
+    noAbilitiesYet: 'Nenhuma habilidade registrada ainda.',
+    saveCustomSheetButton: 'Salvar Ficha do Oráculo',
+    emptySheetTitle: 'Nenhuma Ficha Esculpida',
+    emptySheetDesc:
+      'Escolha o formato desejado (RP ou RPG) no painel superior e clique em Forjar Ficha via IA.',
+    btnGenerateFirstSheet: 'Forjar Ficha via IA',
+    sheetGeneratedAt: 'Forjada em {date}',
   },
 
   // Not Found

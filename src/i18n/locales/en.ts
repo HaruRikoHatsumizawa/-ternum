@@ -850,7 +850,6 @@ export const en: TranslationDict = {
     btnGenerateRpgSummary: 'Generate RPG Summary',
     sheetOptRp: 'Narrative Sheet (RP)',
     sheetOptRpg: 'Tactical Sheet (RPG)',
-    generatingSheet: 'Forging Sheet...',
     btnGenerateCustomSheet: 'Forge Sheet via AI',
     tabProfile: 'Profile & Origin',
     tabPowers: 'Powers & Skills',
@@ -891,6 +890,20 @@ export const en: TranslationDict = {
     removeBond: 'Remove Bond',
     saveBond: 'Save Bond',
     cancelBond: 'Cancel',
+    // Supplementary keys for powers, abilities, and custom sheet
+    btnAddPower: 'Add Power',
+    removePowerTooltip: 'Remove power',
+    noPowersYet: 'No powers inscribed yet.',
+    abilitiesSectionTitle: 'Abilities & Skills',
+    addAbilityTitle: 'Add New Ability',
+    btnAddAbility: 'Add Ability',
+    removeAbilityTooltip: 'Remove ability',
+    noAbilitiesYet: 'No abilities inscribed yet.',
+    saveCustomSheetButton: 'Save Oracle Sheet',
+    emptySheetTitle: 'No Sheet Inscribed',
+    emptySheetDesc: 'Choose your desired format (RP or RPG) above and click Forge Sheet via AI.',
+    btnGenerateFirstSheet: 'Forge Sheet via AI',
+    sheetGeneratedAt: 'Forged at {date}',
   },
 
   // Not Found

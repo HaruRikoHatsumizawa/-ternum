@@ -48,6 +48,7 @@ export type TranslationKey = DotNestedKeys<TranslationDict>
 
 interface LanguageContextType {
   locale: Locale
+  language: Locale
   setLocale: (locale: Locale) => Promise<void>
   t: (key: string, params?: Record<string, string | number>) => string
   dict: TranslationDict
@@ -158,6 +159,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     <LanguageContext.Provider
       value={{
         locale,
+        language: locale,
         setLocale,
         t,
         dict,

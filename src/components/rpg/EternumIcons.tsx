@@ -1265,6 +1265,74 @@ export function RuneUserIcon({ className = 'w-4 h-4', size, ...props }: EternumI
   )
 }
 
+// Ícone Rúnico de Adicionar / Criação (+)
+export function RunePlusIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <circle cx="12" cy="12" r="9.5" strokeWidth="1.2" strokeDasharray="3 2" opacity="0.6" />
+      <line x1="12" y1="7" x2="12" y2="17" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="7" y1="12" x2="17" y2="12" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="12" cy="7" r="0.8" fill="currentColor" />
+      <circle cx="12" cy="17" r="0.8" fill="currentColor" />
+      <circle cx="7" cy="12" r="0.8" fill="currentColor" />
+      <circle cx="17" cy="12" r="0.8" fill="currentColor" />
+    </svg>
+  )
+}
+
+// Ícone Rúnico de Descarte / Banimento (Lixeira / Cinzas)
+export function RuneTrashIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M4 6.5 H20" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M9.5 4 H14.5 L15.5 6.5 H8.5 Z" strokeWidth="1.3" strokeLinejoin="round" />
+      <path
+        d="M6.5 6.5 L7.5 19 C7.6 20.1 8.5 21 9.6 21 H14.4 C15.5 21 16.4 20.1 16.5 19 L17.5 6.5"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="10"
+        y1="10"
+        x2="10"
+        y2="17"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.75"
+      />
+      <line
+        x1="14"
+        y1="10"
+        x2="14"
+        y2="17"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.75"
+      />
+    </svg>
+  )
+}
+
 /**
  * Seletor universal de insígnia rúnica por chave textual (elimina emojis em todo o sistema)
  */

@@ -245,7 +245,7 @@ export default function NpcView() {
         </div>
 
         <Button
-          onClick={handleStartCreate}
+          onClick={() => handleStartCreate()}
           className={`font-fantasy font-bold gap-1.5 border shadow-sm ${
             mode === 'rp'
               ? 'bg-gradient-to-r from-purple-700 to-purple-500 hover:from-purple-600 hover:to-purple-400 text-purple-50 border-purple-300/40'
