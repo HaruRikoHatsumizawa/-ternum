@@ -20,9 +20,9 @@ import { Sparkles, ArrowRight, Lock, Mail, User, CheckCircle2 } from 'lucide-rea
 
 export default function Login() {
   const [isSignUp, setIsSignUp] = useState(false)
-  const [email, setEmail] = useState('amanda_fac1@yahoo.com.br')
-  const [password, setPassword] = useState('Skip@Pass')
-  const [name, setName] = useState('Amanda')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 

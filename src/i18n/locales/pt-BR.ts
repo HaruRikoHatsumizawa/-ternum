@@ -176,6 +176,16 @@ export const ptBR = {
     noRpPlots: 'Nenhuma trama registrada ainda.',
     noRpCodex: 'Nenhum códice de linhagem ou relações criado.',
     noRpCharacters: 'Nenhum personagem registrado no elenco.',
+    highlightHeroesTitle: 'Personagens em Destaque (Grupo de Aventureiros)',
+    highlightHeroesBadge: 'RPG & RP • Tier 1 Heroico',
+    noHeroesYet: 'Nenhum herói ou NPC forjado ainda.',
+    noHeroesYetDesc:
+      'Crie seus primeiros personagens no Registro de NPCs ou Fichas para vê-los aqui.',
+    createHero: 'Forjar Primeiro Herói',
+    levelShort: 'Nv.',
+    hitPointsShort: 'Pontos de Vida (HP)',
+    armorClassShort: 'Classe de Armadura (CA)',
+    viewHeroSheet: 'Ver Ficha Completa',
   },
 
   // Page Editor

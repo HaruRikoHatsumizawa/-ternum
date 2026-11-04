@@ -50,49 +50,7 @@ import {
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { RpHomeView } from '@/components/rpg/RpHomeView'
-
-// Amostras de Heróis em Destaque da Campanha (Fichas prontas)
-const HIGHLIGHT_HEROES = [
-  {
-    name: 'Valerius Lâmina Rubra',
-    species: 'Raposa-Vermelha',
-    classRole: 'Espadachim & Mercenário',
-    level: 5,
-    hpMax: 48,
-    hpCurrent: 44,
-    avatar: 'fox',
-    xp: 6800,
-    xpNext: 7500,
-    alignment: 'Caótico e Bom',
-    rpNote: 'Mestre em fintas e espreita. Leal a quem honra sua palavra.',
-  },
-  {
-    name: 'Lyra Sombra-Estelar',
-    species: 'Loba Cinzenta',
-    classRole: 'Arcanista das Brumas',
-    level: 4,
-    hpMax: 26,
-    hpCurrent: 26,
-    avatar: 'wolf',
-    xp: 3900,
-    xpNext: 4500,
-    alignment: 'Neutro e Bom',
-    rpNote: 'Canaliza constelações veladas; protetora silente de sua matilha.',
-  },
-  {
-    name: 'Ignis Escama-de-Cinza',
-    species: 'Dragão Viajante',
-    classRole: 'Clérigo da Forja Rúnica',
-    level: 4,
-    hpMax: 38,
-    hpCurrent: 35,
-    avatar: 'dragon',
-    xp: 4100,
-    xpNext: 4500,
-    alignment: 'Leal e Neutro',
-    rpNote: 'Sábio eremita que forja lâminas sagradas e coleciona crônicas.',
-  },
-]
+import { NpcRecord, npcsService } from '@/services/npcs'
 
 export default function Index() {
   const { user } = useAuth()
@@ -103,6 +61,7 @@ export default function Index() {
   const [pages, setPages] = useState<PageRecord[]>([])
   const [boards, setBoards] = useState<BoardRecord[]>([])
   const [databases, setDatabases] = useState<DatabaseRecord[]>([])
+  const [heroes, setHeroes] = useState<NpcRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
@@ -110,14 +69,16 @@ export default function Index() {
     const loadAll = async () => {
       setLoading(true)
       try {
-        const [p, b, d] = await Promise.all([
-          pagesService.list(),
-          boardsService.list(),
-          databasesService.list(),
+        const [p, b, d, n] = await Promise.all([
+          pagesService.list().catch(() => []),
+          boardsService.list().catch(() => []),
+          databasesService.list().catch(() => []),
+          npcsService.list().catch(() => []),
         ])
         setPages(p)
         setBoards(b)
         setDatabases(d)
+        setHeroes(n)
       } catch (err) {
         console.error(err)
       } finally {
@@ -278,99 +239,104 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Personagens em Destaque da Mesa (Fichas Rápidas com HP & XP) */}
+      {/* Personagens em Destaque da Mesa (Apenas personagens reais do usuário) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Swords className="h-5 w-5 text-amber-400" />
             <h2 className="text-lg font-bold font-fantasy text-amber-200 tracking-wide">
-              Personagens em Destaque (Grupo de Aventureiros)
+              {t('home.highlightHeroesTitle')}
             </h2>
           </div>
           <span className="text-xs text-amber-300/60 font-fantasy flex items-center gap-1">
             <RunicPawIcon className="w-3.5 h-3.5 text-amber-400" />
-            RPG & RP • Tier 1 Heroico
+            {t('home.highlightHeroesBadge')}
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {HIGHLIGHT_HEROES.map((hero) => {
-            const hpPercent = Math.round((hero.hpCurrent / hero.hpMax) * 100)
-            const xpPercent = Math.round((hero.xp / hero.xpNext) * 100)
+        {heroes.length === 0 ? (
+          <div className="p-6 rounded-xl border border-dashed border-amber-500/25 bg-[#121620]/60 text-center space-y-3">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+              <RunicPawIcon className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm font-fantasy font-bold text-amber-200">
+                {t('home.noHeroesYet')}
+              </p>
+              <p className="text-xs text-[#a39b8d] max-w-md mx-auto mt-1">
+                {t('home.noHeroesYetDesc')}
+              </p>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => navigate('/npcs')}
+              className="bg-amber-600/30 hover:bg-amber-600/50 text-amber-200 border border-amber-500/40 text-xs font-fantasy"
+            >
+              <Plus className="w-3.5 h-3.5 mr-1.5" />
+              {t('home.createHero')}
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {heroes.slice(0, 3).map((hero) => {
+              const maxHp = hero.hp || 20
+              const acVal = hero.ac || 10
 
-            return (
-              <div
-                key={hero.name}
-                className="p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:border-amber-500/45 transition-all shadow-md group relative overflow-hidden"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl shrink-0 group-hover:scale-105 transition-transform shadow-xs">
-                      {hero.avatar}
+              return (
+                <Link
+                  key={hero.id}
+                  to={`/characters/${hero.id}`}
+                  className="p-4 rounded-xl border border-amber-500/25 bg-[#121620] hover:border-amber-500/45 transition-all shadow-md group relative overflow-hidden block"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs text-amber-300">
+                        <RunicInsignia name={hero.avatar || 'npc'} className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold font-fantasy text-amber-100 leading-tight group-hover:text-amber-300 transition-colors">
+                          {hero.name}
+                        </h3>
+                        <p className="text-xs text-amber-300/80 font-medium">
+                          {hero.species || hero.race || 'Aventureiro'} •{' '}
+                          {hero.occupation || 'Viajante'}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold font-fantasy text-amber-100 leading-tight">
-                        {hero.name}
-                      </h3>
-                      <p className="text-xs text-amber-300/80 font-medium">
-                        {hero.species} • {hero.classRole}
-                      </p>
+                    {hero.cr && (
+                      <span className="px-2 py-0.5 rounded text-[11px] font-fantasy font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        {hero.cr}
+                      </span>
+                    )}
+                  </div>
+
+                  {(hero.appearance || hero.bio || hero.notes) && (
+                    <p className="text-[11px] text-[#b8b0a0] italic mt-3 pt-2 border-t border-[#222938] line-clamp-1">
+                      "{hero.appearance || hero.bio || hero.notes}"
+                    </p>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-[#222938] text-[11px]">
+                    <div className="flex items-center gap-1.5 text-rose-300">
+                      <Flame className="h-3 w-3 text-rose-500" />
+                      <span>
+                        {t('home.hitPointsShort')}:{' '}
+                        <strong className="font-mono text-rose-200">{maxHp}</strong>
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-amber-300 justify-end">
+                      <Shield className="h-3 w-3 text-amber-400" />
+                      <span>
+                        {t('home.armorClassShort')}:{' '}
+                        <strong className="font-mono text-amber-200">{acVal}</strong>
+                      </span>
                     </div>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[11px] font-fantasy font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                    Nv. {hero.level}
-                  </span>
-                </div>
-
-                {hero.rpNote && (
-                  <p className="text-[11px] text-[#b8b0a0] italic mt-3 pt-2 border-t border-[#222938] line-clamp-1">
-                    "{hero.rpNote}"
-                  </p>
-                )}
-
-                <div className="space-y-2 mt-2 pt-2 border-t border-[#222938]">
-                  {/* Barra de Vida (HP) */}
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-rose-400 font-medium flex items-center gap-1">
-                        <Flame className="h-3 w-3 text-rose-500 fill-rose-500" />
-                        Pontos de Vida (HP)
-                      </span>
-                      <span className="font-mono text-rose-200">
-                        {hero.hpCurrent} / {hero.hpMax}
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#1e2433] rounded-full h-1.5 overflow-hidden">
-                      <div
-                        className="bg-gradient-to-r from-rose-600 to-rose-400 h-full rounded-full transition-all duration-300"
-                        style={{ width: `${hpPercent}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Barra de Experiência (XP) */}
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-[11px]">
-                      <span className="text-amber-400 font-medium flex items-center gap-1">
-                        <Award className="h-3 w-3 text-amber-400" />
-                        Experiência (XP)
-                      </span>
-                      <span className="font-mono text-amber-200">
-                        {hero.xp} / {hero.xpNext}
-                      </span>
-                    </div>
-                    <div className="w-full bg-[#1e2433] rounded-full h-1.5 overflow-hidden">
-                      <div
-                        className="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-300"
-                        style={{ width: `${xpPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+                </Link>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* Ações Rápidas de Módulos (com distinção de modo) */}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T22:28:35.234Z",
+  "generatedAt": "2026-11-04T11:06:27.971Z",
   "collections": [
     {
       "name": "users",
@@ -67,11 +67,11 @@
       "name": "pages",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -142,11 +142,11 @@
       "name": "boards",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -217,11 +217,11 @@
       "name": "databases",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -292,11 +292,11 @@
       "name": "sessions",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -374,11 +374,11 @@
       "name": "npcs",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -558,11 +558,11 @@
       "name": "encounters",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -640,11 +640,11 @@
       "name": "glossary_terms",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -697,11 +697,11 @@
       "name": "compendium_entries",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -768,11 +768,11 @@
       "name": "inventory_items",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {
@@ -868,11 +868,11 @@
       "name": "character_details",
       "type": "base",
       "apiRules": {
-        "list": "@request.auth.id != '' && user = @request.auth.id",
-        "view": "@request.auth.id != '' && user = @request.auth.id",
-        "create": "@request.auth.id != '' && @request.body.user = @request.auth.id",
-        "update": "@request.auth.id != '' && user = @request.auth.id",
-        "delete": "@request.auth.id != '' && user = @request.auth.id"
+        "list": "user = @request.auth.id",
+        "view": "user = @request.auth.id",
+        "create": "user = @request.auth.id",
+        "update": "user = @request.auth.id",
+        "delete": "user = @request.auth.id"
       },
       "fields": [
         {

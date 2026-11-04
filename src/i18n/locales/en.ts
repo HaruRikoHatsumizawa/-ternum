@@ -178,6 +178,15 @@ export const en: TranslationDict = {
     noRpPlots: 'No plot registered yet.',
     noRpCodex: 'No lineage or relationship codex created.',
     noRpCharacters: 'No character registered in the cast.',
+    highlightHeroesTitle: 'Featured Characters (Adventuring Party)',
+    highlightHeroesBadge: 'RPG & RP • Heroic Tier 1',
+    noHeroesYet: 'No hero or NPC forged yet.',
+    noHeroesYetDesc: 'Create your first characters in the NPC Registry or Sheets to see them here.',
+    createHero: 'Forge First Hero',
+    levelShort: 'Lv.',
+    hitPointsShort: 'Hit Points (HP)',
+    armorClassShort: 'Armor Class (AC)',
+    viewHeroSheet: 'View Full Sheet',
   },
 
   // Page Editor

@@ -34,18 +34,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(newModel)
     })
 
-    // Auto login demo se não houver usuário autenticado no início
+    // Inicialização da sessão: apenas valida se há sessão legítima prévia no authStore
     const initAuth = async () => {
       try {
-        if (!pb.authStore.isValid) {
-          // Tenta autenticar silenciosamente com a conta demo
-          try {
-            await pb.collection('users').authWithPassword('amanda_fac1@yahoo.com.br', 'Skip@Pass')
-            setUser(pb.authStore.record)
-            setToken(pb.authStore.token)
-          } catch (_) {
-            // Se falhar, segue deslogado para tela de login
-          }
+        if (pb.authStore.isValid && pb.authStore.record) {
+          setUser(pb.authStore.record)
+          setToken(pb.authStore.token)
+        } else {
+          // Sem sessão válida => garante estado deslogado limpo
+          pb.authStore.clear()
+          setUser(null)
+          setToken(null)
         }
       } finally {
         setIsLoading(false)
