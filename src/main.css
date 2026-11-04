@@ -425,4 +425,99 @@
   .mode-accent-header {
     border-bottom-color: rgba(var(--mode-accent-rgb), 0.2);
   }
+
+  /* Oráculo de Éternum: Destaques Arcanos Especiais */
+  @keyframes arcaneGlowPulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 10px -2px rgba(var(--mode-accent-rgb), 0.22),
+        inset 0 0 8px rgba(var(--mode-accent-rgb), 0.08);
+      border-color: rgba(var(--mode-accent-rgb), 0.45);
+    }
+    50% {
+      box-shadow:
+        0 0 20px 2px rgba(var(--mode-accent-rgb), 0.45),
+        inset 0 0 14px rgba(var(--mode-accent-rgb), 0.16);
+      border-color: rgba(var(--mode-accent-rgb), 0.75);
+    }
+  }
+
+  @keyframes arcaneRuneEyePulse {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 2px rgba(var(--mode-accent-rgb), 0.4));
+    }
+    50% {
+      transform: scale(1.12);
+      filter: drop-shadow(0 0 8px rgba(var(--mode-accent-rgb), 0.9));
+    }
+  }
+
+  @keyframes arcaneRuneRingSpin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .oracle-sidebar-glow {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--mode-accent-rgb), 0.16) 0%,
+      rgba(15, 18, 26, 0.95) 50%,
+      rgba(var(--mode-accent-rgb), 0.12) 100%
+    );
+    border: 1px solid rgba(var(--mode-accent-rgb), 0.42);
+    box-shadow:
+      0 0 14px -2px rgba(var(--mode-accent-rgb), 0.25),
+      inset 0 0 12px rgba(var(--mode-accent-rgb), 0.1);
+    transition: all 0.25s ease-in-out;
+  }
+
+  .oracle-sidebar-glow:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--mode-accent-rgb), 0.26) 0%,
+      rgba(22, 27, 39, 0.98) 50%,
+      rgba(var(--mode-accent-rgb), 0.22) 100%
+    );
+    border-color: rgba(var(--mode-accent-rgb), 0.7);
+    box-shadow:
+      0 0 22px 2px rgba(var(--mode-accent-rgb), 0.4),
+      inset 0 0 16px rgba(var(--mode-accent-rgb), 0.18);
+  }
+
+  .oracle-pulse-icon {
+    animation: arcaneRuneEyePulse 3.2s ease-in-out infinite;
+  }
+
+  .oracle-hero-card {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(18, 22, 32, 0.95) 0%,
+      rgba(var(--mode-accent-rgb), 0.12) 50%,
+      rgba(12, 15, 23, 0.98) 100%
+    );
+    border: 1px solid rgba(var(--mode-accent-rgb), 0.38);
+    box-shadow:
+      0 8px 28px -6px rgba(0, 0, 0, 0.7),
+      0 0 18px -2px rgba(var(--mode-accent-rgb), 0.18),
+      inset 0 0 20px rgba(var(--mode-accent-rgb), 0.08);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .oracle-hero-card:hover {
+    border-color: rgba(var(--mode-accent-rgb), 0.65);
+    box-shadow:
+      0 12px 36px -4px rgba(0, 0, 0, 0.8),
+      0 0 26px 2px rgba(var(--mode-accent-rgb), 0.32),
+      inset 0 0 24px rgba(var(--mode-accent-rgb), 0.14);
+    transform: translateY(-2px);
+  }
 }

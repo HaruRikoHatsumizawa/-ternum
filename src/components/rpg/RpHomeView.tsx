@@ -16,6 +16,7 @@ import {
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { RunicPawIcon, TomeOrnament } from '@/components/rpg/RpgArtwork'
+import { OracleHeroCard } from '@/components/rpg/OracleHeroCard'
 import {
   Sparkles,
   BookOpen,
@@ -126,6 +127,9 @@ export function RpHomeView({ pages, onRefreshPages }: RpHomeViewProps) {
 
   return (
     <div className="max-w-6xl mx-auto py-8 sm:py-10 px-4 sm:px-8 space-y-10 text-purple-100">
+      {/* Destaque Heróico do Oráculo de Éternum no Salão de RP */}
+      <OracleHeroCard />
+
       {/* Banner Aristocrático & Eclético: O Salão de Narrativa */}
       <div className="relative overflow-hidden rounded-3xl border border-purple-500/30 bg-gradient-to-br from-[#1c1229] via-[#140d1f] to-[#0c0814] p-6 sm:p-9 shadow-2xl">
         {/* Glows sutis de veludo e ametista */}

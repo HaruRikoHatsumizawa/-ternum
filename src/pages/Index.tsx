@@ -50,6 +50,7 @@ import {
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { RpHomeView } from '@/components/rpg/RpHomeView'
+import { OracleHeroCard } from '@/components/rpg/OracleHeroCard'
 import { NpcRecord, npcsService } from '@/services/npcs'
 
 export default function Index() {
@@ -185,6 +186,9 @@ export default function Index() {
 
   return (
     <div className="max-w-6xl mx-auto py-8 sm:py-10 px-4 sm:px-8 space-y-10">
+      {/* Destaque Heróico do Oráculo de Éternum (IA Arcana) */}
+      <OracleHeroCard />
+
       {/* Banner de Boas-vindas Medieval Dark Fantasy */}
       <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-[#171b26] via-[#131722] to-[#0c0f16] p-6 sm:p-8 shadow-2xl">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -403,20 +407,23 @@ export default function Index() {
 
           <Link
             to="/oracle"
-            className="flex items-start gap-3 p-4 rounded-xl border border-purple-500/25 bg-[#121620] hover:bg-[#161c29] hover:border-purple-500/40 transition-all text-left group shadow-xs"
+            className="flex items-start gap-3 p-4 rounded-xl border border-[rgba(var(--mode-accent-rgb),0.35)] bg-[#121620] hover:bg-[#161c29] hover:border-[rgba(var(--mode-accent-rgb),0.6)] transition-all text-left group shadow-xs oracle-sidebar-glow"
           >
-            <div className="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <RuneOracleIcon className="h-5 w-5 text-purple-400" />
+            <div className="w-10 h-10 rounded-lg bg-[rgba(var(--mode-accent-rgb),0.12)] text-[hsl(var(--mode-accent))] border border-[rgba(var(--mode-accent-rgb),0.3)] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <RuneOracleIcon className="h-5 w-5 mode-accent-text oracle-pulse-icon" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-sm font-fantasy font-bold text-purple-100 block">
-                Oráculo de Éternum
-              </span>
-              <span className="text-xs text-[#a39b8d] line-clamp-1">
-                IA nativa: ganchos, enigmas e ideias
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-fantasy font-bold text-amber-100 block">
+                  {t('nav.oracleAi')}
+                </span>
+                <span className="text-[9px] px-1 py-0.2 rounded font-fantasy uppercase font-bold bg-[rgba(var(--mode-accent-rgb),0.2)] text-[hsl(var(--mode-accent))] border border-[rgba(var(--mode-accent-rgb),0.35)]">
+                  IA
+                </span>
+              </div>
+              <span className="text-xs text-[#a39b8d] line-clamp-1">{t('oracle.subtitle')}</span>
             </div>
-            <ArrowRight className="h-4 w-4 text-purple-400/60 group-hover:text-purple-300 transition-colors" />
+            <ArrowRight className="h-4 w-4 text-[hsl(var(--mode-accent))] opacity-60 group-hover:opacity-100 transition-opacity" />
           </Link>
         </div>
       </div>

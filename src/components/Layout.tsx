@@ -394,15 +394,19 @@ export default function Layout() {
 
                   <Link
                     to="/oracle"
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors mt-2 ${
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-all my-1.5 oracle-sidebar-glow group ${
                       location.pathname === '/oracle'
-                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
-                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                        ? 'ring-1 ring-[hsl(var(--mode-accent))] font-bold text-amber-100'
+                        : 'text-amber-100/90 hover:text-amber-100'
                     }`}
                   >
-                    <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">{t('nav.oracleAi')}</span>
-                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-fantasy">
+                    <div className="w-5 h-5 rounded-md bg-black/40 border border-[rgba(var(--mode-accent-rgb),0.35)] flex items-center justify-center shrink-0 group-hover:border-[rgba(var(--mode-accent-rgb),0.6)] transition-colors">
+                      <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0 oracle-pulse-icon" />
+                    </div>
+                    <span className="flex-1 font-fantasy tracking-wide text-xs">
+                      {t('nav.oracleAi')}
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-fantasy uppercase tracking-wider font-bold bg-[rgba(var(--mode-accent-rgb),0.2)] text-[hsl(var(--mode-accent))] border border-[rgba(var(--mode-accent-rgb),0.35)] shadow-xs">
                       IA
                     </span>
                   </Link>
@@ -524,15 +528,19 @@ export default function Layout() {
 
                   <Link
                     to="/oracle"
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-all my-1.5 oracle-sidebar-glow group ${
                       location.pathname === '/oracle'
-                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
-                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                        ? 'ring-1 ring-[hsl(var(--mode-accent))] font-bold text-amber-100'
+                        : 'text-amber-100/90 hover:text-amber-100'
                     }`}
                   >
-                    <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">{t('nav.oracleAi')}</span>
-                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-fantasy">
+                    <div className="w-5 h-5 rounded-md bg-black/40 border border-[rgba(var(--mode-accent-rgb),0.35)] flex items-center justify-center shrink-0 group-hover:border-[rgba(var(--mode-accent-rgb),0.6)] transition-colors">
+                      <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0 oracle-pulse-icon" />
+                    </div>
+                    <span className="flex-1 font-fantasy tracking-wide text-xs">
+                      {t('nav.oracleAi')}
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-fantasy uppercase tracking-wider font-bold bg-[rgba(var(--mode-accent-rgb),0.2)] text-[hsl(var(--mode-accent))] border border-[rgba(var(--mode-accent-rgb),0.35)] shadow-xs">
                       IA
                     </span>
                   </Link>
@@ -630,15 +638,19 @@ export default function Layout() {
 
                   <Link
                     to="/oracle"
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg transition-all my-1.5 oracle-sidebar-glow group ${
                       location.pathname === '/oracle'
-                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
-                        : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
+                        ? 'ring-1 ring-[hsl(var(--mode-accent))] font-bold text-purple-100'
+                        : 'text-purple-100/90 hover:text-purple-100'
                     }`}
                   >
-                    <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
-                    <span className="flex-1">{t('nav.oracleAi')}</span>
-                    <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-fantasy">
+                    <div className="w-5 h-5 rounded-md bg-black/40 border border-[rgba(var(--mode-accent-rgb),0.35)] flex items-center justify-center shrink-0 group-hover:border-[rgba(var(--mode-accent-rgb),0.6)] transition-colors">
+                      <RuneOracleIcon className="h-3.5 w-3.5 mode-accent-text shrink-0 oracle-pulse-icon" />
+                    </div>
+                    <span className="flex-1 font-fantasy tracking-wide text-xs">
+                      {t('nav.oracleAi')}
+                    </span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded font-fantasy uppercase tracking-wider font-bold bg-[rgba(var(--mode-accent-rgb),0.2)] text-[hsl(var(--mode-accent))] border border-[rgba(var(--mode-accent-rgb),0.35)] shadow-xs">
                       IA
                     </span>
                   </Link>

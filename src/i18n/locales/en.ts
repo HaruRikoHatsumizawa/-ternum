@@ -501,6 +501,16 @@ export const en: TranslationDict = {
     title: 'The Éternum Oracle',
     subtitle:
       'Native Arcana AI assistant for RPG & RP masters and players • Sheets, Scenes, NPCs & Enigmas',
+    bannerBadge: 'Native Arcane AI • Skip Cloud',
+    bannerTitle: 'Consult the Éternum Oracle',
+    bannerDescGeral:
+      'Summon campaign ideas, hybrid sheets, runic enigmas, dramatic hooks, and game mechanics in real-time.',
+    bannerDescRpg:
+      'Summon tactical tables, monster stats, dungeon puzzles, hero stat sheets, and adventure contracts.',
+    bannerDescRp:
+      'Summon solemn court dialogues, dramatic motives, aristocratic secrets, and roleplay scenes.',
+    bannerAction: 'Open Arcane Glass',
+    bannerQuickHint: 'Markdown formatted responses with arcane sigils',
     newConsult: 'New Consultation',
     previousChronicles: 'Previous Chronicles',
     defaultWelcome:

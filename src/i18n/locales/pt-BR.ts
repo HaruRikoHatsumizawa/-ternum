@@ -502,6 +502,16 @@ export const ptBR = {
     title: 'O Oráculo de Éternum',
     subtitle:
       'Assistente de IA Arcana nativo para mestres e jogadores de RPG & RP • Fichas, Cenas, NPCs & Enigmas',
+    bannerBadge: 'IA Arcana Nativa • Skip Cloud',
+    bannerTitle: 'Consultar o Oráculo de Éternum',
+    bannerDescGeral:
+      'Invoque ideias de campanha, fichas híbridas, enigmas rúnicos, ganchos dramáticos e regras em tempo real.',
+    bannerDescRpg:
+      'Invoque tabelas táticas, estatísticas de monstros, enigmas de masmorra, fichas de heróis e contratos de aventura.',
+    bannerDescRp:
+      'Invoque diálogos solenes da corte, motivações dramáticas, segredos aristocráticos e cenas interpretativas.',
+    bannerAction: 'Abrir Espelho Arcano',
+    bannerQuickHint: 'Respostas em Markdown com sigilos arcanos',
     newConsult: 'Nova Consulta',
     previousChronicles: 'Crônicas Anteriores',
     defaultWelcome:
