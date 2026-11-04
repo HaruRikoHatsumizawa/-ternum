@@ -16,9 +16,22 @@ import {
   RuneScrollIcon,
   RuneCombatIcon,
   RuneOracleIcon,
+  RuneSwordIcon,
+  RuneTomeIcon,
+  RuneCompendiumIcon,
+  RuneBondsIcon,
 } from '@/components/rpg/EternumIcons'
 
-export type ConfirmIconType = 'trash' | 'skull' | 'scroll' | 'combat' | 'oracle'
+export type ConfirmIconType =
+  | 'trash'
+  | 'skull'
+  | 'scroll'
+  | 'combat'
+  | 'oracle'
+  | 'blade'
+  | 'tome'
+  | 'compendium'
+  | 'bonds'
 
 export interface ConfirmOptions {
   title?: string
@@ -85,6 +98,14 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
         return <RuneOracleIcon className={iconCls} />
       case 'scroll':
         return <RuneScrollIcon className={iconCls} />
+      case 'blade':
+        return <RuneSwordIcon className={iconCls} />
+      case 'tome':
+        return <RuneTomeIcon className={iconCls} />
+      case 'compendium':
+        return <RuneCompendiumIcon className={iconCls} />
+      case 'bonds':
+        return <RuneBondsIcon className={iconCls} />
       case 'trash':
       default:
         return <RuneTrashIcon className={iconCls} />

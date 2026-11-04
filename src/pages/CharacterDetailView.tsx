@@ -435,7 +435,7 @@ export function CharacterDetailView() {
   async function handleRemoveBond(bondId: string) {
     if (!id) return
 
-    const bondTarget = enrichedBonds.find((b) => b.id === bondId)
+    const bondTarget = characterBondsList.find((b) => b.id === bondId)
     const confirmed = await confirm({
       title: t('confirm.deleteTitle'),
       description: t('confirm.bondDesc'),
