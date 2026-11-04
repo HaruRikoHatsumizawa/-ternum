@@ -26,7 +26,14 @@ import {
   CharacterPowerItem,
   CharacterAbilityItem,
   AiCustomSheetData,
+  CharacterBondItem,
 } from '@/services/characterDetails'
+
+// Vínculo enriquecido com dados do personagem de destino para renderização com PFP e moldura
+export interface BondWithTarget extends CharacterBondItem {
+  targetRecord?: NpcRecord | null
+  targetPhotoUrl?: string | null
+}
 import { useTranslation } from '@/i18n/LanguageContext'
 import { useAppMode } from '@/contexts/ModeContext'
 import { useToast } from '@/hooks/use-toast'
@@ -47,7 +54,18 @@ import {
   RuneSparkleIcon,
   RuneShieldIcon,
   RuneUserIcon,
+  RuneBondsIcon,
+  RunePlusIcon,
+  RuneTrashIcon,
 } from '@/components/rpg/EternumIcons'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from '@/components/ui/dialog'
 import { TomeOrnament, RunicCircle } from '@/components/rpg/RpgArtwork'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 
@@ -106,7 +124,7 @@ export function CharacterDetailView() {
   const [bondsLoading, setBondsLoading] = useState(false)
   // Modal de Adicionar / Editar Vínculo
   const [bondModalOpen, setBondModalOpen] = useState(false)
-  const [editingBond, setEditingBond] = useState<CharacterBondRecord | null>(null)
+  const [editingBond, setEditingBond] = useState<CharacterBondItem | null>(null)
   const [selectedTargetId, setSelectedTargetId] = useState('')
   const [bondRelationType, setBondRelationType] = useState('')
   const [bondDesc, setBondDesc] = useState('')
@@ -125,7 +143,11 @@ export function CharacterDetailView() {
   async function loadData(characterId: string) {
     setLoading(true)
     try {
-      const npcData = await npcsService.getById(characterId)
+      const [npcData, allNpcs] = await Promise.all([
+        npcsService.getById(characterId),
+        npcsService.list().catch(() => [] as NpcRecord[]),
+      ])
+
       if (!npcData) {
         toast({
           title: t('characterDetail.notFoundTitle'),
@@ -136,6 +158,10 @@ export function CharacterDetailView() {
         return
       }
       setNpc(npcData)
+
+      // Filtrar NPCs disponíveis para vínculos (exceto o próprio personagem)
+      const others = allNpcs.filter((item) => item.id !== characterId)
+      setAvailableTargets(others)
 
       const detailsData = await characterDetailsService.getByCharacterId(characterId)
       if (detailsData) {
@@ -153,6 +179,9 @@ export function CharacterDetailView() {
         setRpSummary(detailsData.rp_summary || '')
         setRpgSummary(detailsData.rpg_summary || '')
         setAiCustomSheet(detailsData.ai_custom_sheet || null)
+
+        // Carregar vínculos estruturados e enriquecer com fotos/registros de destino
+        await hydrateBonds(detailsData.bonds_data || [], allNpcs)
       } else {
         // Inicializa a partir dos dados do NPC
         setName(npcData.name || '')
@@ -252,6 +281,199 @@ export function CharacterDetailView() {
       })
     } finally {
       setSaving(false)
+    }
+  }
+
+  // Hidrata a lista de vínculos estruturados com dados do alvo (NPC record e foto PFP)
+  async function hydrateBonds(rawBonds: CharacterBondItem[], allNpcs: NpcRecord[]) {
+    setBondsLoading(true)
+    try {
+      const enriched: BondWithTarget[] = await Promise.all(
+        rawBonds.map(async (bond) => {
+          const target = allNpcs.find((n) => n.id === bond.target_character_id) || null
+          let targetPhotoUrl: string | null = null
+
+          // Tenta obter foto dos detalhes do personagem vinculado
+          if (bond.target_character_id) {
+            try {
+              const targetDetails = await characterDetailsService.getByCharacterId(
+                bond.target_character_id,
+              )
+              if (targetDetails && targetDetails.photo) {
+                targetPhotoUrl = pb.files.getUrl(targetDetails, targetDetails.photo, {
+                  thumb: '128x128',
+                })
+              }
+            } catch {
+              /* intentionally ignored */
+            }
+          }
+
+          return {
+            ...bond,
+            target_name: target?.name || bond.target_name || 'Personagem Desconhecido',
+            targetRecord: target,
+            targetPhotoUrl,
+          }
+        }),
+      )
+      setCharacterBondsList(enriched)
+    } finally {
+      setBondsLoading(false)
+    }
+  }
+
+  // Abrir modal para novo vínculo
+  function handleOpenNewBondModal() {
+    setEditingBond(null)
+    setSelectedTargetId(availableTargets[0]?.id || '')
+    setBondRelationType('')
+    setBondDesc('')
+    setBondModalOpen(true)
+  }
+
+  // Abrir modal para editar vínculo existente
+  function handleOpenEditBondModal(bond: BondWithTarget) {
+    setEditingBond(bond)
+    setSelectedTargetId(bond.target_character_id)
+    setBondRelationType(bond.relation_type)
+    setBondDesc(bond.description)
+    setBondModalOpen(true)
+  }
+
+  // Salvar ou atualizar vínculo estruturado
+  async function handleSaveBond() {
+    if (!id || !selectedTargetId) return
+
+    setSavingBond(true)
+    try {
+      const targetNpc = availableTargets.find((n) => n.id === selectedTargetId)
+      const currentRawBonds: CharacterBondItem[] = (details?.bonds_data || []).map((b) => ({
+        id: b.id,
+        target_character_id: b.target_character_id,
+        target_name: b.target_name,
+        target_avatar: b.target_avatar,
+        relation_type: b.relation_type,
+        description: b.description,
+      }))
+
+      let updatedRawBonds: CharacterBondItem[] = []
+
+      if (editingBond) {
+        // Atualiza vínculo existente
+        updatedRawBonds = currentRawBonds.map((b) =>
+          b.id === editingBond.id
+            ? {
+                ...b,
+                target_character_id: selectedTargetId,
+                target_name: targetNpc?.name || b.target_name,
+                relation_type: bondRelationType.trim(),
+                description: bondDesc.trim(),
+              }
+            : b,
+        )
+      } else {
+        // Cria novo vínculo
+        const newBondItem: CharacterBondItem = {
+          id: `bond-${Date.now()}`,
+          target_character_id: selectedTargetId,
+          target_name: targetNpc?.name || 'Personagem',
+          relation_type: bondRelationType.trim(),
+          description: bondDesc.trim(),
+        }
+        updatedRawBonds = [...currentRawBonds, newBondItem]
+      }
+
+      // Salva no PocketBase via upsert de character_details
+      const saved = await characterDetailsService.upsert({
+        character_id: id,
+        name: name.trim() || npc?.name || 'Personagem',
+        age: age.trim(),
+        sexuality: sexuality.trim(),
+        pronouns: pronouns.trim(),
+        race: race.trim(),
+        species: species.trim(),
+        backstory: backstory.trim(),
+        bonds: bonds.trim(),
+        powers,
+        abilities,
+        bonds_data: updatedRawBonds,
+        rp_summary: rpSummary,
+        rpg_summary: rpgSummary,
+        ai_custom_sheet: aiCustomSheet,
+      })
+
+      setDetails(saved)
+      await hydrateBonds(saved.bonds_data || [], availableTargets)
+
+      setBondModalOpen(false)
+      setEditingBond(null)
+      setSelectedTargetId('')
+      setBondRelationType('')
+      setBondDesc('')
+
+      toast({
+        title: t('characterDetail.savedSuccessTitle'),
+        description: t('characterDetail.savedSuccessDesc'),
+      })
+    } catch (err: any) {
+      toast({
+        title: t('characterDetail.saveErrorTitle'),
+        description: err?.message || t('characterDetail.saveErrorDesc'),
+        variant: 'destructive',
+      })
+    } finally {
+      setSavingBond(false)
+    }
+  }
+
+  // Remover vínculo estruturado
+  async function handleRemoveBond(bondId: string) {
+    if (!id) return
+
+    try {
+      const currentRawBonds: CharacterBondItem[] = (details?.bonds_data || []).map((b) => ({
+        id: b.id,
+        target_character_id: b.target_character_id,
+        target_name: b.target_name,
+        target_avatar: b.target_avatar,
+        relation_type: b.relation_type,
+        description: b.description,
+      }))
+
+      const updatedRawBonds = currentRawBonds.filter((b) => b.id !== bondId)
+
+      const saved = await characterDetailsService.upsert({
+        character_id: id,
+        name: name.trim() || npc?.name || 'Personagem',
+        age: age.trim(),
+        sexuality: sexuality.trim(),
+        pronouns: pronouns.trim(),
+        race: race.trim(),
+        species: species.trim(),
+        backstory: backstory.trim(),
+        bonds: bonds.trim(),
+        powers,
+        abilities,
+        bonds_data: updatedRawBonds,
+        rp_summary: rpSummary,
+        rpg_summary: rpgSummary,
+        ai_custom_sheet: aiCustomSheet,
+      })
+
+      setDetails(saved)
+      await hydrateBonds(saved.bonds_data || [], availableTargets)
+
+      toast({
+        title: t('characterDetail.savedSuccessTitle'),
+        description: t('characterDetail.savedSuccessDesc'),
+      })
+    } catch (err: any) {
+      toast({
+        title: t('characterDetail.saveErrorTitle'),
+        description: err?.message || t('characterDetail.saveErrorDesc'),
+        variant: 'destructive',
+      })
     }
   }
 
@@ -643,6 +865,18 @@ export function CharacterDetailView() {
         </button>
 
         <button
+          onClick={() => setActiveTab('vinculos')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-fantasy font-bold transition-colors whitespace-nowrap ${
+            activeTab === 'vinculos'
+              ? 'bg-amber-500/15 border border-amber-500/50 text-amber-200'
+              : 'text-[#9c9486] hover:text-amber-100 hover:bg-[#151a26]'
+          }`}
+        >
+          <RuneBondsIcon className="w-4 h-4 text-amber-400" />
+          {t('characterDetail.tabBonds')} ({characterBondsList.length})
+        </button>
+
+        <button
           onClick={() => setActiveTab('resumos')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-fantasy font-bold transition-colors whitespace-nowrap ${
             activeTab === 'resumos'
@@ -928,7 +1162,7 @@ export function CharacterDetailView() {
                 {abilities.map((abi) => (
                   <div
                     key={abi.id}
-                    className="p-3 rounded-xl bg-[#161c2a] border border-[#283246] hover:border-amber-500/40 transition-colors group relative"
+                    className="p-3 rounded-xl bg-[#161c2a] border border-[#283244] hover:border-amber-500/40 transition-colors group relative"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -961,6 +1195,149 @@ export function CharacterDetailView() {
                   </div>
                 )}
               </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* CONTEÚDO DA ABA: VÍNCULOS ENTRE PERSONAGENS */}
+      {activeTab === 'vinculos' && (
+        <div className="space-y-6">
+          <Card className="bg-[#121622] border-[#283244] shadow-xl">
+            <CardHeader className="pb-3 border-b border-[#20293a] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <CardTitle className="text-sm font-fantasy font-bold text-amber-200 flex items-center gap-2">
+                  <RuneBondsIcon className="w-4 h-4 text-amber-400" />
+                  {t('characterDetail.bondsSectionTitle')}
+                </CardTitle>
+                <p className="text-xs text-[#8c8476] mt-1 font-serif">
+                  {t('characterDetail.bondsSectionDesc')}
+                </p>
+              </div>
+
+              <Button
+                onClick={handleOpenNewBondModal}
+                size="sm"
+                className="text-xs font-fantasy font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shrink-0"
+              >
+                <RunePlusIcon className="w-3.5 h-3.5 mr-1" />
+                {t('characterDetail.btnAddBond')}
+              </Button>
+            </CardHeader>
+
+            <CardContent className="pt-6">
+              {bondsLoading ? (
+                <div className="p-12 text-center text-xs text-[#8c8476]">{t('common.loading')}</div>
+              ) : characterBondsList.length === 0 ? (
+                <div className="p-12 text-center border-2 border-dashed border-[#242d3e] rounded-2xl bg-[#0b0e14]/50 space-y-3">
+                  <RuneBondsIcon className="w-10 h-10 text-amber-400/40 mx-auto" />
+                  <h3 className="text-sm font-fantasy font-bold text-amber-200">
+                    {t('characterDetail.noBondsTitle')}
+                  </h3>
+                  <p className="text-xs text-[#8c8476] max-w-md mx-auto">
+                    {t('characterDetail.noBondsDesc')}
+                  </p>
+                  <Button
+                    onClick={handleOpenNewBondModal}
+                    size="sm"
+                    className="text-xs font-fantasy font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 mt-1"
+                  >
+                    <RunePlusIcon className="w-3.5 h-3.5 mr-1" />
+                    {t('characterDetail.btnAddFirstBond')}
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {characterBondsList.map((bond) => {
+                    const targetName =
+                      bond.targetRecord?.name ||
+                      bond.target_name ||
+                      t('characterDetail.unknownTarget')
+                    const targetInitial = targetName.charAt(0).toUpperCase() || '?'
+                    const targetFrame = 'runic-gold'
+
+                    return (
+                      <div
+                        key={bond.id}
+                        className="p-4 rounded-xl bg-[#0e121a] border border-[#232b3a] hover:border-amber-500/40 transition-all flex flex-col justify-between group relative shadow-md"
+                      >
+                        <div className="space-y-3">
+                          {/* Cabeçalho do Vínculo: PFP com Moldura Temática e Nome */}
+                          <div className="flex items-start gap-3">
+                            <div className="shrink-0 relative">
+                              <AvatarFrame frameId={targetFrame} size="sm">
+                                <Avatar className="h-full w-full rounded-full">
+                                  {bond.targetPhotoUrl ? (
+                                    <AvatarImage src={bond.targetPhotoUrl} alt={targetName} />
+                                  ) : null}
+                                  <AvatarFallback className="text-xs font-fantasy font-bold bg-amber-500/20 text-amber-300 flex items-center justify-center">
+                                    {targetInitial}
+                                  </AvatarFallback>
+                                </Avatar>
+                              </AvatarFrame>
+                            </div>
+
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-xs font-fantasy font-bold text-amber-100 truncate">
+                                {targetName}
+                              </h4>
+                              {bond.targetRecord && (
+                                <p className="text-[11px] text-[#8c8476] truncate font-serif">
+                                  {[bond.targetRecord.race, bond.targetRecord.occupation]
+                                    .filter(Boolean)
+                                    .join(' • ')}
+                                </p>
+                              )}
+                              {bond.relation_type && (
+                                <div className="mt-1.5">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-[10px] font-fantasy font-semibold border-amber-500/40 bg-amber-950/30 text-amber-200"
+                                  >
+                                    {bond.relation_type}
+                                  </Badge>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Descrição do Vínculo */}
+                          {bond.description ? (
+                            <p className="text-xs text-[#a29a8a] font-serif leading-relaxed border-t border-[#1a2130] pt-2.5">
+                              {bond.description}
+                            </p>
+                          ) : (
+                            <p className="text-[11px] text-[#5e584e] italic border-t border-[#1a2130] pt-2.5 font-serif">
+                              {t('characterDetail.noBondDesc')}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Ações do Cartão de Vínculo */}
+                        <div className="flex items-center justify-end gap-1 mt-3 pt-2 border-t border-[#181f2c]">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleOpenEditBondModal(bond)}
+                            className="text-xs text-[#a29a8a] hover:text-amber-200 h-7 px-2"
+                          >
+                            {t('common.edit')}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleRemoveBond(bond.id)}
+                            className="text-xs text-rose-400 hover:text-rose-200 hover:bg-rose-950/30 h-7 px-2"
+                            title={t('characterDetail.btnDeleteBond')}
+                          >
+                            <RuneTrashIcon className="w-3.5 h-3.5" />
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -1194,6 +1571,96 @@ export function CharacterDetailView() {
           )}
         </div>
       )}
+
+      {/* MODAL DIALOG: ADICIONAR / EDITAR VÍNCULO */}
+      <Dialog open={bondModalOpen} onOpenChange={setBondModalOpen}>
+        <DialogContent className="max-w-md bg-[#121622] border-[#2a3448] text-[#f1ede3] shadow-2xl">
+          <DialogHeader className="border-b border-[#20293a] pb-3">
+            <DialogTitle className="text-sm font-fantasy font-bold text-amber-200 flex items-center gap-2">
+              <RuneBondsIcon className="w-4 h-4 text-amber-400" />
+              {editingBond ? t('characterDetail.editBondTitle') : t('characterDetail.addBondTitle')}
+            </DialogTitle>
+            <DialogDescription className="text-xs text-[#8c8476] font-serif">
+              {t('characterDetail.bondModalDesc')}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-3">
+            {/* Escolha do Personagem Alvo */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                {t('characterDetail.bondTargetLabel')}
+              </label>
+              {availableTargets.length === 0 ? (
+                <p className="text-xs text-rose-300 font-serif">
+                  {t('characterDetail.noAvailableTargets')}
+                </p>
+              ) : (
+                <select
+                  value={selectedTargetId}
+                  onChange={(e) => setSelectedTargetId(e.target.value)}
+                  className="w-full h-9 rounded-md bg-[#0b0e14] border border-[#2a3448] px-3 text-xs text-amber-100 font-fantasy focus:outline-none focus:ring-1 focus:ring-amber-500"
+                >
+                  <option value="" disabled>
+                    {t('characterDetail.selectTargetPlaceholder')}
+                  </option>
+                  {availableTargets.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name} {item.race ? `(${item.race})` : ''}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            {/* Tipo de Relação (Aliado, Rival, Mentor, Família etc.) */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                {t('characterDetail.bondRelationTypeLabel')}
+              </label>
+              <Input
+                value={bondRelationType}
+                onChange={(e) => setBondRelationType(e.target.value)}
+                placeholder={t('characterDetail.bondRelationPlaceholder')}
+                className="bg-[#0b0e14] border-[#2a3448] text-amber-100 text-xs"
+              />
+            </div>
+
+            {/* Breve Descrição do Vínculo */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-fantasy font-bold text-amber-200">
+                {t('characterDetail.bondDescLabel')}
+              </label>
+              <Textarea
+                value={bondDesc}
+                onChange={(e) => setBondDesc(e.target.value)}
+                placeholder={t('characterDetail.bondDescPlaceholder')}
+                rows={3}
+                className="bg-[#0b0e14] border-[#2a3448] text-amber-100 text-xs resize-none font-serif leading-relaxed"
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="border-t border-[#20293a] pt-3 flex items-center justify-end gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setBondModalOpen(false)}
+              className="text-xs text-[#a29a8a] hover:text-amber-100"
+            >
+              {t('common.cancel')}
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSaveBond}
+              disabled={savingBond || !selectedTargetId}
+              className="text-xs font-fantasy font-bold bg-amber-500 hover:bg-amber-400 text-slate-950"
+            >
+              {savingBond ? t('common.saving') : t('common.save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
