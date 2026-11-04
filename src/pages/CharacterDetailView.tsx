@@ -99,8 +99,23 @@ export function CharacterDetailView() {
   const [generatingSheet, setGeneratingSheet] = useState(false)
   const [sheetFormatToGenerate, setSheetFormatToGenerate] = useState<'rp' | 'rpg'>('rp')
 
+  // Lista de todos os outros NPCs para escolha no vínculo
+  const [availableTargets, setAvailableTargets] = useState<NpcRecord[]>([])
+  // Vínculos estruturados do personagem
+  const [characterBondsList, setCharacterBondsList] = useState<BondWithTarget[]>([])
+  const [bondsLoading, setBondsLoading] = useState(false)
+  // Modal de Adicionar / Editar Vínculo
+  const [bondModalOpen, setBondModalOpen] = useState(false)
+  const [editingBond, setEditingBond] = useState<CharacterBondRecord | null>(null)
+  const [selectedTargetId, setSelectedTargetId] = useState('')
+  const [bondRelationType, setBondRelationType] = useState('')
+  const [bondDesc, setBondDesc] = useState('')
+  const [savingBond, setSavingBond] = useState(false)
+
   // Aba ativa na subpágina
-  const [activeTab, setActiveTab] = useState<'perfil' | 'poderes' | 'resumos' | 'ficha'>('perfil')
+  const [activeTab, setActiveTab] = useState<
+    'perfil' | 'poderes' | 'vinculos' | 'resumos' | 'ficha'
+  >('perfil')
 
   useEffect(() => {
     if (!id) return

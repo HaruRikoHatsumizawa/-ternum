@@ -919,6 +919,93 @@ export function RuneSparkleIcon({ className = 'w-4 h-4', size, ...props }: Etern
     </svg>
   )
 }
+export const RuneSparklesIcon = RuneSparkleIcon
+
+// Caveira Rúnica / Vilão / Letalidade (substitui 💀)
+export function RuneSkullIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M6 11 C6 6.5 8.7 3.5 12 3.5 C15.3 3.5 18 6.5 18 11 C18 13.5 17 15.5 15.5 16.5 L15.5 19.5 C15.5 20 15 20.5 14.5 20.5 H9.5 C9 20.5 8.5 20 8.5 19.5 L8.5 16.5 C7 15.5 6 13.5 6 11 Z"
+        strokeWidth="1.4"
+        fill="currentColor"
+        fillOpacity="0.2"
+        strokeLinejoin="round"
+      />
+      <circle cx="9.5" cy="11.5" r="1.5" fill="currentColor" />
+      <circle cx="14.5" cy="11.5" r="1.5" fill="currentColor" />
+      <path d="M12 14.2 L11.2 15.8 H12.8 Z" fill="currentColor" />
+      <line x1="10" y1="18.5" x2="10" y2="20.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="12" y1="18.5" x2="12" y2="20.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="14" y1="18.5" x2="14" y2="20.5" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// Linha do Tempo / Crônicas / Épocas Rúnicas
+export function RuneTimelineIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Eixo vertical com setas de eras */}
+      <line x1="12" y1="3" x2="12" y2="21" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="12" cy="6" r="2.5" strokeWidth="1.3" fill="currentColor" fillOpacity="0.25" />
+      <circle cx="12" cy="12" r="2.5" strokeWidth="1.3" fill="currentColor" fillOpacity="0.4" />
+      <circle cx="12" cy="18" r="2.5" strokeWidth="1.3" fill="currentColor" fillOpacity="0.25" />
+      <path d="M12 6 H17.5" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M6.5 12 H12" strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M12 18 H17.5" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+export const RuneChronicleIcon = RuneTimelineIcon
+
+// Vínculos / Laços Heroicos / Aliança (substitui 🤝 / laços)
+export function RuneBondsIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      <circle cx="8" cy="12" r="5" strokeWidth="1.4" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="16" cy="12" r="5" strokeWidth="1.4" fill="currentColor" fillOpacity="0.15" />
+      <path
+        d="M12 8.5 C13 9.5 13 14.5 12 15.5 C11 14.5 11 9.5 12 8.5 Z"
+        strokeWidth="1.2"
+        fill="currentColor"
+        fillOpacity="0.4"
+      />
+      <circle cx="8" cy="12" r="1.2" fill="currentColor" />
+      <circle cx="16" cy="12" r="1.2" fill="currentColor" />
+    </svg>
+  )
+}
 
 /**
  * 11. Combate Tático / Ordem de Iniciativa / Confronto:
@@ -1210,6 +1297,9 @@ export type RunicInsigniaKey =
   | 'backpack'
   | 'nerd'
   | 'd20'
+  | 'timeline'
+  | 'chronicle'
+  | 'bonds'
 
 export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] = [
   { id: 'd20', label: 'Dado Rúnico d20' },
@@ -1217,6 +1307,8 @@ export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] =
   { id: 'backpack', label: 'Mochila de Aventureiro' },
   { id: 'nerd', label: 'Máscara Dramática' },
   { id: 'combat', label: 'Combate Tático' },
+  { id: 'timeline', label: 'Linha do Tempo / Crônicas' },
+  { id: 'bonds', label: 'Laços & Alianças' },
   { id: 'sword', label: 'Espada de Honra' },
   { id: 'wolf', label: 'Lobo Nobre' },
   { id: 'fox', label: 'Raposa Astuta' },
@@ -1294,6 +1386,15 @@ export function RunicInsignia({
     return <RuneBackpackIcon className={className} size={size} {...props} />
   if (norm === 'nerd' || norm === 'fandom' || norm === 'mascara' || norm === 'dicionario')
     return <RuneNerdIcon className={className} size={size} {...props} />
+  if (
+    norm === 'timeline' ||
+    norm === 'chronicle' ||
+    norm === 'cronica' ||
+    norm === 'linha_do_tempo'
+  )
+    return <RuneTimelineIcon className={className} size={size} {...props} />
+  if (norm === 'bonds' || norm === 'vinculos' || norm === 'lacos' || norm === 'alianca')
+    return <RuneBondsIcon className={className} size={size} {...props} />
 
   // Fallback padrão seguro (Pergaminho rúnico suave)
   return <RuneScrollIcon className={className} size={size} {...props} />
@@ -1313,6 +1414,9 @@ export type EternumIconKey =
   | 'combat'
   | 'compendium'
   | 'nerd'
+  | 'timeline'
+  | 'chronicle'
+  | 'bonds'
 
 export function EternumIcon({
   name,
@@ -1345,6 +1449,11 @@ export function EternumIcon({
       return <RuneCompendiumIcon className={className} size={size} {...props} />
     case 'nerd':
       return <RuneNerdIcon className={className} size={size} {...props} />
+    case 'timeline':
+    case 'chronicle':
+      return <RuneTimelineIcon className={className} size={size} {...props} />
+    case 'bonds':
+      return <RuneBondsIcon className={className} size={size} {...props} />
     case 'search':
       return <RuneSearchIcon className={className} size={size} {...props} />
     default:

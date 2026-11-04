@@ -12,6 +12,7 @@ import PageEditor from './pages/PageEditor'
 import BoardView from './pages/BoardView'
 import DatabaseView from './pages/DatabaseView'
 import SessionsCalendar from './pages/SessionsCalendar'
+import TimelineView from './pages/TimelineView'
 import LootForge from './pages/LootForge'
 import NpcView from './pages/NpcView'
 import OracleChat from './pages/OracleChat'
@@ -98,6 +99,7 @@ const App = () => (
                   <Route path="/boards/:id" element={<BoardView />} />
                   <Route path="/databases/:id" element={<DatabaseView />} />
                   <Route path="/sessions" element={<SessionsCalendar />} />
+                  <Route path="/timeline" element={<TimelineView />} />
                   <Route path="/loot" element={<LootForge />} />
                   <Route path="/combat" element={<CombatTracker />} />
                   <Route path="/npcs" element={<NpcView />} />

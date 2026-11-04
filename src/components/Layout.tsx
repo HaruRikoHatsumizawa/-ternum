@@ -41,6 +41,7 @@ import {
   RuneLexiconIcon,
   RuneCompendiumIcon,
   RuneNerdIcon,
+  RuneTimelineIcon,
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { Button } from '@/components/ui/button'
@@ -336,6 +337,17 @@ export default function Layout() {
                         <span>{t('nav.sessionsCalendar')}</span>
                       </Link>
                       <Link
+                        to="/timeline"
+                        className={`w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                          location.pathname === '/timeline'
+                            ? 'bg-amber-500/20 text-amber-200 font-semibold border border-amber-500/40'
+                            : 'text-[#c8c0b0] hover:text-amber-100 hover:bg-[#18202d]'
+                        }`}
+                      >
+                        <RuneTimelineIcon className="h-3 w-3 text-amber-400 shrink-0" />
+                        <span>{t('nav.timeline')}</span>
+                      </Link>
+                      <Link
                         to="/loot"
                         className={`w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                           location.pathname === '/loot'
@@ -369,6 +381,13 @@ export default function Layout() {
                       >
                         <RuneAstrolabeIcon className="h-3 w-3 text-purple-400 shrink-0" />
                         <span>{t('nav.sessionsCalendar')}</span>
+                      </Link>
+                      <Link
+                        to="/timeline"
+                        className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs rounded-md transition-colors text-[#c8c0b0] hover:text-purple-200 hover:bg-[#18202d]"
+                      >
+                        <RuneTimelineIcon className="h-3 w-3 text-purple-400 shrink-0" />
+                        <span>{t('nav.timelineRp')}</span>
                       </Link>
                     </div>
                   </div>
@@ -480,6 +499,18 @@ export default function Layout() {
                   </Link>
 
                   <Link
+                    to="/timeline"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/timeline'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-amber-100 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneTimelineIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span>{t('nav.timeline')}</span>
+                  </Link>
+
+                  <Link
                     to="/loot"
                     className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
                       location.pathname === '/loot'
@@ -583,6 +614,18 @@ export default function Layout() {
                   >
                     <RuneAstrolabeIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
                     <span>{t('nav.sessionsCalendar')}</span>
+                  </Link>
+
+                  <Link
+                    to="/timeline"
+                    className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded-md transition-colors ${
+                      location.pathname === '/timeline'
+                        ? 'mode-accent-bg mode-accent-text font-semibold border mode-accent-border shadow-xs'
+                        : 'text-[#d1c8b8] hover:text-purple-200 hover:bg-[#18202d]'
+                    }`}
+                  >
+                    <RuneTimelineIcon className="h-3.5 w-3.5 mode-accent-text shrink-0" />
+                    <span>{t('nav.timelineRp')}</span>
                   </Link>
 
                   <Link

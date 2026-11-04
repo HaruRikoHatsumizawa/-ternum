@@ -22,6 +22,15 @@ export interface AiCustomSheetData {
   runic_theme?: string
 }
 
+export interface CharacterBondItem {
+  id: string
+  target_character_id: string
+  target_name: string
+  target_avatar?: string
+  relation_type: string
+  description: string
+}
+
 export interface CharacterDetailRecord {
   id: string
   user: string
@@ -37,6 +46,7 @@ export interface CharacterDetailRecord {
   powers?: CharacterPowerItem[]
   abilities?: CharacterAbilityItem[]
   bonds?: string
+  bonds_data?: CharacterBondItem[]
   rp_summary?: string
   rpg_summary?: string
   ai_custom_sheet?: AiCustomSheetData | null
@@ -58,6 +68,7 @@ export interface UpsertCharacterDetailData {
   powers?: CharacterPowerItem[]
   abilities?: CharacterAbilityItem[]
   bonds?: string
+  bonds_data?: CharacterBondItem[]
   rp_summary?: string
   rpg_summary?: string
   ai_custom_sheet?: AiCustomSheetData | null
@@ -101,6 +112,9 @@ export const characterDetailsService = {
     if (data.species !== undefined) formData.append('species', data.species)
     if (data.backstory !== undefined) formData.append('backstory', data.backstory)
     if (data.bonds !== undefined) formData.append('bonds', data.bonds)
+    if (data.bonds_data !== undefined) {
+      formData.append('bonds_data', JSON.stringify(data.bonds_data))
+    }
     if (data.rp_summary !== undefined) formData.append('rp_summary', data.rp_summary)
     if (data.rpg_summary !== undefined) formData.append('rpg_summary', data.rpg_summary)
 
