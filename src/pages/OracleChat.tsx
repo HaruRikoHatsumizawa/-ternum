@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { RunicCircle, ArcaneOrb, TomeOrnament } from '@/components/rpg/RpgArtwork'
 import { RuneOracleIcon } from '@/components/rpg/EternumIcons'
+import { DiscordMarkdown } from '@/components/rpg/DiscordMarkdown'
 import { toast } from '@/hooks/use-toast'
 
 interface ChatMessage {
@@ -288,13 +289,13 @@ export default function OracleChat() {
                   </div>
 
                   <div
-                    className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed border space-y-1 shadow-md ${
+                    className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed border space-y-1 shadow-md max-w-full ${
                       isAssistant
                         ? 'bg-[#161c28] border-amber-500/25 text-amber-100'
                         : 'bg-amber-500/15 border-amber-500/40 text-amber-200'
                     }`}
                   >
-                    <div className="whitespace-pre-wrap">{m.content}</div>
+                    <DiscordMarkdown content={m.content} />
                   </div>
                 </div>
               )

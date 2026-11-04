@@ -33,6 +33,8 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { DiscordMarkdown } from '@/components/rpg/DiscordMarkdown'
+import { DiscordInline } from '@/components/rpg/discordMarkdownInline'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,6 +67,7 @@ export default function PageEditor() {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [pageTargetMode, setPageTargetMode] = useState<string>('geral')
+  const [editingBlockId, setEditingBlockId] = useState<string | null>(null)
 
   // Carregar dados da página
   useEffect(() => {
@@ -420,53 +423,86 @@ export default function PageEditor() {
 
               {/* Conteúdo Renderizado do Bloco com visual Medieval */}
               <div className="flex-1 min-w-0">
-                {block.type === 'heading_1' && (
-                  <input
-                    type="text"
-                    value={block.content}
-                    onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Título Épico (Capítulo)..."
-                    className="w-full text-2xl font-fantasy font-bold text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-1 tracking-wide"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleAddBlockAfter(index, 'text')
-                      }
-                    }}
-                  />
-                )}
+                {block.type === 'heading_1' &&
+                  (editingBlockId === block.id || !block.content ? (
+                    <input
+                      type="text"
+                      autoFocus={editingBlockId === block.id}
+                      value={block.content}
+                      onBlur={() => setEditingBlockId(null)}
+                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                      placeholder="Título Épico (Capítulo)..."
+                      className="w-full text-2xl font-fantasy font-bold text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-1 tracking-wide"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          setEditingBlockId(null)
+                          handleAddBlockAfter(index, 'text')
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setEditingBlockId(block.id)}
+                      className="w-full text-2xl font-fantasy font-bold text-amber-100 py-1 tracking-wide cursor-text"
+                    >
+                      <DiscordInline content={block.content} />
+                    </div>
+                  ))}
 
-                {block.type === 'heading_2' && (
-                  <input
-                    type="text"
-                    value={block.content}
-                    onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Seção de Atributos (H2)..."
-                    className="w-full text-xl font-fantasy font-semibold text-amber-200 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleAddBlockAfter(index, 'text')
-                      }
-                    }}
-                  />
-                )}
+                {block.type === 'heading_2' &&
+                  (editingBlockId === block.id || !block.content ? (
+                    <input
+                      type="text"
+                      autoFocus={editingBlockId === block.id}
+                      value={block.content}
+                      onBlur={() => setEditingBlockId(null)}
+                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                      placeholder="Seção de Atributos (H2)..."
+                      className="w-full text-xl font-fantasy font-semibold text-amber-200 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          setEditingBlockId(null)
+                          handleAddBlockAfter(index, 'text')
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setEditingBlockId(block.id)}
+                      className="w-full text-xl font-fantasy font-semibold text-amber-200 py-0.5 cursor-text"
+                    >
+                      <DiscordInline content={block.content} />
+                    </div>
+                  ))}
 
-                {block.type === 'heading_3' && (
-                  <input
-                    type="text"
-                    value={block.content}
-                    onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Subseção de Perícias (H3)..."
-                    className="w-full text-base font-fantasy font-semibold text-amber-300/90 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleAddBlockAfter(index, 'text')
-                      }
-                    }}
-                  />
-                )}
+                {block.type === 'heading_3' &&
+                  (editingBlockId === block.id || !block.content ? (
+                    <input
+                      type="text"
+                      autoFocus={editingBlockId === block.id}
+                      value={block.content}
+                      onBlur={() => setEditingBlockId(null)}
+                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                      placeholder="Subseção de Perícias (H3)..."
+                      className="w-full text-base font-fantasy font-semibold text-amber-300/90 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          setEditingBlockId(null)
+                          handleAddBlockAfter(index, 'text')
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setEditingBlockId(block.id)}
+                      className="w-full text-base font-fantasy font-semibold text-amber-300/90 py-0.5 cursor-text"
+                    >
+                      <DiscordInline content={block.content} />
+                    </div>
+                  ))}
 
                 {block.type === 'todo' && (
                   <div className="flex items-start gap-2 pt-0.5">
@@ -481,95 +517,156 @@ export default function PageEditor() {
                         <Square className="h-4 w-4 text-amber-400/40" />
                       )}
                     </button>
-                    <input
-                      type="text"
-                      value={block.content}
-                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Habilidade / Magia / Manobra..."
-                      className={`w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5 ${
-                        block.checked ? 'line-through text-[#7d7568]' : ''
-                      }`}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          handleAddBlockAfter(index, 'todo')
-                        }
-                      }}
-                    />
+                    {editingBlockId === block.id || !block.content ? (
+                      <input
+                        type="text"
+                        autoFocus={editingBlockId === block.id}
+                        value={block.content}
+                        onBlur={() => setEditingBlockId(null)}
+                        onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                        placeholder="Habilidade / Magia / Manobra..."
+                        className={`w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5 ${
+                          block.checked ? 'line-through text-[#7d7568]' : ''
+                        }`}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            setEditingBlockId(null)
+                            handleAddBlockAfter(index, 'todo')
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div
+                        onClick={() => setEditingBlockId(block.id)}
+                        className={`w-full text-sm text-amber-100 py-0.5 cursor-text ${
+                          block.checked ? 'line-through text-[#7d7568]' : ''
+                        }`}
+                      >
+                        <DiscordInline content={block.content} />
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {block.type === 'bullet' && (
                   <div className="flex items-start gap-2 pt-0.5">
                     <RuneSwordIcon className="w-3.5 h-3.5 mode-accent-text shrink-0 mt-1" />
-                    <input
-                      type="text"
-                      value={block.content}
-                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Item de equipamento / estatística..."
-                      className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          handleAddBlockAfter(index, 'bullet')
-                        }
-                      }}
-                    />
+                    {editingBlockId === block.id || !block.content ? (
+                      <input
+                        type="text"
+                        autoFocus={editingBlockId === block.id}
+                        value={block.content}
+                        onBlur={() => setEditingBlockId(null)}
+                        onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                        placeholder="Item de equipamento / estatística..."
+                        className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            setEditingBlockId(null)
+                            handleAddBlockAfter(index, 'bullet')
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div
+                        onClick={() => setEditingBlockId(block.id)}
+                        className="w-full text-sm text-amber-100 py-0.5 cursor-text"
+                      >
+                        <DiscordInline content={block.content} />
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {block.type === 'quote' && (
                   <div className="border-l-2 border-amber-500/80 pl-3.5 py-1 my-0.5 italic text-amber-200/90 bg-amber-500/5 rounded-r">
-                    <input
-                      type="text"
-                      value={block.content}
-                      onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Palavras de oráculo, profecia ou fala de NPC..."
-                      className="w-full text-sm italic font-serif text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          handleAddBlockAfter(index, 'text')
-                        }
-                      }}
-                    />
+                    {editingBlockId === block.id || !block.content ? (
+                      <input
+                        type="text"
+                        autoFocus={editingBlockId === block.id}
+                        value={block.content}
+                        onBlur={() => setEditingBlockId(null)}
+                        onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                        placeholder="Palavras de oráculo, profecia ou fala de NPC..."
+                        className="w-full text-sm italic font-serif text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            setEditingBlockId(null)
+                            handleAddBlockAfter(index, 'text')
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div
+                        onClick={() => setEditingBlockId(block.id)}
+                        className="w-full text-sm italic font-serif text-amber-100 py-0.5 cursor-text"
+                      >
+                        <DiscordInline content={block.content} />
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {block.type === 'callout' && (
                   <div className="flex items-start gap-2.5 bg-amber-950/30 border border-amber-500/30 rounded-lg p-2.5 my-1 text-amber-200">
                     <Sparkles className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                    {editingBlockId === block.id || !block.content ? (
+                      <input
+                        type="text"
+                        autoFocus={editingBlockId === block.id}
+                        value={block.content}
+                        onBlur={() => setEditingBlockId(null)}
+                        onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
+                        placeholder="Espécie / Raça, Classe, Nível, Biografia ou Nota de RP..."
+                        className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-400/40 bg-transparent py-0.5 font-medium"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            setEditingBlockId(null)
+                            handleAddBlockAfter(index, 'text')
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div
+                        onClick={() => setEditingBlockId(block.id)}
+                        className="w-full text-sm text-amber-100 py-0.5 font-medium cursor-text"
+                      >
+                        <DiscordInline content={block.content} />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {block.type === 'text' &&
+                  (editingBlockId === block.id || !block.content ? (
                     <input
                       type="text"
+                      autoFocus={editingBlockId === block.id}
                       value={block.content}
+                      onBlur={() => setEditingBlockId(null)}
                       onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                      placeholder="Espécie / Raça, Classe, Nível, Biografia ou Nota de RP..."
-                      className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-400/40 bg-transparent py-0.5 font-medium"
+                      placeholder="Escreva a crônica da sessão ou pressione Enter..."
+                      className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault()
+                          setEditingBlockId(null)
                           handleAddBlockAfter(index, 'text')
                         }
                       }}
                     />
-                  </div>
-                )}
-
-                {block.type === 'text' && (
-                  <input
-                    type="text"
-                    value={block.content}
-                    onChange={(e) => handleBlockContentChange(block.id, e.target.value)}
-                    placeholder="Escreva a crônica da sessão ou pressione Enter..."
-                    className="w-full text-sm text-amber-100 border-0 focus:outline-none placeholder:text-amber-200/30 bg-transparent py-0.5"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleAddBlockAfter(index, 'text')
-                      }
-                    }}
-                  />
-                )}
+                  ) : (
+                    <div
+                      onClick={() => setEditingBlockId(block.id)}
+                      className="w-full text-sm text-amber-100 py-0.5 cursor-text"
+                    >
+                      <DiscordMarkdown content={block.content} />
+                    </div>
+                  ))}
               </div>
 
               {/* Botão rápido para adicionar bloco logo abaixo */}

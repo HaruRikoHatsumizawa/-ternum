@@ -68,6 +68,8 @@ import {
 } from '@/components/ui/dialog'
 import { TomeOrnament, RunicCircle } from '@/components/rpg/RpgArtwork'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
+import { DiscordMarkdown } from '@/components/rpg/DiscordMarkdown'
+import { DiscordInline } from '@/components/rpg/discordMarkdownInline'
 
 export function CharacterDetailView() {
   const { id } = useParams<{ id: string }>()
@@ -763,12 +765,16 @@ export function CharacterDetailView() {
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-fantasy font-black text-amber-100 tracking-wide">
-              {name || t('characterDetail.untitledCharacter')}
+              <DiscordInline content={name || t('characterDetail.untitledCharacter')} />
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#a8a090] font-serif max-w-2xl line-clamp-2">
-              {backstory || t('characterDetail.emptyBackstoryHint')}
-            </p>
+            <div className="text-xs sm:text-sm text-[#a8a090] font-serif max-w-2xl line-clamp-2">
+              {backstory ? (
+                <DiscordMarkdown content={backstory} />
+              ) : (
+                <span>{t('characterDetail.emptyBackstoryHint')}</span>
+              )}
+            </div>
 
             {/* Ações de IA rápidas */}
             <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">
@@ -1099,9 +1105,9 @@ export function CharacterDetailView() {
                       </button>
                     </div>
                     {pow.description && (
-                      <p className="text-xs text-[#a29a8a] mt-1 font-serif leading-relaxed">
-                        {pow.description}
-                      </p>
+                      <div className="text-xs text-[#a29a8a] mt-1 font-serif leading-relaxed">
+                        <DiscordMarkdown content={pow.description} />
+                      </div>
                     )}
                   </div>
                 ))}
@@ -1182,9 +1188,9 @@ export function CharacterDetailView() {
                       </button>
                     </div>
                     {abi.description && (
-                      <p className="text-xs text-[#a29a8a] mt-1 font-serif leading-relaxed">
-                        {abi.description}
-                      </p>
+                      <div className="text-xs text-[#a29a8a] mt-1 font-serif leading-relaxed">
+                        <DiscordMarkdown content={abi.description} />
+                      </div>
                     )}
                   </div>
                 ))}
@@ -1303,9 +1309,9 @@ export function CharacterDetailView() {
 
                           {/* Descrição do Vínculo */}
                           {bond.description ? (
-                            <p className="text-xs text-[#a29a8a] font-serif leading-relaxed border-t border-[#1a2130] pt-2.5">
-                              {bond.description}
-                            </p>
+                            <div className="text-xs text-[#a29a8a] font-serif leading-relaxed border-t border-[#1a2130] pt-2.5">
+                              <DiscordMarkdown content={bond.description} />
+                            </div>
                           ) : (
                             <p className="text-[11px] text-[#5e584e] italic border-t border-[#1a2130] pt-2.5 font-serif">
                               {t('characterDetail.noBondDesc')}
