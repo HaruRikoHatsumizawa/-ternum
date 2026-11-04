@@ -480,10 +480,12 @@ export const ptBR = {
   settings: {
     title: 'Santuário do Mestre & Aventureiro',
     subtitle:
-      'Gerencie idioma, as molduras da foto de perfil, a paleta visual (RP Roxo / RPG Ouro), título de jogador e segurança.',
+      'Gerencie as molduras da foto de perfil, a paleta visual (RP Roxo / RPG Ouro), título de jogador e segurança.',
     languageSectionTitle: 'Idioma do Grimório (Language)',
     languageSectionDesc:
-      'Escolha o idioma de toda a interface do Éternum. O idioma é salvo na sua conta do PocketBase e se mantém em qualquer dispositivo.',
+      'Os controles de idioma agora ficam na barra lateral, logo acima da busca rápida (⌘K). A troca é imediata e salva na sua conta do PocketBase.',
+    languageMovedNotice:
+      'O seletor de idioma agora está na barra lateral, posicionado diretamente acima da busca rápida (⌘K), acessível de qualquer tela.',
     languageSelectLabel: 'Idioma Ativo da Interface',
     languageSelectHelp:
       'Altera todos os menus, botões, modais e avisos mantendo seus conteúdos e fichas intactos.',

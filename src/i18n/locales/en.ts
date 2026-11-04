@@ -480,10 +480,12 @@ export const en: TranslationDict = {
   settings: {
     title: 'Master & Adventurer Sanctuary',
     subtitle:
-      'Manage language, profile picture frames, visual theme (RP Purple / RPG Gold), player title, and security.',
+      'Manage profile picture frames, visual theme (RP Purple / RPG Gold), player title, and security.',
     languageSectionTitle: 'Grimoire Language',
     languageSectionDesc:
-      'Choose the language of Éternum’s entire interface. The language is saved to your PocketBase account and persists across devices.',
+      'Language controls are now located in the sidebar, directly above the quick search (⌘K). Switching is instantaneous and saved to your PocketBase account.',
+    languageMovedNotice:
+      'Language controls have been moved to the sidebar, positioned directly above quick search (⌘K), accessible from every screen.',
     languageSelectLabel: 'Active Interface Language',
     languageSelectHelp:
       'Changes all menus, buttons, modals, and notices while leaving your user-created content and notes intact.',

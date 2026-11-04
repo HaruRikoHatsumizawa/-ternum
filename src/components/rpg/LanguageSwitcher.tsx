@@ -2,12 +2,51 @@ import { useLanguage, SUPPORTED_LOCALES } from '@/i18n/LanguageContext'
 import { Languages } from 'lucide-react'
 
 export interface LanguageSwitcherProps {
-  variant?: 'compact' | 'full'
+  variant?: 'compact' | 'full' | 'sidebar'
   className?: string
 }
 
 export function LanguageSwitcher({ variant = 'compact', className = '' }: LanguageSwitcherProps) {
   const { locale, setLocale, t } = useLanguage()
+
+  if (variant === 'sidebar') {
+    return (
+      <div
+        className={`flex items-center p-0.5 rounded-lg bg-[#0e1219] border border-[#222a38] text-[11px] shadow-xs ${className}`}
+        role="group"
+        aria-label={t('settings.languageSelectLabel')}
+      >
+        <span className="px-2 text-amber-400/70 flex items-center gap-1 font-fantasy text-[10px] uppercase tracking-wider shrink-0 select-none">
+          <Languages className="w-3 h-3 text-amber-400/80" />
+          <span className="hidden sm:inline">Idioma</span>
+        </span>
+        <div className="flex items-center flex-1 gap-1">
+          {SUPPORTED_LOCALES.map((item) => {
+            const isActive = locale === item.id
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setLocale(item.id)}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1 px-2 rounded-md font-fantasy font-bold transition-all text-[11px] ${
+                  isActive
+                    ? 'mode-accent-bg mode-accent-text mode-accent-border border shadow-xs'
+                    : 'text-[#8e8678] hover:text-amber-100 hover:bg-[#161c26] border border-transparent'
+                }`}
+                title={item.sublabel}
+                aria-pressed={isActive}
+              >
+                <span className="text-xs shrink-0">{item.flag}</span>
+                <span className="uppercase tracking-wider">
+                  {item.id === 'pt-BR' ? 'PT-BR' : 'EN'}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
 
   if (variant === 'compact') {
     return (

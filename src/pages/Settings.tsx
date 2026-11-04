@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
-import { LanguageSwitcher } from '@/components/rpg/LanguageSwitcher'
 import {
   RuneGearIcon,
   RuneSwordIcon,
@@ -133,23 +132,16 @@ export default function Settings() {
         <p className="text-sm text-[#a39b8d] mt-1">{t('settings.subtitle')}</p>
       </div>
 
-      {/* Seletor de Idioma da Interface */}
-      <Card className="border-2 mode-accent-border shadow-xl bg-[#121620] text-[#f1ede3]">
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <span className="text-base mode-accent-text">🌐</span>
-            <CardTitle className="text-base font-fantasy font-bold mode-accent-text">
-              {t('settings.languageSectionTitle')}
-            </CardTitle>
-          </div>
-          <CardDescription className="text-xs text-[#8e8678]">
-            {t('settings.languageSectionDesc')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <LanguageSwitcher variant="full" />
-        </CardContent>
-      </Card>
+      {/* Aviso de Idioma movido para a barra lateral */}
+      <div className="p-3.5 rounded-xl border mode-accent-border bg-[#121620]/90 flex items-start gap-3 text-xs shadow-md">
+        <span className="text-base mode-accent-text shrink-0 mt-0.5">🌐</span>
+        <div className="space-y-0.5">
+          <h4 className="font-fantasy font-bold mode-accent-text">
+            {t('settings.languageSectionTitle')}
+          </h4>
+          <p className="text-[#a39b8d] leading-relaxed">{t('settings.languageMovedNotice')}</p>
+        </div>
+      </div>
 
       {/* Seletor Visual dos Dois Modos: RP Roxo vs RPG Laranja/Dourado */}
       <Card className="border-2 mode-accent-border shadow-xl bg-[#121620] text-[#f1ede3]">

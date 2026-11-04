@@ -265,7 +265,10 @@ export default function Layout() {
             </div>
 
             {/* Ações Rápidas */}
-            <div className="px-2 pt-2.5 pb-1 space-y-1">
+            <div className="px-2 pt-2.5 pb-1 space-y-2">
+              {/* Controles de Idioma da Interface - Posicionados ACIMA da Busca Rápida (⌘K) */}
+              <LanguageSwitcher variant="sidebar" />
+
               <button
                 onClick={() => setSearchOpen(true)}
                 className="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-[#d1c8b8] hover:text-amber-200 hover:bg-[#18202d] rounded-md transition-colors border border-transparent hover:border-amber-500/20 group"
@@ -879,9 +882,6 @@ export default function Layout() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            {/* Seletor Rápido de Idioma Discreto no Top Header */}
-            <LanguageSwitcher variant="compact" />
-
             {/* Seletor de TRÊS Modos no Top Header: Geral / RPG / RP */}
             <div className="flex items-center rounded-lg bg-[#141924] border border-[#2b3548] p-0.5 shadow-xs">
               <button
