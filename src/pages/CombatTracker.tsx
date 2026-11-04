@@ -17,6 +17,7 @@ import {
   RuneShieldIcon,
   RuneScrollIcon,
   RuneTomeIcon,
+  RuneD20Icon,
   RunicInsignia,
 } from '@/components/rpg/EternumIcons'
 import { RunicPawIcon, CrestShield } from '@/components/rpg/RpgArtwork'
@@ -352,6 +353,74 @@ export default function CombatTracker() {
       current_turn_index: nextIndex,
     }
     await persistEncounter(updated)
+  }
+
+  // Estado para a animação de rolagem de d20
+  const [isRollingInitiative, setIsRollingInitiative] = useState(false)
+  const [diceRollModalOpen, setDiceRollModalOpen] = useState(false)
+  const [diceRollResults, setDiceRollResults] = useState<
+    { id: string; name: string; roll: number; avatar?: string }[]
+  >([])
+
+  // Rolar iniciativa com d20 para todos os combatentes com animação rúnica
+  const handleRollAllInitiative = async () => {
+    if (!selectedEncounter || selectedEncounter.combatants.length === 0) {
+      toast({ title: 'Nenhum combatente no encontro para rolar iniciativa' })
+      return
+    }
+
+    setIsRollingInitiative(true)
+    setDiceRollModalOpen(true)
+
+    // Gera resultados iniciais giratórios rápidos para a animação
+    const tempCombatants = [...selectedEncounter.combatants]
+    const finalRolls = tempCombatants.map((cbt) => ({
+      id: cbt.id,
+      name: cbt.name,
+      roll: Math.floor(Math.random() * 20) + 1,
+      avatar: cbt.avatar,
+    }))
+
+    // Simula o suspense do dado rolando durante ~1.2 segundos
+    let ticks = 0
+    const interval = setInterval(() => {
+      ticks++
+      setDiceRollResults(
+        tempCombatants.map((cbt) => ({
+          id: cbt.id,
+          name: cbt.name,
+          roll: Math.floor(Math.random() * 20) + 1,
+          avatar: cbt.avatar,
+        })),
+      )
+      if (ticks > 7) {
+        clearInterval(interval)
+        setDiceRollResults(finalRolls)
+
+        // Atualiza os combatentes com a nova iniciativa rolada
+        const rollMap = new Map(finalRolls.map((r) => [r.id, r.roll]))
+        const updatedCombatantsList = tempCombatants.map((cbt) => ({
+          ...cbt,
+          initiative: rollMap.get(cbt.id) ?? cbt.initiative,
+        }))
+
+        // Reordena automaticamente pelo resultado e critérios de desempate
+        const sorted = sortCombatantsByInitiative(updatedCombatantsList)
+        const updated: EncounterRecord = {
+          ...selectedEncounter,
+          combatants: sorted,
+          current_turn_index: 0,
+        }
+
+        persistEncounter(updated).then(() => {
+          setIsRollingInitiative(false)
+          toast({
+            title: 'Iniciativa d20 rolada!',
+            description: 'Fila de combate reordenada automaticamente.',
+          })
+        })
+      }
+    }, 150)
   }
 
   // Reordenar por iniciativa manualmente
@@ -724,9 +793,9 @@ export default function CombatTracker() {
                 </div>
               </div>
 
-              {/* Barra de Ações Rápidas: Adicionar Combatente, Reordenar, Reiniciar */}
+              {/* Barra de Ações Rápidas: Adicionar Combatente, Rolar D20, Reordenar, Reiniciar */}
               <div className="flex flex-wrap items-center justify-between gap-2.5 bg-[#0e121a]/80 p-3 rounded-xl border border-[#263042]">
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button
                     size="sm"
                     onClick={() => setAddCombatantModalOpen(true)}
@@ -736,6 +805,18 @@ export default function CombatTracker() {
                     Adicionar Combatente
                   </Button>
                   <Button
+                    size="sm"
+                    onClick={handleRollAllInitiative}
+                    disabled={isRollingInitiative || selectedEncounter.combatants.length === 0}
+                    title="Rolar d20 para todos os combatentes e reordenar a fila"
+                    className="h-7 text-xs font-fantasy font-bold bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-100 border border-amber-400/50 hover:bg-amber-500/40 shadow-xs"
+                  >
+                    <RuneD20Icon
+                      className={`w-3.5 h-3.5 mr-1.5 text-amber-300 ${isRollingInitiative ? 'animate-spin' : ''}`}
+                    />
+                    Rolar Iniciativa (d20)
+                  </Button>
+                  <Button
                     variant="outline"
                     size="sm"
                     onClick={handleReorderInitiative}
@@ -743,7 +824,7 @@ export default function CombatTracker() {
                     className="h-7 text-xs border-[#2a3448] text-amber-300/90 hover:text-amber-100 hover:bg-amber-500/10"
                   >
                     <ArrowUpDown className="w-3 h-3 mr-1" />
-                    Ordenar Iniciativa
+                    Ordenar
                   </Button>
                 </div>
 
@@ -1592,6 +1673,84 @@ export default function CombatTracker() {
               className="font-fantasy font-bold text-xs bg-amber-500 text-slate-950 hover:bg-amber-400"
             >
               Fechar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Temático: Animação de Rolagem de Dados D20 */}
+      <Dialog open={diceRollModalOpen} onOpenChange={setDiceRollModalOpen}>
+        <DialogContent className="max-w-md bg-[#121620] border-2 border-amber-500/40 text-[#f1ede3] shadow-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-fantasy text-base text-amber-200 flex items-center gap-2">
+              <RuneD20Icon
+                className={`w-5 h-5 text-amber-400 ${isRollingInitiative ? 'animate-spin' : ''}`}
+              />
+              <span>
+                {isRollingInitiative
+                  ? 'Rolando Iniciativa dos Combatentes...'
+                  : 'Iniciativa Definida pelos Dados!'}
+              </span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="py-4 space-y-3">
+            <div className="flex items-center justify-center p-4 rounded-xl bg-gradient-to-b from-amber-500/10 to-transparent border border-amber-500/20">
+              <div className="relative flex flex-col items-center">
+                <div
+                  className={`p-4 rounded-2xl bg-amber-500/20 border-2 border-amber-400/80 shadow-lg text-amber-300 transition-transform ${isRollingInitiative ? 'scale-110 animate-pulse' : 'scale-100'}`}
+                >
+                  <RuneD20Icon className="w-12 h-12" />
+                </div>
+                <span className="text-[11px] font-fantasy uppercase text-amber-300/80 mt-2 tracking-wider">
+                  {isRollingInitiative
+                    ? 'Conjurando os d20...'
+                    : 'Rolagens Concluídas & Fila Reordenada'}
+                </span>
+              </div>
+            </div>
+
+            <div className="max-h-[260px] overflow-y-auto space-y-1.5 pr-1">
+              {diceRollResults.map((res) => (
+                <div
+                  key={res.id}
+                  className="flex items-center justify-between p-2 rounded-lg bg-[#0c1017] border border-[#232c3d]"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-md bg-[#161c28] border border-amber-500/30 flex items-center justify-center text-amber-200 shrink-0">
+                      <RunicInsignia name={res.avatar || 'sword'} className="w-4 h-4" />
+                    </div>
+                    <span className="text-xs font-fantasy font-medium text-amber-100 truncate max-w-[200px]">
+                      {res.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] uppercase font-mono text-amber-300/60">d20</span>
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-sm border ${
+                        res.roll === 20
+                          ? 'bg-amber-500 text-slate-950 border-amber-300 shadow-md animate-bounce'
+                          : res.roll === 1
+                            ? 'bg-rose-950/80 text-rose-300 border-rose-500/60'
+                            : 'bg-[#18202d] text-amber-200 border-amber-500/40'
+                      }`}
+                    >
+                      {res.roll}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              size="sm"
+              disabled={isRollingInitiative}
+              onClick={() => setDiceRollModalOpen(false)}
+              className="font-fantasy font-bold text-xs bg-amber-500 text-slate-950 hover:bg-amber-400"
+            >
+              Concluir & Voltar ao Combate
             </Button>
           </DialogFooter>
         </DialogContent>

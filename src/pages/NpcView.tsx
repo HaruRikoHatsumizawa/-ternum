@@ -3,9 +3,17 @@ import { useNavigate } from 'react-router-dom'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
+import { CHARACTER_TEMPLATES, CharacterTemplate } from '@/services/characterTemplates'
 import { RpgInventoryTab } from '@/components/rpg/RpgInventoryTab'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
-import { RuneNpcIcon, RunicInsignia, RUNIC_INSIGNIA_CATALOG } from '@/components/rpg/EternumIcons'
+import {
+  RuneNpcIcon,
+  RunicInsignia,
+  RUNIC_INSIGNIA_CATALOG,
+  RuneSwordIcon,
+  RuneSparklesIcon,
+  RuneSkullIcon,
+} from '@/components/rpg/EternumIcons'
 import {
   Users,
   Plus,
@@ -41,7 +49,7 @@ function getModifier(score?: number): string {
 export default function NpcView() {
   const navigate = useNavigate()
   const { mode } = useAppMode()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [npcs, setNpcs] = useState<NpcRecord[]>([])
   const [selectedNpc, setSelectedNpc] = useState<NpcRecord | null>(null)
   const [isEditing, setIsEditing] = useState(false)
@@ -82,10 +90,39 @@ export default function NpcView() {
     setIsCreating(false)
   }
 
-  const handleStartCreate = () => {
+  const handleApplyTemplate = (tpl: CharacterTemplate) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...tpl.initialData,
+      personality: {
+        ...(prev.personality || {}),
+        ...(tpl.initialData.personality || {}),
+      },
+      target_mode: prev.target_mode || (mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral'),
+    }))
+    toast({
+      title: `Modelo "${language === 'en' ? tpl.titleEn : tpl.title}" aplicado!`,
+      description: 'Você pode editar livremente qualquer detalhe da ficha.',
+    })
+  }
+
+  const handleStartCreate = (presetTemplateKey?: string) => {
     setIsCreating(true)
     setIsEditing(true)
     setSelectedNpc(null)
+
+    if (presetTemplateKey) {
+      const found = CHARACTER_TEMPLATES.find((t) => t.key === presetTemplateKey)
+      if (found) {
+        setFormData({
+          ...found.initialData,
+          personality: { ...(found.initialData.personality || {}) },
+          target_mode: mode === 'rp' ? 'rp' : mode === 'rpg' ? 'rpg' : 'geral',
+        })
+        return
+      }
+    }
+
     setFormData({
       name: 'Novo Personagem / NPC',
       species: 'Lobo Cinzento Antropomórfico',
@@ -289,6 +326,69 @@ export default function NpcView() {
         <div className="lg:col-span-8">
           {active ? (
             <div className="relative rounded-2xl border-2 border-amber-500/40 bg-[#161b26] p-6 sm:p-8 shadow-2xl space-y-6">
+              {/* Seletor de Modelos Prontos de Ficha (ao criar ou editar) */}
+              {isEditing && (
+                <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-[#121622] to-purple-500/10 border border-amber-500/30 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <h4 className="text-xs font-fantasy font-bold text-amber-200 flex items-center gap-1.5 uppercase tracking-wider">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        {language === 'en'
+                          ? 'Preset Character Templates'
+                          : 'Modelos Prontos de Ficha'}
+                      </h4>
+                      <p className="text-[11px] text-[#a39b8c] mt-0.5">
+                        {language === 'en'
+                          ? 'Select a ready template to auto-fill the sheet, then customize as you wish.'
+                          : 'Escolha um arquétipo balanceado para preencher a ficha instantaneamente e edite por cima.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                    {CHARACTER_TEMPLATES.map((tpl) => (
+                      <button
+                        key={tpl.key}
+                        type="button"
+                        onClick={() => handleApplyTemplate(tpl)}
+                        className="text-left p-2.5 rounded-lg border border-[#2b3548] bg-[#0d1118]/80 hover:border-amber-400/80 hover:bg-amber-500/10 transition-all group flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-1 mb-1">
+                            <span className="text-xs font-fantasy font-bold text-amber-100 group-hover:text-amber-300 flex items-center gap-1.5">
+                              {tpl.key === 'combatente' && (
+                                <RuneSwordIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                              )}
+                              {tpl.key === 'arcanista' && (
+                                <RuneSparklesIcon className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                              )}
+                              {tpl.key === 'vilao' && (
+                                <RuneSkullIcon className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                              )}
+                              <span>{language === 'en' ? tpl.titleEn : tpl.title}</span>
+                            </span>
+                            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                              {language === 'en' ? tpl.badgeEn : tpl.badge}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-[#9a9282] leading-tight line-clamp-2">
+                            {language === 'en' ? tpl.descriptionEn : tpl.description}
+                          </p>
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-[#1c2433] flex items-center justify-between text-[10px] font-mono text-amber-300/80">
+                          <span>
+                            HP {tpl.previewStats.hp} • CA {tpl.previewStats.ac}
+                          </span>
+                          <span className="text-[10px] font-fantasy font-bold text-amber-400 group-hover:underline">
+                            {language === 'en' ? 'Use Template →' : 'Usar Modelo →'}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Botões de Ação & Abas de Formato (Híbrido / RP / RPG) */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#2a3448] pb-4">
                 <div className="flex items-center gap-2">

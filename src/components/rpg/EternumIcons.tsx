@@ -1066,6 +1066,49 @@ export function RuneNerdIcon({ className = 'w-4 h-4', size, ...props }: EternumI
   )
 }
 
+export function RuneD20Icon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      width={size}
+      height={size}
+      aria-hidden="true"
+      {...props}
+    >
+      {/* Contorno do Icosaedro d20 */}
+      <polygon
+        points="12,2 21.5,7.5 21.5,16.5 12,22 2.5,16.5 2.5,7.5"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {/* Triângulo frontal central (onde brilha a face do dado) */}
+      <polygon
+        points="12,6.5 18,15.5 6,15.5"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+        fill="currentColor"
+        fillOpacity="0.18"
+      />
+      {/* Arestas conectando os vértices do triângulo central aos vértices externos */}
+      <line x1="12" y1="2" x2="12" y2="6.5" strokeWidth="1.3" strokeLinecap="round" />
+      <line x1="2.5" y1="7.5" x2="6" y2="15.5" strokeWidth="1.3" strokeLinecap="round" />
+      <line x1="21.5" y1="7.5" x2="18" y2="15.5" strokeWidth="1.3" strokeLinecap="round" />
+      <line x1="12" y1="6.5" x2="2.5" y2="7.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="12" y1="6.5" x2="21.5" y2="7.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="6" y1="15.5" x2="2.5" y2="16.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="18" y1="15.5" x2="21.5" y2="16.5" strokeWidth="1.2" strokeLinecap="round" />
+      <line x1="6" y1="15.5" x2="12" y2="22" strokeWidth="1.3" strokeLinecap="round" />
+      <line x1="18" y1="15.5" x2="12" y2="22" strokeWidth="1.3" strokeLinecap="round" />
+      {/* Ponto focal rúnico no centro */}
+      <circle cx="12" cy="12.5" r="1.1" fill="currentColor" />
+    </svg>
+  )
+}
+
 export function RuneCombatIcon({ className = 'w-4 h-4', size, ...props }: EternumIconProps) {
   return (
     <svg
@@ -1166,8 +1209,10 @@ export type RunicInsigniaKey =
   | 'compendium'
   | 'backpack'
   | 'nerd'
+  | 'd20'
 
 export const RUNIC_INSIGNIA_CATALOG: { id: RunicInsigniaKey; label: string }[] = [
+  { id: 'd20', label: 'Dado Rúnico d20' },
   { id: 'compendium', label: 'Compêndio de Poderes' },
   { id: 'backpack', label: 'Mochila de Aventureiro' },
   { id: 'nerd', label: 'Máscara Dramática' },
@@ -1239,6 +1284,8 @@ export function RunicInsignia({
     return <RuneGearIcon className={className} size={size} {...props} />
   if (norm === 'crest' || norm === 'portal')
     return <RuneCrestIcon className={className} size={size} {...props} />
+  if (norm === 'd20' || norm === 'dice' || norm === 'dado' || norm === 'rolagem')
+    return <RuneD20Icon className={className} size={size} {...props} />
   if (norm === 'combat' || norm === 'combate' || norm === 'iniciativa' || norm === 'battle')
     return <RuneCombatIcon className={className} size={size} {...props} />
   if (norm === 'compendium' || norm === 'compendio' || norm === 'racas' || norm === 'poderes')
