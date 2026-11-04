@@ -519,13 +519,17 @@ export const en: TranslationDict = {
       'A new thread of destiny unravels before the arcane glass. What do you wish to ask the Éternum Oracle?',
     thinking: 'The Oracle scries the threads of the aether...',
     inputPlaceholder:
-      'Ask the Oracle (e.g., Create a hybrid mercenary fox rogue, RP scene, session hook...)',
+      'Ask the Oracle (e.g., Create a Grey Wolf Arcanist character sheet, RP scene, session hook...)',
+    characterCreatedCardTitle: 'Runic Sheet Inscribed in Grimoire',
+    characterCreatedCardSub: 'Character successfully saved to your sheet collection.',
+    openDossierBtn: 'Open Character Dossier',
+    viewInSheetList: 'View in Characters List',
     send: 'Send',
     suggestions: [
-      'Create a hybrid sheet (RPG & RP) of a fox swordmaster with a clan secret.',
+      'Create and save a Grey Wolf Arcanist character sheet in my grimoire.',
+      'Create a Fox swordmaster sheet with a clan secret saved to my list.',
       'Suggest a dramatic RP scene between two noble beasts with opposing views.',
       'Suggest 3 mysterious campaign hooks set in the mists of Val-Morath.',
-      'How to run a puzzle of runes and constellations in a sealed crypt?',
     ],
     errorMsg:
       '*The aether mists wavered and the magical connection faded. Please try sending your query once more.*',

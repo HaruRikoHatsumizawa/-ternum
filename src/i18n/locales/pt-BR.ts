@@ -520,13 +520,17 @@ export const ptBR = {
       'Um novo fio do destino se abre diante do espelho arcano. O que desejas consultar ao Oráculo de Éternum?',
     thinking: 'O Oráculo perscruta as linhas do éter...',
     inputPlaceholder:
-      'Pergunte ao Oráculo (ex: Crie um personagem híbrido raposa mercenária, cena de RP, gancho de sessão...)',
+      'Peça ao Oráculo (ex: Crie um personagem Arcanista Lobo cinzento, cena de RP, gancho de sessão...)',
+    characterCreatedCardTitle: 'Ficha Rúnica Gravada no Grimório',
+    characterCreatedCardSub: 'Personagem salvo com sucesso na coleção de fichas.',
+    openDossierBtn: 'Abrir Dossiê do Personagem',
+    viewInSheetList: 'Ver na Lista de Fichas',
     send: 'Enviar',
     suggestions: [
-      'Crie uma ficha híbrida (RPG & RP) de uma Raposa espadachim com segredo de clã.',
+      'Crie e salve uma ficha de um Arcanista Lobo Cinzento no meu grimório.',
+      'Crie uma ficha de Raposa espadachim com segredo de clã salva na minha lista.',
       'Sugira uma cena dramática de RP entre dois nobres feras com visões opostas.',
       'Sugira 3 ganchos misteriosos de campanha nas brumas de Val-Morath.',
-      'Como conduzir um enigma de runas e constelações em uma cripta selada?',
     ],
     errorMsg:
       '*As brumas do éter oscilaram e a conexão mágica enfraqueceu. Por favor, tente enviar sua pergunta novamente.*',

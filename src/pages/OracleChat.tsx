@@ -1,33 +1,33 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import pb from '@/lib/pocketbase/client'
-import {
-  Sparkles,
-  Send,
-  Bot,
-  User,
-  History,
-  Plus,
-  Compass,
-  Scroll,
-  Swords,
-  BookOpen,
-  Trash2,
-} from 'lucide-react'
+import { Sparkles, Send, User, Plus, Trash2, ExternalLink, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { RunicCircle, ArcaneOrb, TomeOrnament } from '@/components/rpg/RpgArtwork'
-import { RuneOracleIcon } from '@/components/rpg/EternumIcons'
+import { RunicCircle } from '@/components/rpg/RpgArtwork'
+import { RuneOracleIcon, RuneNpcIcon, RuneSwordIcon } from '@/components/rpg/EternumIcons'
 import { DiscordMarkdown } from '@/components/rpg/DiscordMarkdown'
 import { toast } from '@/hooks/use-toast'
+
+export interface CreatedCharacterMeta {
+  id: string
+  name: string
+  species?: string
+  occupation?: string
+  avatar?: string
+  target_mode?: string
+  created?: string
+}
 
 interface ChatMessage {
   id: string
   role: 'user' | 'assistant'
   content: string
   created?: string
+  createdCharacters?: CreatedCharacterMeta[]
 }
 
 interface ConversationItem {
@@ -36,14 +36,8 @@ interface ConversationItem {
   updated?: string
 }
 
-const ORACLE_SUGGESTIONS = [
-  'Crie uma ficha híbrida (RPG & RP) de uma Raposa espadachim com segredo de clã.',
-  'Sugira uma cena dramática de RP entre dois nobres feras com visões opostas.',
-  'Sugira 3 ganchos misteriosos de campanha nas brumas de Val-Morath.',
-  'Como conduzir um enigma de runas e constelações em uma cripta selada?',
-]
-
 export default function OracleChat() {
+  const navigate = useNavigate()
   const { mode } = useAppMode()
   const { t } = useLanguage()
   const confirm = useConfirm()
@@ -52,7 +46,7 @@ export default function OracleChat() {
       id: 'welcome',
       role: 'assistant',
       content:
-        'Saudações, nobre Mestre. Eu sou **O Oráculo de Éternum**, a consciência ancestral que ecoa através das páginas deste grimório. Diga-me: quais segredos de campanha, ganchos de aventura ou relíquias esquecidas desejas desvendar hoje?',
+        'Saudações, nobre Mestre. Eu sou **O Oráculo de Éternum**, a consciência ancestral que ecoa através das páginas deste grimório. Diga-me: quais segredos de campanha, ganchos de aventura ou fichas de heróis desejas forjar hoje? (Peça-me para criar um personagem e gravarei as runas da ficha diretamente em teu grimório!)',
     },
   ])
   const [input, setInput] = useState('')
@@ -208,6 +202,9 @@ export default function OracleChat() {
         id: data.message_id || `ast_${Date.now()}`,
         role: 'assistant',
         content: data.content || 'O Oráculo sussurrou palavras inaudíveis nas brumas.',
+        createdCharacters: Array.isArray(data.created_characters)
+          ? data.created_characters
+          : undefined,
       }
 
       setMessages((prev) => [...prev, assistantMsg])
@@ -324,13 +321,65 @@ export default function OracleChat() {
                   </div>
 
                   <div
-                    className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed border space-y-1 shadow-md max-w-full ${
+                    className={`p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed border space-y-3 shadow-md max-w-full ${
                       isAssistant
                         ? 'bg-[#161c28] border-amber-500/25 text-amber-100'
                         : 'bg-amber-500/15 border-amber-500/40 text-amber-200'
                     }`}
                   >
                     <DiscordMarkdown content={m.content} />
+
+                    {/* Exibição heróica de personagens forjados pelo Oráculo */}
+                    {isAssistant && m.createdCharacters && m.createdCharacters.length > 0 && (
+                      <div className="pt-2 border-t border-amber-500/20 space-y-2">
+                        <div className="flex items-center gap-2 text-xs font-fantasy font-semibold text-amber-300">
+                          <RuneNpcIcon className="w-4 h-4 text-amber-400" />
+                          <span>{t('oracle.characterCreatedCardTitle')}</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {m.createdCharacters.map((char) => (
+                            <div
+                              key={char.id}
+                              className="p-3 rounded-xl bg-[#0c1017] border border-amber-500/35 hover:border-amber-400 transition-all flex flex-col justify-between gap-2.5 shadow-md"
+                            >
+                              <div>
+                                <div className="flex items-center justify-between gap-1">
+                                  <h4 className="font-fantasy font-bold text-amber-100 text-sm truncate">
+                                    {char.name}
+                                  </h4>
+                                  <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                                    {char.target_mode || 'geral'}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-[#a39b8d] mt-0.5">
+                                  {char.species} • {char.occupation}
+                                </p>
+                              </div>
+
+                              <div className="flex items-center gap-2 pt-1 border-t border-[#1a2332]">
+                                <Button
+                                  size="sm"
+                                  onClick={() => navigate(`/characters/${char.id}`)}
+                                  className="flex-1 h-7 text-xs bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 font-fantasy"
+                                >
+                                  <ExternalLink className="w-3 h-3 mr-1" />
+                                  {t('oracle.openDossierBtn')}
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => navigate('/npcs')}
+                                  className="h-7 px-2 text-xs text-[#a39b8d] hover:text-amber-200"
+                                  title={t('oracle.viewInSheetList')}
+                                >
+                                  <RuneSwordIcon className="w-3.5 h-3.5" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -353,15 +402,17 @@ export default function OracleChat() {
           {/* Sugestões Rápidas */}
           {messages.length <= 2 && (
             <div className="px-4 py-2 border-t border-[#232b3b] bg-[#0c1017]/80 flex flex-wrap gap-2 text-[11px]">
-              {ORACLE_SUGGESTIONS.map((sug, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSendMessage(sug)}
-                  className="px-2.5 py-1 rounded-full bg-[#161c28] hover:bg-amber-500/15 border border-[#2b3548] hover:border-amber-500/40 text-amber-200/80 transition-colors text-left"
-                >
-                  {sug}
-                </button>
-              ))}
+              {Array.isArray(t('oracle.suggestions'))
+                ? (t('oracle.suggestions') as unknown as string[]).map((sug: string, i: number) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSendMessage(sug)}
+                      className="px-2.5 py-1 rounded-full bg-[#161c28] hover:bg-amber-500/15 border border-[#2b3548] hover:border-amber-500/40 text-amber-200/80 transition-colors text-left"
+                    >
+                      {sug}
+                    </button>
+                  ))
+                : null}
             </div>
           )}
 

@@ -12,17 +12,86 @@ routerAdd(
         return e.badRequestError('A mensagem para o Oráculo é obrigatória.')
       }
 
+      // Snapshot dos NPCs do usuário antes da invocação para detectar novas fichas ou atualizações
+      let preIds = []
+      try {
+        const existingNpcs = $app.findRecordsByFilter(
+          'npcs',
+          "user = '" + userId + "'",
+          '-created',
+          100,
+          0,
+        )
+        preIds = existingNpcs.map((r) => r.id)
+      } catch (_) {}
+
       const result = $ai.agent('oraculo-eternum').chat({
         user_id: userId,
         conversation_id: body.conversation_id || null,
         message: body.message,
       })
 
+      // Identificar se alguma ficha foi criada durante o diálogo
+      let createdCharacters = []
+      try {
+        const postNpcs = $app.findRecordsByFilter(
+          'npcs',
+          "user = '" + userId + "'",
+          '-created',
+          100,
+          0,
+        )
+        for (let i = 0; i < postNpcs.length; i++) {
+          const rec = postNpcs[i]
+          if (!preIds.includes(rec.id)) {
+            // Ficha recém-criada pela ferramenta do agente!
+            createdCharacters.push({
+              id: rec.id,
+              name: rec.getString('name'),
+              species: rec.getString('species') || rec.getString('race') || 'Antropomórfico',
+              occupation: rec.getString('occupation') || 'Aventureiro',
+              avatar: rec.getString('avatar'),
+              target_mode: rec.getString('target_mode') || 'geral',
+              created: rec.getString('created'),
+            })
+
+            // Garantir que character_details exista para essa ficha recém-criada
+            try {
+              const detailsCol = $app.findCollectionByNameOrId('character_details')
+              let hasDetails = false
+              try {
+                const existingDet = $app.findRecordsByFilter(
+                  'character_details',
+                  "user = '" + userId + "' && character_id = '" + rec.id + "'",
+                  '',
+                  1,
+                  0,
+                )
+                if (existingDet && existingDet.length > 0) hasDetails = true
+              } catch (_) {}
+
+              if (!hasDetails) {
+                const detRec = new Record(detailsCol)
+                detRec.set('user', userId)
+                detRec.set('character_id', rec.id)
+                detRec.set('name', rec.getString('name'))
+                detRec.set('race', rec.getString('race'))
+                detRec.set('species', rec.getString('species'))
+                detRec.set('backstory', rec.getString('bio') || rec.getString('appearance'))
+                detRec.set('bonds', rec.getString('relationships'))
+                $app.save(detRec)
+              }
+            } catch (_) {}
+          }
+        }
+      } catch (_) {}
+
       return e.json(200, {
         conversation_id: result.conversation_id,
         content: result.content,
         citations: result.citations || [],
         message_id: result.message_id,
+        created_characters: createdCharacters,
       })
     } catch (err) {
       if (err instanceof SkipAiConfigError) {
