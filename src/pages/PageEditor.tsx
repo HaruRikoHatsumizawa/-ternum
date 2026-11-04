@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { pagesService, PageRecord, PageBlock } from '@/services/pages'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
@@ -57,6 +58,7 @@ export default function PageEditor() {
   const { id } = useParams<{ id: string }>()
   const { mode, setMode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
   const navigate = useNavigate()
   const [page, setPage] = useState<PageRecord | null>(null)
   const [loading, setLoading] = useState(true)
@@ -139,7 +141,15 @@ export default function PageEditor() {
 
   const handleDeletePage = async () => {
     if (!id) return
-    if (confirm('Tem certeza que deseja excluir esta página?')) {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.pageDesc'),
+      itemName: title || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      icon: 'scroll',
+    })
+    if (confirmed) {
       await pagesService.delete(id)
       navigate('/')
     }
@@ -187,7 +197,20 @@ export default function PageEditor() {
     triggerSave(title, icon, updated, isFavorite)
   }
 
-  const handleDeleteBlock = (blockId: string) => {
+  const handleDeleteBlock = async (blockId: string) => {
+    const targetBlock = blocks.find((b) => b.id === blockId)
+    if (targetBlock && targetBlock.content && targetBlock.content.trim().length > 0) {
+      const confirmed = await confirm({
+        title: t('confirm.deleteTitle'),
+        description: t('confirm.blockDesc'),
+        itemName: targetBlock.content.slice(0, 60),
+        confirmText: t('confirm.deleteAction'),
+        cancelText: t('confirm.cancelAction'),
+        icon: 'scroll',
+      })
+      if (!confirmed) return
+    }
+
     if (blocks.length <= 1) {
       // Limpa o conteúdo em vez de excluir o único bloco
       const updated: PageBlock[] = [{ id: 'b_' + Date.now(), type: 'text', content: '' }]

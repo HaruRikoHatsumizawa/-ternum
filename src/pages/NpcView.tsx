@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { npcsService, NpcRecord, NpcStatus } from '@/services/npcs'
 import { CHARACTER_TEMPLATES, CharacterTemplate } from '@/services/characterTemplates'
@@ -50,6 +51,7 @@ export default function NpcView() {
   const navigate = useNavigate()
   const { mode } = useAppMode()
   const { t, language } = useLanguage()
+  const confirm = useConfirm()
   const [npcs, setNpcs] = useState<NpcRecord[]>([])
   const [selectedNpc, setSelectedNpc] = useState<NpcRecord | null>(null)
   const [isEditing, setIsEditing] = useState(false)
@@ -195,7 +197,15 @@ export default function NpcView() {
 
   const handleDelete = async () => {
     if (!selectedNpc) return
-    if (!confirm(`Deseja apagar a ficha de "${selectedNpc.name}"?`)) return
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.npcDesc'),
+      itemName: selectedNpc.name,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      icon: 'skull',
+    })
+    if (!confirmed) return
 
     try {
       await npcsService.delete(selectedNpc.id)

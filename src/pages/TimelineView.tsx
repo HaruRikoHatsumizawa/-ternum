@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useTranslation } from '@/i18n/LanguageContext'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { useToast } from '@/hooks/use-toast'
 import { timelineService, CampaignEventRecord, CampaignEventCategory } from '@/services/timeline'
 import { sessionsService } from '@/services/sessions'
@@ -43,6 +44,7 @@ export function TimelineView() {
   const { t } = useTranslation()
   const { mode } = useAppMode()
   const { toast } = useToast()
+  const confirm = useConfirm()
 
   const [loading, setLoading] = useState(true)
   const [events, setEvents] = useState<CampaignEventRecord[]>([])
@@ -198,7 +200,16 @@ export function TimelineView() {
   }
 
   async function handleDeleteEvent(id: string) {
-    if (!window.confirm(t('timeline.deleteEventConfirm'))) return
+    const ev = events.find((e) => e.id === id)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.timelineEventDesc'),
+      itemName: ev?.title || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      icon: 'scroll',
+    })
+    if (!confirmed) return
     try {
       await timelineService.delete(id)
       setEvents((prev) => prev.filter((ev) => ev.id !== id))

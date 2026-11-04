@@ -5,6 +5,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { ModeProvider } from '@/contexts/ModeContext'
+import { ConfirmDialogProvider } from '@/contexts/ConfirmDialogContext'
 import { LanguageProvider, useLanguage } from '@/i18n/LanguageContext'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import Index from './pages/Index'
@@ -82,36 +83,38 @@ const App = () => (
       <LanguageProvider>
         <AppBootstrapGate>
           <ModeProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route
-                  element={
-                    <ProtectedRoute>
-                      <Layout />
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route path="/" element={<Index />} />
-                  <Route path="/pages/:id" element={<PageEditor />} />
-                  <Route path="/boards/:id" element={<BoardView />} />
-                  <Route path="/databases/:id" element={<DatabaseView />} />
-                  <Route path="/sessions" element={<SessionsCalendar />} />
-                  <Route path="/timeline" element={<TimelineView />} />
-                  <Route path="/loot" element={<LootForge />} />
-                  <Route path="/combat" element={<CombatTracker />} />
-                  <Route path="/npcs" element={<NpcView />} />
-                  <Route path="/characters/:id" element={<CharacterDetailView />} />
-                  <Route path="/oracle" element={<OracleChat />} />
-                  <Route path="/glossary" element={<GlossaryView />} />
-                  <Route path="/compendium" element={<CompendiumView />} />
-                  <Route path="/settings" element={<Settings />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </TooltipProvider>
+            <ConfirmDialogProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    element={
+                      <ProtectedRoute>
+                        <Layout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route path="/" element={<Index />} />
+                    <Route path="/pages/:id" element={<PageEditor />} />
+                    <Route path="/boards/:id" element={<BoardView />} />
+                    <Route path="/databases/:id" element={<DatabaseView />} />
+                    <Route path="/sessions" element={<SessionsCalendar />} />
+                    <Route path="/timeline" element={<TimelineView />} />
+                    <Route path="/loot" element={<LootForge />} />
+                    <Route path="/combat" element={<CombatTracker />} />
+                    <Route path="/npcs" element={<NpcView />} />
+                    <Route path="/characters/:id" element={<CharacterDetailView />} />
+                    <Route path="/oracle" element={<OracleChat />} />
+                    <Route path="/glossary" element={<GlossaryView />} />
+                    <Route path="/compendium" element={<CompendiumView />} />
+                    <Route path="/settings" element={<Settings />} />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </TooltipProvider>
+            </ConfirmDialogProvider>
           </ModeProvider>
         </AppBootstrapGate>
       </LanguageProvider>

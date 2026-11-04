@@ -42,6 +42,7 @@ export default function BoardView() {
   const { id } = useParams<{ id: string }>()
   const { mode, setMode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
   const navigate = useNavigate()
 
   const [board, setBoard] = useState<BoardRecord | null>(null)

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { useLanguage } from '@/i18n/LanguageContext'
 import { sessionsService, SessionRecord, SessionStatus, TargetMode } from '@/services/sessions'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
@@ -53,6 +54,7 @@ const STATUS_COLORS: Record<SessionStatus, { text: string; bg: string; border: s
 export default function SessionsCalendar() {
   const { mode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
   const [sessions, setSessions] = useState<SessionRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [currentDate, setCurrentDate] = useState(() => new Date())
@@ -207,7 +209,16 @@ export default function SessionsCalendar() {
   }
 
   const handleDeleteSession = async (id: string) => {
-    if (!confirm('Deseja realmente apagar esta sessão do tomo?')) return
+    const s = sessions.find((x) => x.id === id)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.sessionDesc'),
+      itemName: s?.title || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      icon: 'trash',
+    })
+    if (!confirmed) return
     try {
       await sessionsService.delete(id)
       toast({ title: 'Sessão removida do calendário' })

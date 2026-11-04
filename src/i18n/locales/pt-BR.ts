@@ -920,6 +920,37 @@ export const ptBR = {
     desc: 'O tomo que procuras foi devorado pelas brumas do éter ou banido do reino.',
     backHome: 'Retornar aos Portões do Reino',
   },
+
+  // Confirmações Rúnicas de Exclusão
+  confirm: {
+    deleteTitle: 'Exclusão do Códice',
+    deleteAction: 'Excluir do Registro',
+    cancelAction: 'Preservar / Cancelar',
+    genericDesc: 'Esta ação não poderá ser desfeita. Desejas prosseguir com o expurgo?',
+    pageDesc: 'Tem certeza que deseja banir esta página do grimório?',
+    blockDesc: 'Deseja expurgar este bloco do manuscrito?',
+    boardCardDesc: 'Deseja expurgar este decreto da tábula de missões?',
+    boardColumnDesc: 'Deseja destruir esta coluna e todos os decretos contidos nela?',
+    databaseRowDesc: 'Deseja expurgar esta linha do códice tabelado?',
+    databaseColDesc: 'Deseja destruir este atributo e todos os dados gravados nele?',
+    npcDesc: 'Deseja realmente apagar a ficha e todos os vínculos deste personagem?',
+    characterPhotoDesc: 'Deseja desvincular o retrato arcano deste personagem?',
+    characterBondDesc: 'Deseja romper definitivamente este vínculo com o personagem?',
+    characterPowerDesc: 'Deseja expurgar este dom arcano da ficha?',
+    characterAbilityDesc: 'Deseja expurgar esta perícia da ficha?',
+    sessionDesc: 'Deseja remover esta convocação do calendário astral?',
+    encounterDesc: 'Deseja expurgar este combate e todos os combatentes inscritos nele?',
+    combatantDesc: 'Deseja remover este combatente da refrega?',
+    timelineEventDesc: 'Deseja apagar este acontecimento dos anais da crônica?',
+    compendiumEntryDesc: 'Deseja expurgar este tomo sagrado do compêndio arcano?',
+    glossaryTermDesc: 'Deseja banir este verbete do léxico de Éternum?',
+    inventoryItemDesc: 'Deseja destruir este artefato da algibeira?',
+    oracleConversationDesc: 'Deseja queimar o pergaminho desta consulta com o Oráculo?',
+    deleteAccountTitle: 'Dissolver Alma & Conta',
+    deleteAccountDesc:
+      'ATENÇÃO: Toda a sua linhagem, grimórios, fichas e registros vinculados serão consumidos pelo vácuo eterno. Esta ação é irreversível.',
+    deleteAccountAction: 'Dissolver Conta Definitivamente',
+  },
 }
 
 export type TranslationDict = typeof ptBR
