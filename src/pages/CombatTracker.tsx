@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppMode, isItemVisibleInMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   encountersService,
   EncounterRecord,
@@ -106,6 +107,8 @@ function extractHeroStatsFromPage(page: PageRecord): { hp: number; ac: number; a
 export default function CombatTracker() {
   const { mode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
+
   const [encounters, setEncounters] = useState<EncounterRecord[]>([])
   const [selectedEncounter, setSelectedEncounter] = useState<EncounterRecord | null>(null)
   const [loading, setLoading] = useState(true)
@@ -232,7 +235,16 @@ export default function CombatTracker() {
 
   // Exclusão de combate
   const handleDeleteEncounter = async (id: string, name: string) => {
-    if (!confirm(`Deseja remover o combate "${name}"?`)) return
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.encounterDesc'),
+      itemName: name,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'combat',
+    })
+    if (!confirmed) return
     try {
       await encountersService.delete(id)
       const filtered = encounters.filter((e) => e.id !== id)
@@ -342,6 +354,17 @@ export default function CombatTracker() {
   // Remover combatente
   const handleRemoveCombatant = async (cbtId: string) => {
     if (!selectedEncounter) return
+    const combatant = selectedEncounter.combatants.find((c) => c.id === cbtId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.combatantDesc'),
+      itemName: combatant?.name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'skull',
+    })
+    if (!confirmed) return
     const updatedCombatants = selectedEncounter.combatants.filter((c) => c.id !== cbtId)
     let nextIndex = selectedEncounter.current_turn_index
     if (nextIndex >= updatedCombatants.length) {
@@ -485,7 +508,15 @@ export default function CombatTracker() {
   // Reiniciar combate (rodada 1, turno 0)
   const handleResetCombat = async () => {
     if (!selectedEncounter) return
-    if (!confirm('Deseja reiniciar a contagem de rodadas e turnos deste combate?')) return
+    const confirmed = await confirm({
+      title: t('combatTracker.resetRounds') || 'Reiniciar Batalha',
+      description: 'Deseja reiniciar a contagem de rodadas e turnos deste combate para a Rodada 1?',
+      confirmText: 'Reiniciar Rodadas',
+      cancelText: t('confirm.cancelAction'),
+      dangerous: false,
+      icon: 'combat',
+    })
+    if (!confirmed) return
 
     const updated: EncounterRecord = {
       ...selectedEncounter,

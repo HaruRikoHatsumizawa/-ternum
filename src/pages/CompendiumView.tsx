@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useLanguage, useTranslation } from '@/i18n/LanguageContext'
 import { useAuth } from '@/contexts/AuthContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   compendiumService,
   CompendiumEntryRecord,
@@ -32,16 +33,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { Plus, Pencil, Trash2, ArrowUpDown, Filter } from 'lucide-react'
@@ -69,6 +60,7 @@ export default function CompendiumView() {
   const { locale, t } = useLanguage()
   const { user } = useAuth()
   const { toast } = useToast()
+  const confirm = useConfirm()
 
   const [customEntries, setCustomEntries] = useState<CompendiumEntryRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -86,9 +78,6 @@ export default function CompendiumView() {
   const [formDescription, setFormDescription] = useState('')
   const [formTraitsText, setFormTraitsText] = useState('')
   const [saving, setSaving] = useState(false)
-
-  // Diálogo de exclusão
-  const [deleteTarget, setDeleteTarget] = useState<CompendiumEntryRecord | null>(null)
 
   // Carregar verbetes customizados do PocketBase
   const loadCustomEntries = useCallback(async () => {
@@ -283,13 +272,22 @@ export default function CompendiumView() {
     }
   }
 
-  // Excluir
-  const handleDeleteConfirm = async () => {
-    if (!deleteTarget) return
+  // Excluir com diálogo temático
+  const handleDeleteEntry = async (entry: CompendiumEntryRecord) => {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.compendiumEntryDesc'),
+      itemName: entry.name,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'compendium',
+    })
+    if (!confirmed) return
+
     try {
-      await compendiumService.delete(deleteTarget.id)
+      await compendiumService.delete(entry.id)
       toast({ title: t('compendium.deletedToast') })
-      setDeleteTarget(null)
       loadCustomEntries()
     } catch (err) {
       console.error('Erro ao banir verbete:', err)
@@ -478,7 +476,7 @@ export default function CompendiumView() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setDeleteTarget(item.rawRecord!)}
+                          onClick={() => handleDeleteEntry(item.rawRecord!)}
                           aria-label={t('compendium.deleteEntry')}
                           className="p-1 rounded text-stone-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                         >
@@ -633,31 +631,6 @@ export default function CompendiumView() {
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Diálogo de confirmação de exclusão */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent className="bg-stone-950 border-amber-500/30 text-amber-100">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-cinzel text-red-400">
-              {t('compendium.deleteTitle')}
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-xs text-stone-400">
-              {t('compendium.deleteDescription').replace('{name}', deleteTarget?.name || '')}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="border-stone-700 text-stone-300 hover:bg-stone-800 text-xs">
-              {t('compendium.deleteCancel')}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteConfirm}
-              className="bg-red-700 hover:bg-red-600 text-white text-xs font-cinzel"
-            >
-              {t('compendium.deleteConfirm')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   )
 }

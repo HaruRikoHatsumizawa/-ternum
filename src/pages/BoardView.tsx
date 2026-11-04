@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { boardsService, BoardRecord, BoardCard, BoardColumn } from '@/services/boards'
 import { EternumLoadingScreen } from '@/components/rpg/EternumLoadingScreen'
 import { RuneSwordIcon, RunicInsignia } from '@/components/rpg/EternumIcons'
@@ -111,7 +112,16 @@ export default function BoardView() {
 
   const handleDeleteBoard = async () => {
     if (!id) return
-    if (confirm('Tem certeza que deseja excluir este quadro?')) {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.boardColumnDesc') || t('confirm.genericDesc'),
+      itemName: name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (confirmed) {
       await boardsService.delete(id)
       navigate('/')
     }
@@ -173,7 +183,18 @@ export default function BoardView() {
     setCardModalOpen(false)
   }
 
-  const handleDeleteCard = (cardId: string) => {
+  const handleDeleteCard = async (cardId: string) => {
+    const card = cards.find((c) => c.id === cardId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.boardCardDesc'),
+      itemName: card?.title || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (!confirmed) return
     const updated = cards.filter((c) => c.id !== cardId)
     setCards(updated)
     triggerSave(name, columns, updated)

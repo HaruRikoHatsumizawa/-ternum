@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import pb from '@/lib/pocketbase/client'
 import {
   Sparkles,
@@ -13,6 +14,7 @@ import {
   Scroll,
   Swords,
   BookOpen,
+  Trash2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,6 +46,7 @@ const ORACLE_SUGGESTIONS = [
 export default function OracleChat() {
   const { mode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
@@ -92,6 +95,29 @@ export default function OracleChat() {
   useEffect(() => {
     loadConversations()
   }, [])
+
+  const handleClearChat = async () => {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.oracleDesc'),
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'oracle',
+    })
+    if (!confirmed) return
+
+    setActiveConvId(null)
+    setMessages([
+      {
+        id: `welcome_${Date.now()}`,
+        role: 'assistant',
+        content:
+          'O espelho arcano foi purificado. Um novo fio do destino se abre diante de vós. O que desejas consultar ao Oráculo de Éternum?',
+      },
+    ])
+    toast({ title: 'Vozes arcanas silenciadas' })
+  }
 
   const handleStartNewChat = () => {
     setActiveConvId(null)
@@ -229,6 +255,15 @@ export default function OracleChat() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleClearChat}
+            className="text-xs border-rose-500/30 text-rose-300 hover:text-rose-100 hover:bg-rose-950/40 font-fantasy"
+            title="Limpar diálogo com o Oráculo"
+          >
+            <Trash2 className="h-3.5 w-3.5 mr-1" /> {t('confirm.deleteAction')}
+          </Button>
           <Button
             variant="outline"
             size="sm"

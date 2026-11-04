@@ -36,6 +36,7 @@ export interface BondWithTarget extends CharacterBondItem {
 }
 import { useTranslation } from '@/i18n/LanguageContext'
 import { useAppMode } from '@/contexts/ModeContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -76,6 +77,7 @@ export function CharacterDetailView() {
   const navigate = useNavigate()
   const { t, locale } = useTranslation()
   const { mode } = useAppMode()
+  const confirm = useConfirm()
   const { toast } = useToast()
 
   const [npc, setNpc] = useState<NpcRecord | null>(null)
@@ -433,6 +435,18 @@ export function CharacterDetailView() {
   async function handleRemoveBond(bondId: string) {
     if (!id) return
 
+    const bondTarget = enrichedBonds.find((b) => b.id === bondId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.bondDesc'),
+      itemName: bondTarget?.target_name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'bonds',
+    })
+    if (!confirmed) return
+
     try {
       const currentRawBonds: CharacterBondItem[] = (details?.bonds_data || []).map((b) => ({
         id: b.id,
@@ -492,7 +506,18 @@ export function CharacterDetailView() {
     setNewPowerDesc('')
   }
 
-  function handleRemovePower(powerId: string) {
+  async function handleRemovePower(powerId: string) {
+    const power = powers.find((p) => p.id === powerId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.powerDesc'),
+      itemName: power?.name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (!confirmed) return
     setPowers(powers.filter((p) => p.id !== powerId))
   }
 
@@ -509,8 +534,34 @@ export function CharacterDetailView() {
     setNewAbilityDesc('')
   }
 
-  function handleRemoveAbility(abilityId: string) {
+  async function handleRemoveAbility(abilityId: string) {
+    const ability = abilities.find((a) => a.id !== abilityId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.abilityDesc'),
+      itemName: ability?.name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (!confirmed) return
     setAbilities(abilities.filter((a) => a.id !== abilityId))
+  }
+
+  async function handleRemovePhoto() {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.characterPhotoDesc'),
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (!confirmed) return
+    setPhotoFile(null)
+    setPhotoPreview(null)
+    setRemovePhotoRequested(true)
   }
 
   // Monta objeto consolidado para enviar ao Oráculo
@@ -709,11 +760,7 @@ export function CharacterDetailView() {
               {(existingPhotoUrl || photoPreview) && !removePhotoRequested && (
                 <button
                   type="button"
-                  onClick={() => {
-                    setPhotoFile(null)
-                    setPhotoPreview(null)
-                    setRemovePhotoRequested(true)
-                  }}
+                  onClick={handleRemovePhoto}
                   className="text-[11px] font-fantasy px-2 py-1 rounded bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/40 text-rose-300 transition-colors"
                   title={t('characterDetail.removePhotoTooltip')}
                 >

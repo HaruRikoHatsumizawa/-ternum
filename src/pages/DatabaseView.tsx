@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   databasesService,
   DatabaseRecord,
@@ -43,6 +44,7 @@ export default function DatabaseView() {
   const { id } = useParams<{ id: string }>()
   const { mode, setMode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
   const navigate = useNavigate()
 
   const [database, setDatabase] = useState<DatabaseRecord | null>(null)
@@ -103,7 +105,16 @@ export default function DatabaseView() {
 
   const handleDeleteDatabase = async () => {
     if (!id) return
-    if (confirm('Tem certeza que deseja excluir esta tabela?')) {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('database.deleteConfirm'),
+      itemName: name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (confirmed) {
       await databasesService.delete(id)
       navigate('/')
     }
@@ -130,7 +141,16 @@ export default function DatabaseView() {
   }
 
   // Excluir Linha
-  const handleDeleteRow = (rowId: string) => {
+  const handleDeleteRow = async (rowId: string) => {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.databaseRowDesc'),
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (!confirmed) return
     const updated = rows.filter((r) => r.id !== rowId)
     setRows(updated)
     triggerSave(name, columns, updated)
@@ -173,12 +193,21 @@ export default function DatabaseView() {
   }
 
   // Excluir Coluna
-  const handleDeleteColumn = (colId: string) => {
+  const handleDeleteColumn = async (colId: string) => {
     if (columns.length <= 1) {
-      alert('A tabela deve ter pelo menos uma coluna.')
       return
     }
-    if (confirm('Tem certeza que deseja excluir esta coluna?')) {
+    const targetCol = columns.find((c) => c.id === colId)
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.databaseColDesc'),
+      itemName: targetCol?.name || undefined,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'trash',
+    })
+    if (confirmed) {
       const updatedCols = columns.filter((c) => c.id !== colId)
       const updatedRows = rows.map((r) => {
         const copy = { ...r }

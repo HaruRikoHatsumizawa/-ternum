@@ -937,6 +937,7 @@ export const en: TranslationDict = {
     compendiumEntryDesc: 'Do you wish to purge this sacred tome from the arcane compendium?',
     glossaryTermDesc: 'Do you wish to banish this term from the lexicon of Éternum?',
     inventoryItemDesc: 'Do you wish to destroy this artifact from your pouch?',
+    oracleDesc: 'Do you wish to burn the scroll of this Oracle consultation?',
     oracleConversationDesc: 'Do you wish to burn the scroll of this Oracle consultation?',
     deleteAccountTitle: 'Dissolve Soul & Account',
     deleteAccountDesc:

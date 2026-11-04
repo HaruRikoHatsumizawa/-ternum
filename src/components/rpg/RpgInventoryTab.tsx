@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTranslation } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   inventoryService,
   InventoryItemRecord,
@@ -28,16 +29,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { Plus, Pencil, Trash2, ShieldCheck, ShieldAlert } from 'lucide-react'
 
@@ -49,6 +40,7 @@ export interface RpgInventoryTabProps {
 export function RpgInventoryTab({ characterId, characterName }: RpgInventoryTabProps) {
   const { t } = useTranslation()
   const { toast } = useToast()
+  const confirm = useConfirm()
 
   const [items, setItems] = useState<InventoryItemRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -66,9 +58,6 @@ export function RpgInventoryTab({ characterId, characterName }: RpgInventoryTabP
   const [formWeight, setFormWeight] = useState<number | ''>('')
   const [formNotes, setFormNotes] = useState('')
   const [saving, setSaving] = useState(false)
-
-  // Diálogo de exclusão
-  const [deleteTarget, setDeleteTarget] = useState<InventoryItemRecord | null>(null)
 
   const loadItems = useCallback(async () => {
     if (!characterId) return
@@ -255,13 +244,22 @@ export function RpgInventoryTab({ characterId, characterName }: RpgInventoryTabP
     }
   }
 
-  // Excluir
-  const handleDeleteConfirm = async () => {
-    if (!deleteTarget) return
+  // Excluir com diálogo temático
+  const handleDeleteItem = async (item: InventoryItemRecord) => {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.inventoryItemDesc'),
+      itemName: item.name,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'blade',
+    })
+    if (!confirmed) return
+
     try {
-      await inventoryService.delete(deleteTarget.id)
+      await inventoryService.delete(item.id)
       toast({ title: t('inventory.deletedToast') })
-      setDeleteTarget(null)
       loadItems()
     } catch (err) {
       console.error('Erro ao excluir item:', err)
@@ -472,7 +470,7 @@ export function RpgInventoryTab({ characterId, characterName }: RpgInventoryTabP
                 {/* Excluir */}
                 <button
                   type="button"
-                  onClick={() => setDeleteTarget(item)}
+                  onClick={() => handleDeleteItem(item)}
                   className="p-1.5 rounded text-stone-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                   aria-label={t('inventory.deleteItem')}
                 >
@@ -651,31 +649,6 @@ export function RpgInventoryTab({ characterId, characterName }: RpgInventoryTabP
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Confirmação de exclusão */}
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <AlertDialogContent className="bg-stone-950 border-amber-500/30 text-amber-100">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-cinzel text-red-400">
-              {t('inventory.deleteTitle')}
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-xs text-stone-400">
-              {t('inventory.deleteDescription').replace('{name}', deleteTarget?.name || '')}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="border-stone-700 text-stone-300 hover:bg-stone-800 text-xs">
-              {t('common.cancel')}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteConfirm}
-              className="bg-red-700 hover:bg-red-600 text-white text-xs font-cinzel"
-            >
-              {t('inventory.deleteConfirm')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   )
 }

@@ -945,6 +945,7 @@ export const ptBR = {
     compendiumEntryDesc: 'Deseja expurgar este tomo sagrado do compêndio arcano?',
     glossaryTermDesc: 'Deseja banir este verbete do léxico de Éternum?',
     inventoryItemDesc: 'Deseja destruir este artefato da algibeira?',
+    oracleDesc: 'Deseja queimar o pergaminho desta consulta com o Oráculo?',
     oracleConversationDesc: 'Deseja queimar o pergaminho desta consulta com o Oráculo?',
     deleteAccountTitle: 'Dissolver Alma & Conta',
     deleteAccountDesc:

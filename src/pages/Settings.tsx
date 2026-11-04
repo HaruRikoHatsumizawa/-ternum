@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppMode, AppMode } from '@/contexts/ModeContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   RuneGearIcon,
   RuneSwordIcon,
+  RuneSkullIcon,
   RuneScrollIcon,
   RuneCrestIcon,
 } from '@/components/rpg/EternumIcons'
@@ -32,6 +34,7 @@ import {
   Sparkles,
   Swords,
   Scroll,
+  Trash2,
 } from 'lucide-react'
 import pb from '@/lib/pocketbase/client'
 import { AvatarFrame, PFP_FRAMES } from '@/components/rpg/AvatarFrame'
@@ -40,6 +43,7 @@ export default function Settings() {
   const { user, updateProfile, updatePassword, logout } = useAuth()
   const { mode, setMode } = useAppMode()
   const { t } = useLanguage()
+  const confirm = useConfirm()
 
   const [name, setName] = useState(user?.name || '')
   const [selectedFrame, setSelectedFrame] = useState<string>(user?.pfp_frame || 'runic-gold')
@@ -90,6 +94,27 @@ export default function Settings() {
 
   const handleModeToggle = async (newMode: AppMode) => {
     await setMode(newMode)
+  }
+
+  const handleDeleteAccount = async () => {
+    if (!user) return
+    const confirmed = await confirm({
+      title: t('confirm.deleteAccountTitle'),
+      description: t('confirm.deleteAccountDesc'),
+      confirmText: t('confirm.deleteAccountAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'skull',
+    })
+    if (!confirmed) return
+
+    try {
+      await pb.collection('users').delete(user.id)
+      logout()
+    } catch (err: any) {
+      console.error('Falha ao dissolver conta:', err)
+      setProfileError(err?.message || 'Falha ao dissolver conta do códice.')
+    }
   }
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -565,17 +590,38 @@ export default function Settings() {
         </form>
       </Card>
 
-      {/* Sair da conta */}
-      <div className="flex justify-end pt-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={logout}
-          className="text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 border-rose-500/30 font-fantasy"
-        >
-          {t('settings.leaveTable')}
-        </Button>
-      </div>
+      {/* Zona de Perigo / Exclusão de Conta & Sair da mesa */}
+      <Card className="border border-rose-900/40 bg-[#120a0e] shadow-xl overflow-hidden">
+        <CardHeader className="border-b border-rose-900/30 pb-3">
+          <CardTitle className="text-base font-fantasy font-bold text-rose-200 flex items-center gap-2">
+            <RuneSkullIcon className="h-5 w-5 text-rose-400" />
+            <span>{t('confirm.deleteAccountTitle')}</span>
+          </CardTitle>
+          <CardDescription className="text-xs text-rose-300/70">
+            {t('confirm.deleteAccountDesc')}
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="pt-3.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={logout}
+            className="text-xs text-amber-300 hover:text-amber-100 hover:bg-amber-950/30 border-amber-500/30 font-fantasy"
+          >
+            {t('settings.leaveTable')}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDeleteAccount}
+            className="text-xs text-rose-300 hover:text-rose-100 hover:bg-rose-950/60 border-rose-500/40 font-fantasy gap-1.5"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            <span>{t('confirm.deleteAccountAction')}</span>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

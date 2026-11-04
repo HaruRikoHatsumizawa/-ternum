@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/i18n/LanguageContext'
+import { useConfirm } from '@/contexts/ConfirmDialogContext'
 import {
   glossaryTermsService,
   GlossaryTermRecord,
@@ -56,6 +57,7 @@ export interface DisplayGlossaryTerm {
 export default function GlossaryView() {
   const { user } = useAuth()
   const { t, locale } = useLanguage()
+  const confirm = useConfirm()
 
   const [loading, setLoading] = useState(true)
   const [customTerms, setCustomTerms] = useState<GlossaryTermRecord[]>([])
@@ -94,18 +96,13 @@ export default function GlossaryView() {
     }
   }, [searchParams])
 
-  // Modais de Criação/Edição e Exclusão
+  // Modais de Criação/Edição
   const [modalOpen, setModalOpen] = useState(false)
   const [editingTerm, setEditingTerm] = useState<GlossaryTermRecord | null>(null)
   const [formTerm, setFormTerm] = useState('')
-  const [formCategory, setFormCategory] = useState<GlossaryCategoryId>('combate')
+  const [formCategory, setFormCategory] = useState<GlossaryCategoryId>('nerd')
   const [formDefinition, setFormDefinition] = useState('')
   const [saving, setSaving] = useState(false)
-
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
-  const [termToDelete, setTermToDelete] = useState<GlossaryTermRecord | null>(null)
-  const [deleting, setDeleting] = useState(false)
-
   // Carrega termos customizados salvos no PocketBase
   const loadCustomTerms = async () => {
     if (!user) return
@@ -298,18 +295,25 @@ export default function GlossaryView() {
     }
   }
 
-  const handleConfirmDelete = async () => {
-    if (!termToDelete) return
-    setDeleting(true)
+  const handleDeleteTerm = async (termRecord: GlossaryTermRecord) => {
+    const confirmed = await confirm({
+      title: t('confirm.deleteTitle'),
+      description: t('confirm.glossaryTermDesc'),
+      itemName: termRecord.term,
+      confirmText: t('confirm.deleteAction'),
+      cancelText: t('confirm.cancelAction'),
+      dangerous: true,
+      icon: 'tome',
+    })
+    if (!confirmed) return
+
     try {
-      await glossaryTermsService.delete(termToDelete.id)
-      setCustomTerms((prev) => prev.filter((t) => t.id !== termToDelete.id))
+      await glossaryTermsService.delete(termRecord.id)
+      setCustomTerms((prev) => prev.filter((t) => t.id !== termRecord.id))
       toast({
         title: t('glossary.deletedToast'),
-        description: `"${termToDelete.term}" banido do glossário.`,
+        description: `"${termRecord.term}" banido do glossário.`,
       })
-      setDeleteConfirmOpen(false)
-      setTermToDelete(null)
     } catch (err: any) {
       console.error(err)
       toast({
@@ -317,8 +321,6 @@ export default function GlossaryView() {
         description: err?.message || '',
         variant: 'destructive',
       })
-    } finally {
-      setDeleting(false)
     }
   }
 
@@ -533,10 +535,7 @@ export default function GlossaryView() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => {
-                          setTermToDelete(tItem.record!)
-                          setDeleteConfirmOpen(true)
-                        }}
+                        onClick={() => handleDeleteTerm(tItem.record!)}
                         className="h-7 px-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 gap-1"
                       >
                         <Trash2 className="w-3 h-3" />
@@ -636,41 +635,6 @@ export default function GlossaryView() {
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal de Confirmação de Exclusão */}
-      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
-        <DialogContent className="max-w-md bg-[#121724] border-[#293246] text-[#f1ede3]">
-          <DialogHeader>
-            <DialogTitle className="font-fantasy text-base text-red-300">
-              {t('glossary.deleteTitle')}
-            </DialogTitle>
-            <DialogDescription className="text-xs text-[#a8a191] pt-2">
-              {termToDelete
-                ? t('glossary.deleteDescription').replace('{term}', termToDelete.term)
-                : ''}
-            </DialogDescription>
-          </DialogHeader>
-
-          <DialogFooter className="pt-3">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setDeleteConfirmOpen(false)}
-              className="text-xs text-[#a09888]"
-            >
-              {t('glossary.deleteCancel')}
-            </Button>
-            <Button
-              type="button"
-              disabled={deleting}
-              onClick={handleConfirmDelete}
-              className="bg-red-700 hover:bg-red-600 text-white font-semibold text-xs border border-red-500/50"
-            >
-              {t('glossary.deleteConfirm')}
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
