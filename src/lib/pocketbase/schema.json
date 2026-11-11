@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T15:31:14.453Z",
+  "generatedAt": "2026-11-11T12:13:30.665Z",
   "collections": [
     {
       "name": "users",
@@ -29,14 +29,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "pfp_frame",
@@ -55,7 +60,10 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["pt-BR", "en"]
+          "selectValues": [
+            "pt-BR",
+            "en"
+          ]
         }
       ],
       "indexes": [
@@ -116,21 +124,30 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "target_mode",
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         }
       ],
       "indexes": [
@@ -191,21 +208,30 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "target_mode",
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         }
       ],
       "indexes": [
@@ -266,21 +292,30 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "target_mode",
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         }
       ],
       "indexes": [
@@ -323,7 +358,11 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["Agendada", "Realizada", "Cancelada"]
+          "selectValues": [
+            "Agendada",
+            "Realizada",
+            "Cancelada"
+          ]
         },
         {
           "name": "campaign",
@@ -348,21 +387,30 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "target_mode",
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         }
       ],
       "indexes": [
@@ -423,7 +471,11 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["Vivo", "Desconhecido", "Morto"]
+          "selectValues": [
+            "Vivo",
+            "Desconhecido",
+            "Morto"
+          ]
         },
         {
           "name": "appearance",
@@ -514,14 +566,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "species",
@@ -546,7 +603,11 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         }
       ],
       "indexes": [
@@ -589,7 +650,11 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["Preparando", "Em Andamento", "Finalizado"]
+          "selectValues": [
+            "Preparando",
+            "Em Andamento",
+            "Finalizado"
+          ]
         },
         {
           "name": "round",
@@ -614,21 +679,30 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         },
         {
           "name": "created",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -665,7 +739,14 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["combate", "personagem", "regras", "dados", "mesa", "nerd"]
+          "selectValues": [
+            "combate",
+            "personagem",
+            "regras",
+            "dados",
+            "mesa",
+            "nerd"
+          ]
         },
         {
           "name": "definition",
@@ -678,14 +759,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -722,14 +808,24 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["dnd", "bleach", "dragonball", "anime", "games", "outro"]
+          "selectValues": [
+            "dnd",
+            "bleach",
+            "dragonball",
+            "anime",
+            "games",
+            "outro"
+          ]
         },
         {
           "name": "entry_type",
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["race", "power"]
+          "selectValues": [
+            "race",
+            "power"
+          ]
         },
         {
           "name": "short_description",
@@ -748,14 +844,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -811,7 +912,13 @@
           "type": "select",
           "required": true,
           "system": false,
-          "selectValues": ["weapon", "armor", "consumable", "treasure", "adventure"]
+          "selectValues": [
+            "weapon",
+            "armor",
+            "consumable",
+            "treasure",
+            "adventure"
+          ]
         },
         {
           "name": "is_equipped",
@@ -830,7 +937,14 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["Comum", "Incomum", "Raro", "Muito Raro", "Lendário", "Artefato"]
+          "selectValues": [
+            "Comum",
+            "Incomum",
+            "Raro",
+            "Muito Raro",
+            "Lendário",
+            "Artefato"
+          ]
         },
         {
           "name": "weight",
@@ -849,14 +963,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -977,14 +1096,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "bonds_data",
@@ -1066,21 +1190,30 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["geral", "rpg", "rp"]
+          "selectValues": [
+            "geral",
+            "rpg",
+            "rp"
+          ]
         },
         {
           "name": "created",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
